@@ -1,0 +1,124 @@
+{%- liquid
+  assign letters = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,#' | split: ','
+  if section.settings.source == 'menu' and section.settings.menu != blank
+    assign use_menu = true
+  else
+    assign use_menu = false
+  endif
+  assign present = ''
+  if use_menu
+    for link in section.settings.menu.links
+      assign first = link.title | slice: 0 | upcase
+      assign present = present | append: first | append: ','
+    endfor
+  else
+    for vendor in shop.vendors
+      assign first = vendor | slice: 0 | upcase
+      assign present = present | append: first | append: ','
+    endfor
+  endif
+-%}
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <header class="article__header" style="text-align: left; justify-items: start;">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="h1 heading-italic">{{ section.settings.heading }}</h1>
+      {%- if section.settings.text != blank -%}<div class="rte muted">{{ section.settings.text }}</div>{%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="az-featured">
+        {%- for block in section.blocks -%}
+          {%- assign url = block.settings.link | default: block.settings.name | url_for_vendor -%}
+          {%- if block.settings.link == blank -%}{%- assign url = block.settings.name | url_for_vendor -%}{%- endif -%}
+          <a href="{{ url }}" class="collection-tile zoom-on-hover" {{ block.shopify_attributes }}>
+            <div class="media" style="--ratio: 1.1;">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400,600,800', sizes: '(min-width: 990px) 25vw, 50vw', alt: block.settings.name }}
+              {%- else -%}
+                {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="collection-tile__label"><p class="collection-tile__title">{{ block.settings.name }}</p><span class="collection-tile__arrow">{% render 'icon', icon: 'arrow-right' %}</span></div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="az-search field">
+      <input type="search" class="field__input" id="AzSearch" placeholder=" " oninput="(function(q){q=q.toLowerCase();document.querySelectorAll('[data-az-item]').forEach(function(li){li.hidden=q&&li.dataset.azItem.indexOf(q)===-1});document.querySelectorAll('[data-az-group]').forEach(function(g){g.hidden=!g.querySelector('[data-az-item]:not([hidden])')})})(this.value)">
+      <label for="AzSearch" class="field__label">{{ 'sections.brands.search' | t }}</label>
+    </div>
+
+    <nav class="az-nav" aria-label="{{ 'sections.brands.jump' | t }}">
+      {%- for l in letters -%}
+        {%- assign key = l | append: ',' -%}
+        {%- if l == '#' -%}
+          <a href="#az-num">#</a>
+        {%- elsif present contains key -%}
+          <a href="#az-{{ l | downcase }}">{{ l }}</a>
+        {%- else -%}
+          <span aria-hidden="true">{{ l }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+
+    {%- for l in letters -%}
+      {%- capture items -%}
+        {%- if use_menu -%}
+          {%- for link in section.settings.menu.links -%}
+            {%- assign first = link.title | slice: 0 | upcase -%}
+            {%- assign is_alpha = false -%}{%- if letters contains first and first != '#' -%}{%- assign is_alpha = true -%}{%- endif -%}
+            {%- if first == l or l == '#' and is_alpha == false -%}
+              <li data-az-item="{{ link.title | downcase | escape }}"><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for vendor in shop.vendors -%}
+            {%- assign first = vendor | slice: 0 | upcase -%}
+            {%- assign is_alpha = false -%}{%- if letters contains first and first != '#' -%}{%- assign is_alpha = true -%}{%- endif -%}
+            {%- if first == l or l == '#' and is_alpha == false -%}
+              <li data-az-item="{{ vendor | downcase | escape }}"><a href="{{ vendor | url_for_vendor }}">{{ vendor }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endcapture -%}
+      {%- if items != blank -%}
+        <div class="az-group" id="az-{% if l == '#' %}num{% else %}{{ l | downcase }}{% endif %}" data-az-group>
+          <p class="az-group__letter">{{ l }}</p>
+          <ul class="az-group__list" role="list">{{ items }}</ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Designers A–Z",
+  "tag": "div",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "select", "id": "source", "label": "Designer list source", "default": "vendors", "options": [ { "value": "vendors", "label": "All product vendors (automatic)" }, { "value": "menu", "label": "A menu" } ] },
+    { "type": "link_list", "id": "menu", "label": "Menu (if source is a menu)" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Directory" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Designers <em>A–Z</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Every house we carry, from the great Parisian ateliers to Japanese independents.</p>" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "blocks": [
+    {
+      "type": "featured",
+      "name": "Featured designer",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Designer" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Defaults to the vendor page." }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Designers A–Z" } ]
+}
+{% endschema %}

@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "main": { "type": "brands-directory", "settings": { "source": "vendors" } }
+  },
+  "order": ["main"]
+}

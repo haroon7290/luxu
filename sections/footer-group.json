@@ -1,0 +1,32 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand": { "type": "brand", "settings": { "show_social": true } },
+        "links-1": { "type": "links", "settings": { "heading": "Shopping", "menu": "footer" } },
+        "text-1": { "type": "text", "settings": { "heading": "Authenticity & condition", "link_label": "Our standard", "link": "" } },
+        "contact-1": { "type": "contact", "settings": { "heading": "Client care", "email_label": "Orders & questions", "email": "care@example.com", "email_2_label": "Returns", "hours": "Mon–Fri, 9:00–18:00 CET" } },
+        "newsletter-1": { "type": "newsletter", "settings": { "heading": "First look" } }
+      },
+      "block_order": ["brand", "links-1", "text-1", "contact-1", "newsletter-1"],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "show_country": true,
+        "show_language": true,
+        "show_payment": true,
+        "show_policies": true,
+        "copyright": "All rights reserved.",
+        "show_wordmark": true
+      }
+    },
+    "popup": {
+      "type": "popup",
+      "disabled": true,
+      "settings": {}
+    }
+  },
+  "order": ["footer", "popup"]
+}

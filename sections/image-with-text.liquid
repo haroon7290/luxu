@@ -1,0 +1,88 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="iwt iwt--image-{{ section.settings.image_position }}" style="--iwt-ratio: {{ section.settings.ratio }}; --iwt-cols: {% if section.settings.image_width == 'large' %}1.3fr 1fr{% elsif section.settings.image_width == 'small' %}0.8fr 1fr{% else %}1fr 1fr{% endif %};">
+      <div class="iwt__media reveal">
+        <div class="media zoom-on-hover">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,900,1200,1600', sizes: '(min-width: 990px) 50vw, 100vw', alt: section.settings.image.alt }}
+          {%- else -%}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        {%- if section.settings.image_2 != blank -%}
+          <div class="media iwt__media-secondary" style="--ratio: 1.2;">
+            {{ section.settings.image_2 | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350,700', sizes: '25vw', alt: section.settings.image_2.alt }}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="iwt__copy reveal" style="--i: 1;">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'eyebrow' -%}
+              <p class="eyebrow eyebrow--line" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+            {%- when 'heading' -%}
+              <h2 class="{{ block.settings.size }} heading-italic" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+            {%- when 'text' -%}
+              <div class="iwt__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- when 'stats' -%}
+              <div class="iwt__stats" {{ block.shopify_attributes }}>
+                {%- for i in (1..3) -%}
+                  {%- assign n = 'stat_' | append: i | append: '_number' -%}
+                  {%- assign l = 'stat_' | append: i | append: '_label' -%}
+                  {%- if block.settings[n] != blank -%}
+                    <div><p class="iwt__stat-num">{{ block.settings[n] }}</p><p class="iwt__stat-label">{{ block.settings[l] }}</p></div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- when 'button' -%}
+              <div class="btn-row" {{ block.shopify_attributes }}>
+                {%- if block.settings.label != blank -%}<a href="{{ block.settings.link }}" class="btn btn--{{ block.settings.style }}">{{ block.settings.label }}</a>{%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image_2", "label": "Overlapping detail image" },
+    { "type": "select", "id": "image_position", "label": "Image position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
+    { "type": "select", "id": "image_width", "label": "Image width", "default": "medium", "options": [ { "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" } ] },
+    { "type": "select", "id": "ratio", "label": "Image ratio", "default": "1.2", "options": [ { "value": "0.75", "label": "Landscape" }, { "value": "1", "label": "Square" }, { "value": "1.2", "label": "Portrait" }, { "value": "1.5", "label": "Tall" } ] },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Small label", "limit": 1, "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Our story" } ] },
+    { "type": "heading", "name": "Heading", "limit": 2, "settings": [
+      { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Luxury, <em>passed on</em> with care" },
+      { "type": "select", "id": "size", "label": "Size", "default": "h1", "options": [ { "value": "h0", "label": "Extra large" }, { "value": "h1", "label": "Large" }, { "value": "h2", "label": "Medium" }, { "value": "h3", "label": "Small" } ] }
+    ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "richtext", "id": "text", "label": "Text", "default": "<p>We believe great design deserves more than one life. Each piece we select is researched, restored where needed, and presented with the honesty you'd expect from a friend in the trade.</p>" } ] },
+    { "type": "stats", "name": "Statistics", "limit": 1, "settings": [
+      { "type": "text", "id": "stat_1_number", "label": "Stat 1 number", "default": "2×" }, { "type": "text", "id": "stat_1_label", "label": "Stat 1 label", "default": "Authenticated" },
+      { "type": "text", "id": "stat_2_number", "label": "Stat 2 number", "default": "100%" }, { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "Inspections filmed" },
+      { "type": "text", "id": "stat_3_number", "label": "Stat 3 number", "default": "14" }, { "type": "text", "id": "stat_3_label", "label": "Stat 3 label", "default": "Day returns" }
+    ] },
+    { "type": "button", "name": "Button", "limit": 2, "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "About us" },
+      { "type": "url", "id": "link", "label": "Link" },
+      { "type": "select", "id": "style", "label": "Style", "default": "primary", "options": [ { "value": "primary", "label": "Solid" }, { "value": "secondary", "label": "Outline" } ] }
+    ] }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "blocks": [ { "type": "eyebrow" }, { "type": "heading" }, { "type": "text" }, { "type": "stats" }, { "type": "button" } ]
+    }
+  ]
+}
+{% endschema %}

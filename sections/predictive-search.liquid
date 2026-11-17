@@ -1,0 +1,55 @@
+{%- comment -%} Rendered by /search/suggest?section_id=predictive-search {%- endcomment -%}
+<div data-predictive-content>
+  {%- if predictive_search.performed -%}
+    {%- assign res = predictive_search.resources -%}
+    {%- assign total = res.products.size | plus: res.collections.size | plus: res.pages.size | plus: res.articles.size | plus: res.queries.size -%}
+    {%- if total > 0 -%}
+      <div class="predictive">
+        <div class="predictive__aside">
+          {%- if res.queries.size > 0 -%}
+            <div class="search-modal__group">
+              <p class="eyebrow">{{ 'general.search.suggestions' | t }}</p>
+              <ul class="predictive__list" role="list">
+                {%- for q in res.queries -%}
+                  <li><a href="{{ q.url }}">{{ q.styled_text }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+          {%- if res.collections.size > 0 -%}
+            <div class="search-modal__group">
+              <p class="eyebrow">{{ 'general.search.collections' | t }}</p>
+              <ul class="predictive__list" role="list">
+                {%- for c in res.collections -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+          {%- if res.pages.size > 0 or res.articles.size > 0 -%}
+            <div class="search-modal__group">
+              <p class="eyebrow">{{ 'general.search.pages' | t }}</p>
+              <ul class="predictive__list" role="list">
+                {%- for p in res.pages -%}<li><a href="{{ p.url }}">{{ p.title }}</a></li>{%- endfor -%}
+                {%- for a in res.articles -%}<li><a href="{{ a.url }}">{{ a.title }}</a></li>{%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+        <div>
+          {%- if res.products.size > 0 -%}
+            <p class="eyebrow" style="margin-bottom: 1rem;">{{ 'general.search.products' | t }}</p>
+            <div class="predictive__products">
+              {%- for product in res.products limit: 8 -%}
+                {% render 'product-card', product: product, sizes: '(min-width: 990px) 18vw, 50vw' %}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&options%5Bprefix%5D=last" class="btn btn--secondary predictive__all">
+            {{ 'general.search.view_all' | t: terms: predictive_search.terms }} {% render 'icon', icon: 'arrow-right' %}
+          </a>
+        </div>
+      </div>
+    {%- else -%}
+      <p class="predictive__empty">{{ 'general.search.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- endif -%}
+  {%- endif -%}
+</div>

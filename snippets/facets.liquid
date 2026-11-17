@@ -1,0 +1,97 @@
+{%- comment -%}
+  Storefront filtering form (collections & search).
+  - results: collection or search object
+  - section_id
+  - open_first: number of groups expanded by default
+{%- endcomment -%}
+{%- liquid
+  assign uses_comma_decimals = false
+  if shop.money_format contains 'with_comma_separator'
+    assign uses_comma_decimals = true
+  endif
+  assign open_first = open_first | default: 3
+-%}
+<form id="FacetsForm-{{ section_id }}" class="facets" data-facets-form>
+  {%- if results.terms -%}
+    <input type="hidden" name="q" value="{{ results.terms | escape }}">
+    <input type="hidden" name="options[prefix]" value="last">
+  {%- endif -%}
+  {%- if results.sort_by -%}
+    <input type="hidden" name="sort_by" value="{{ results.sort_by }}" data-sort-hidden>
+  {%- endif -%}
+
+  {%- for filter in results.filters -%}
+    {%- assign active_count = filter.active_values.size -%}
+    {%- if filter.type == 'price_range' and filter.min_value.value != nil or filter.max_value.value != nil -%}
+      {%- assign active_count = 1 -%}
+    {%- endif -%}
+    <details class="facet" data-facet-id="{{ filter.param_name | handle }}" {% if forloop.index <= open_first or active_count > 0 %}open{% endif %}>
+      <summary class="facet__summary">
+        <span>{{ filter.label }}{% if active_count > 0 and filter.type != 'price_range' %} <span class="facet__count">{{ active_count }}</span>{% endif %}</span>
+        {% render 'icon', icon: 'chevron-down' %}
+      </summary>
+      <div class="facet__body">
+        {%- case filter.type -%}
+          {%- when 'list', 'boolean' -%}
+            {%- if filter.values.size > 10 -%}
+              <div class="facet__search">
+                {% render 'icon', icon: 'search' %}
+                <input type="text" class="facet__search-input" placeholder="{{ 'collections.filters.search_in' | t: filter: filter.label | escape }}" data-facet-search aria-label="{{ 'collections.filters.search_in' | t: filter: filter.label | escape }}">
+              </div>
+            {%- endif -%}
+            <ul class="facet__list{% if filter.presentation == 'swatch' %} facet__list--swatch{% endif %}" role="list">
+              {%- for value in filter.values -%}
+                <li class="facet__value" data-facet-value="{{ value.label | downcase | escape }}">
+                  <label class="check{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                    <input
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      {% if value.active %}checked{% endif %}
+                      {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    >
+                    {%- if filter.presentation == 'swatch' and value.swatch -%}
+                      {%- if value.swatch.image -%}
+                        <span class="swatch" style="background-image: url({{ value.swatch.image | image_url: width: 60 }});" aria-hidden="true"></span>
+                      {%- else -%}
+                        <span class="swatch" style="background-color: {{ value.swatch.color }};" aria-hidden="true"></span>
+                      {%- endif -%}
+                    {%- else -%}
+                      <span class="check__box" aria-hidden="true">{% render 'icon', icon: 'check' %}</span>
+                    {%- endif -%}
+                    <span class="check__label">{{ value.label | escape }}</span>
+                    <span class="check__count">{{ value.count }}</span>
+                  </label>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- when 'price_range' -%}
+            {%- liquid
+              if uses_comma_decimals
+                assign min_v = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                assign max_v = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                assign range_max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+              else
+                assign min_v = filter.min_value.value | money_without_currency | replace: ',', ''
+                assign max_v = filter.max_value.value | money_without_currency | replace: ',', ''
+                assign range_max = filter.range_max | money_without_currency | replace: ',', ''
+              endif
+            -%}
+            <div class="price-range" data-price-range>
+              <div class="field field--price">
+                <span class="field--price__symbol">{{ cart.currency.symbol }}</span>
+                <input class="field__input" type="number" inputmode="decimal" name="{{ filter.min_value.param_name }}" id="Price-min-{{ section_id }}" {% if filter.min_value.value %}value="{{ min_v }}"{% endif %} placeholder="0" min="0" max="{{ range_max }}" aria-label="{{ 'collections.filters.from' | t }}">
+              </div>
+              <span class="price-range__sep">&ndash;</span>
+              <div class="field field--price">
+                <span class="field--price__symbol">{{ cart.currency.symbol }}</span>
+                <input class="field__input" type="number" inputmode="decimal" name="{{ filter.max_value.param_name }}" id="Price-max-{{ section_id }}" {% if filter.max_value.value %}value="{{ max_v }}"{% endif %} placeholder="{{ range_max }}" min="0" max="{{ range_max }}" aria-label="{{ 'collections.filters.to' | t }}">
+              </div>
+            </div>
+            <p class="price-range__hint">{{ 'collections.filters.max_price' | t: price: range_max }}</p>
+        {%- endcase -%}
+      </div>
+    </details>
+  {%- endfor -%}
+  <noscript><button type="submit" class="btn btn--primary btn--full">{{ 'collections.filters.apply' | t }}</button></noscript>
+</form>

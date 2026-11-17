@@ -1,0 +1,50 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="rich-text rich-text--{{ section.settings.align }} reveal">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'eyebrow' -%}
+            <p class="eyebrow eyebrow--line" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+          {%- when 'heading' -%}
+            <h2 class="{{ block.settings.size }} heading-italic" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+          {%- when 'quote' -%}
+            <blockquote class="rich-text__quote" {{ block.shopify_attributes }}>{{ block.settings.quote }}</blockquote>
+          {%- when 'text' -%}
+            <div class="rich-text__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'buttons' -%}
+            <div class="btn-row" {{ block.shopify_attributes }}>
+              {%- if block.settings.label_1 != blank -%}<a href="{{ block.settings.link_1 }}" class="btn btn--primary">{{ block.settings.label_1 }}</a>{%- endif -%}
+              {%- if block.settings.label_2 != blank -%}<a href="{{ block.settings.link_2 }}" class="btn btn--secondary">{{ block.settings.label_2 }}</a>{%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "select", "id": "align", "label": "Alignment", "default": "center", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }, { "value": "right", "label": "Right" } ] },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Small label", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Small label" } ] },
+    { "type": "heading", "name": "Heading", "settings": [
+      { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Talk about <em>your brand</em>" },
+      { "type": "select", "id": "size", "label": "Size", "default": "h1", "options": [ { "value": "h0", "label": "Extra large" }, { "value": "h1", "label": "Large" }, { "value": "h2", "label": "Medium" }, { "value": "h3", "label": "Small" } ] }
+    ] },
+    { "type": "quote", "name": "Statement", "settings": [ { "type": "textarea", "id": "quote", "label": "Statement", "default": "A beautiful thing, chosen twice." } ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Share information about your brand with your customers.</p>" } ] },
+    { "type": "buttons", "name": "Buttons", "settings": [
+      { "type": "text", "id": "label_1", "label": "First button label", "default": "Shop now" }, { "type": "url", "id": "link_1", "label": "First button link" },
+      { "type": "text", "id": "label_2", "label": "Second button label" }, { "type": "url", "id": "link_2", "label": "Second button link" }
+    ] }
+  ],
+  "presets": [ { "name": "Rich text", "blocks": [ { "type": "eyebrow" }, { "type": "heading" }, { "type": "text" }, { "type": "buttons" } ] } ]
+}
+{% endschema %}

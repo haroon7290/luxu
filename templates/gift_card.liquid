@@ -1,0 +1,61 @@
+{%- layout none -%}
+{%- assign gc_balance = gift_card.balance | money -%}
+{%- assign gc_initial = gift_card.initial_value | money -%}
+{%- assign gc_expires = gift_card.expires_on | date: '%d %B %Y' -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>{{ 'gift_cards.issued.title' | t: value: gc_balance, shop: shop.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@300;400;500&display=swap">
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+    <style>
+      :root { --font-heading: "Cormorant Garamond", Georgia, serif; --font-body: "Jost", Arial, sans-serif; --c-bg: #FAF7F2; --c-bg-rgb: 250,247,242; --c-text: #161412; --c-text-rgb: 22,20,18; --c-accent: #9C7A4B; --c-accent-rgb: 156,122,75; --c-surface: #F1EBE2; --c-btn: #161412; --c-btn-label: #FAF7F2; --c-btn-2: #161412; --radius: 6px; --btn-radius: 0px; }
+      .gift { max-width: 560px; margin: 0 auto; padding: 3rem 1.25rem; text-align: center; display: grid; gap: 1.5rem; }
+      .gift__card { position: relative; aspect-ratio: 1.6; border-radius: 16px; background: linear-gradient(135deg, #161412, #3a3128); color: #FAF7F2; padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between; text-align: left; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); overflow: hidden; }
+      .gift__card::after { content: ''; position: absolute; width: 60%; aspect-ratio: 1; border-radius: 50%; right: -15%; top: -25%; background: radial-gradient(circle, rgba(201,168,119,.45), transparent 70%); }
+      .gift__balance { font-family: var(--font-heading); font-size: 2.8rem; line-height: 1; }
+      .gift__code { font-family: ui-monospace, Menlo, monospace; letter-spacing: .14em; font-size: 1.05rem; padding: .9rem 1rem; border: 1px dashed rgba(22,20,18,.3); border-radius: 6px; }
+      #QrCode { display: grid; place-items: center; }
+      @media print { .no-print { display: none !important; } }
+    </style>
+  </head>
+  <body>
+    <main class="gift">
+      <p class="eyebrow">{{ shop.name }}</p>
+      <h1 class="h2">{{ 'gift_cards.issued.subtext' | t }}</h1>
+      <div class="gift__card">
+        <span style="font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;">{{ 'gift_cards.issued.label' | t }}</span>
+        <div>
+          <p class="gift__balance">{{ gift_card.balance | money }}</p>
+          {%- if gift_card.balance != gift_card.initial_value -%}<p style="opacity: .7; font-size: .85rem;">{{ 'gift_cards.issued.initial_value' | t: value: gc_initial }}</p>{%- endif -%}
+        </div>
+        {%- if gift_card.expires_on -%}<span style="font-size: .75rem; opacity: .7;">{{ 'gift_cards.issued.expiration_date' | t: expires_on: gc_expires }}</span>{%- endif -%}
+      </div>
+      {%- if gift_card.enabled == false or gift_card.expired -%}
+        <p class="form-message form-message--error">{% if gift_card.expired %}{{ 'gift_cards.issued.expired' | t }}{% else %}{{ 'gift_cards.issued.disabled' | t }}{% endif %}</p>
+      {%- endif -%}
+      <p class="muted">{{ 'gift_cards.issued.redeem_html' | t }}</p>
+      <p class="gift__code" id="GiftCardCode">{{ gift_card.code | format_code }}</p>
+      <div id="QrCode" data-identifier="{{ gift_card.qr_identifier }}"></div>
+      <div class="btn-row no-print" style="justify-content: center;">
+        <button type="button" class="btn btn--secondary" onclick="navigator.clipboard && navigator.clipboard.writeText('{{ gift_card.code | format_code }}')">{{ 'gift_cards.issued.copy_code' | t }}</button>
+        <a href="{{ shop.url }}" class="btn btn--primary">{{ 'gift_cards.issued.shop_link' | t }}</a>
+        <button type="button" class="btn btn--secondary" onclick="window.print()">{{ 'gift_cards.issued.print' | t }}</button>
+      </div>
+      {%- if gift_card.pass_url -%}
+        <a href="{{ gift_card.pass_url }}" class="no-print"><img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}" style="margin: 0 auto;"></a>
+      {%- endif -%}
+    </main>
+    <script>
+      window.addEventListener('load', function () {
+        var el = document.getElementById('QrCode');
+        if (window.QRCode && el) new QRCode(el, { text: el.dataset.identifier, width: 120, height: 120 });
+      });
+    </script>
+  </body>
+</html>

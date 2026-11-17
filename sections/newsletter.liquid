@@ -1,0 +1,50 @@
+{%- assign has_image = false -%}{%- if section.settings.image != blank -%}{%- assign has_image = true -%}{%- endif -%}
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="newsletter{% if has_image %} newsletter--image{% else %} newsletter--center{% endif %}">
+      {%- if has_image -%}
+        <div class="newsletter__media reveal"><div class="media">{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1200,1400', sizes: '(min-width: 990px) 50vw, 100vw' }}</div></div>
+      {%- endif -%}
+      <div class="newsletter__copy reveal" style="--i: 1;">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="h1 heading-italic">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="rte muted">{{ section.settings.text }}</div>{%- endif -%}
+        {%- form 'customer', id: 'NewsletterForm', class: 'newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success">{% render 'icon', icon: 'check' %} {{ 'newsletter.success' | t }}</p>
+          {%- else -%}
+            <div class="newsletter__form">
+              <div class="field">
+                <input type="email" name="contact[email]" id="NewsletterEmail-{{ section.id }}" class="field__input" autocomplete="email" placeholder=" " required>
+                <label for="NewsletterEmail-{{ section.id }}" class="field__label">{{ 'newsletter.email' | t }}</label>
+              </div>
+              <button type="submit" class="btn btn--primary">{{ section.settings.button_label }}</button>
+            </div>
+            {%- if form.errors -%}<p class="form-message form-message--error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+        {%- if section.settings.disclaimer != blank -%}<p class="newsletter__disclaimer">{{ section.settings.disclaimer }}</p>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-2" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "The first look" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Hear about it <em>before</em> it's listed" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>New arrivals land in your inbox a day early, along with private offers and stories from our studio.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Subscribe" },
+    { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "By subscribing you agree to receive marketing emails. Unsubscribe any time." },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "presets": [ { "name": "Newsletter" } ]
+}
+{% endschema %}

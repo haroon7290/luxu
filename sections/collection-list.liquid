@@ -1,0 +1,85 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <slider-component>
+      {%- capture controls -%}
+        {%- if section.settings.layout == 'slider' -%}
+          <div class="slider-controls">
+            <button type="button" class="icon-btn icon-btn--round" data-slider-prev aria-label="{{ 'accessibility.previous' | t }}">{% render 'icon', icon: 'chevron-left' %}</button>
+            <button type="button" class="icon-btn icon-btn--round" data-slider-next aria-label="{{ 'accessibility.next' | t }}">{% render 'icon', icon: 'chevron-right' %}</button>
+          </div>
+        {%- endif -%}
+      {%- endcapture -%}
+      {% render 'section-header', eyebrow: section.settings.eyebrow, title: section.settings.heading, text: section.settings.text, link_label: section.settings.link_label, link_url: routes.collections_url, extra: controls %}
+      <ul class="{% if section.settings.layout == 'slider' %}slider{% else %}grid{% endif %}" {% if section.settings.layout == 'slider' %}data-slider{% endif %} role="list" style="--cols: {{ section.settings.columns }}; --cols-mobile: 2; --per-view: {{ section.settings.columns }}; --per-view-tablet: 2.5; --per-view-mobile: 1.5; --tile-ratio: {{ section.settings.ratio }};">
+        {%- for block in section.blocks -%}
+          {%- assign c = block.settings.collection -%}
+          {%- assign img = block.settings.image | default: c.featured_image -%}
+          <li class="reveal" style="--i: {{ forloop.index0 | modulo: 5 }};" {{ block.shopify_attributes }}>
+            <a href="{{ c.url | default: '#' }}" class="collection-tile zoom-on-hover{% if section.settings.label_style == 'below' %} collection-tile--below{% endif %}">
+              <div class="media">
+                {%- if img != blank -%}
+                  {{ img | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,500,700,900', sizes: '(min-width: 990px) 25vw, 50vw', alt: c.title }}
+                {%- else -%}
+                  {%- assign ph = forloop.index | modulo: 6 | plus: 1 -%}
+                  {{ 'collection-' | append: ph | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              <div class="collection-tile__label">
+                <div>
+                  <p class="collection-tile__title">{{ block.settings.title | default: c.title | default: 'Collection' }}</p>
+                  {%- if section.settings.show_count and c != blank -%}<p class="collection-tile__count">{{ 'collections.general.items' | t: count: c.products_count }}</p>{%- endif -%}
+                </div>
+                <span class="collection-tile__arrow">{% render 'icon', icon: 'arrow-right' %}</span>
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </slider-component>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 12,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Browse" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Shop by <em>category</em>" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "All categories" },
+    { "type": "select", "id": "layout", "label": "Layout", "default": "grid", "options": [ { "value": "grid", "label": "Grid" }, { "value": "slider", "label": "Slider" } ] },
+    { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "select", "id": "ratio", "label": "Image ratio", "default": "1.25", "options": [ { "value": "1", "label": "Square" }, { "value": "1.25", "label": "Portrait" }, { "value": "0.75", "label": "Landscape" } ] },
+    { "type": "select", "id": "label_style", "label": "Title position", "default": "overlay", "options": [ { "value": "overlay", "label": "On image" }, { "value": "below", "label": "Below image" } ] },
+    { "type": "checkbox", "id": "show_count", "label": "Show product count", "default": true },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "title", "label": "Title override" },
+        { "type": "image_picker", "id": "image", "label": "Image override" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "blocks": [
+        { "type": "collection", "settings": { "title": "Bags" } },
+        { "type": "collection", "settings": { "title": "Wallets & SLGs" } },
+        { "type": "collection", "settings": { "title": "Jewellery" } },
+        { "type": "collection", "settings": { "title": "Accessories" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

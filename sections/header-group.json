@@ -1,0 +1,43 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-1": { "type": "announcement", "settings": { "text": "Every piece authenticated twice", "link": "" } },
+        "announcement-2": { "type": "announcement", "settings": { "text": "Complimentary insured shipping over €300", "link": "" } },
+        "announcement-3": { "type": "announcement", "settings": { "text": "14-day returns · Complimentary gift wrapping", "link": "" } }
+      },
+      "block_order": ["announcement-1", "announcement-2", "announcement-3"],
+      "settings": { "color_scheme": "scheme-3", "style": "slide", "speed": 5, "show_arrows": true }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega-designers": { "type": "mega", "settings": { "menu_item": "Designers", "layout": "brands", "image_1_subtitle": "Directory", "image_1_title": "All designers A–Z", "image_2_subtitle": "Just landed", "image_2_title": "New this week" } },
+        "mega-bags": { "type": "mega", "settings": { "menu_item": "Bags", "layout": "columns", "image_1_subtitle": "Icons", "image_1_title": "The shoulder bag edit" } }
+      },
+      "block_order": ["mega-designers", "mega-bags"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "logo_position": "center",
+        "show_tagline": true,
+        "sticky": "scroll-up",
+        "search_placeholder": "Search designers, styles…",
+        "menu": "main-menu",
+        "desktop_nav": "inline",
+        "nav_align": "center",
+        "highlight_item": "Sale",
+        "secondary_mobile_only": true,
+        "show_help_strip": true,
+        "help_text": "Here to help",
+        "help_menu": "footer",
+        "show_country": true,
+        "show_language": true
+      }
+    }
+  },
+  "order": ["announcement-bar", "header"]
+}

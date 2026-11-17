@@ -1,0 +1,111 @@
+{%- liquid
+  case section.settings.platform
+    when 'tiktok'
+      assign p_icon = 'tiktok'
+      assign p_name = 'TikTok'
+      assign p_url = settings.social_tiktok
+    when 'instagram'
+      assign p_icon = 'instagram'
+      assign p_name = 'Instagram'
+      assign p_url = settings.social_instagram
+    when 'youtube'
+      assign p_icon = 'youtube'
+      assign p_name = 'YouTube'
+      assign p_url = settings.social_youtube
+    else
+      assign p_icon = 'video'
+      assign p_name = section.settings.custom_platform
+      assign p_url = ''
+  endcase
+  if section.settings.link != blank
+    assign p_url = section.settings.link
+  endif
+-%}
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="live live--image-{{ section.settings.image_position }}">
+      <div class="live__media reveal">
+        <a href="{{ p_url | default: '#' }}" target="_blank" rel="noopener" class="media zoom-on-hover" aria-label="{{ section.settings.button_label | escape }}">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500,800,1100,1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: section.settings.image.alt }}
+          {%- else -%}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+          <span class="live__play">{% render 'icon', icon: 'play', class: 'icon--lg' %}</span>
+        </a>
+        <span class="badge badge--live live__badge">{{ section.settings.badge }}</span>
+      </div>
+      <div class="live__copy reveal" style="--i: 1;">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="h1 heading-italic">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="rte muted">{{ section.settings.text }}</div>{%- endif -%}
+        {%- if section.blocks.size > 0 -%}
+          <div class="live__schedule">
+            {%- for block in section.blocks -%}
+              <div class="live__row" data-live-day="{{ block.settings.weekdays }}" {{ block.shopify_attributes }}>
+                <span class="live__day">{{ block.settings.day }}</span>
+                <span class="live__time">{{ block.settings.time }}</span>
+                <span class="muted" style="font-size: var(--fs-xs);">{{ block.settings.note }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <div class="btn-row" style="align-items: center; gap: 1.25rem;">
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ p_url | default: '#' }}" target="_blank" rel="noopener" class="btn btn--primary">{% render 'icon', icon: p_icon %} {{ section.settings.button_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.handle != blank -%}
+            <span class="live__handle">{% render 'icon', icon: p_icon %} {{ section.settings.handle }} · {{ p_name }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Live shopping banner",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 7,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-2" },
+    { "type": "select", "id": "platform", "label": "Platform", "default": "tiktok", "options": [ { "value": "tiktok", "label": "TikTok" }, { "value": "instagram", "label": "Instagram" }, { "value": "youtube", "label": "YouTube" }, { "value": "custom", "label": "Other" } ] },
+    { "type": "text", "id": "custom_platform", "label": "Platform name (Other)" },
+    { "type": "url", "id": "link", "label": "Live link", "info": "Defaults to the platform link in Theme settings › Social media." },
+    { "type": "text", "id": "handle", "label": "Account handle", "default": "@yourstore" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "select", "id": "image_position", "label": "Image position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
+    { "type": "text", "id": "badge", "label": "Badge", "default": "Live" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Shop with us, live" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Unboxed <em>on camera</em>, every week" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Join our specialists as they open new arrivals, walk through condition details and answer your questions in real time.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Watch live" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "slot",
+      "name": "Schedule row",
+      "settings": [
+        { "type": "text", "id": "day", "label": "Day label", "default": "Mon – Fri" },
+        { "type": "text", "id": "weekdays", "label": "Highlight on weekdays", "default": "1,2,3,4,5", "info": "Numbers 0 (Sunday) to 6 (Saturday), comma separated. The row is highlighted on those days." },
+        { "type": "text", "id": "time", "label": "Time", "default": "19:00 – 21:00 CET" },
+        { "type": "text", "id": "note", "label": "Note", "default": "New arrivals" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Live shopping banner",
+      "blocks": [
+        { "type": "slot", "settings": { "day": "Mon – Fri", "weekdays": "1,2,3,4,5", "time": "19:00 – 21:00 CET", "note": "New arrivals" } },
+        { "type": "slot", "settings": { "day": "Saturday", "weekdays": "6", "time": "14:00 – 17:00 CET", "note": "Bags & SLGs" } },
+        { "type": "slot", "settings": { "day": "Sunday", "weekdays": "0", "time": "15:00 – 17:00 CET", "note": "Jewellery hour" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

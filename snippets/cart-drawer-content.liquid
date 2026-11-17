@@ -1,0 +1,66 @@
+{%- comment -%} Inner content of the cart drawer. Re-rendered through the Section Rendering API (sections/cart-drawer.liquid). {%- endcomment -%}
+<div class="cart-drawer__content" data-cart-content data-item-count="{{ cart.item_count }}">
+  <div class="drawer__header">
+    <h2 class="drawer__title h4" id="CartDrawerTitle">{{ 'cart.general.title' | t }} <span class="drawer__count">({{ cart.item_count }})</span></h2>
+    <button type="button" class="icon-btn" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <div class="drawer__body">
+      {% render 'free-shipping-bar' %}
+      <form action="{{ routes.cart_url }}" method="post" id="CartDrawerForm" novalidate>
+        {% render 'cart-items', context: 'drawer' %}
+      </form>
+
+      {%- assign upsell = settings.cart_upsell_collection -%}
+      {%- if upsell != blank and upsell.products_count > 0 -%}
+        {%- assign cart_ids = cart.items | map: 'product_id' -%}
+        <div class="cart-upsell">
+          <p class="eyebrow">{{ 'cart.general.upsell' | t }}</p>
+          <div class="cart-upsell__track">
+            {%- assign shown = 0 -%}
+            {%- for p in upsell.products limit: 12 -%}
+              {%- if cart_ids contains p.id or p.available == false -%}{%- continue -%}{%- endif -%}
+              {%- assign shown = shown | plus: 1 -%}
+              {%- if shown > 6 -%}{%- break -%}{%- endif -%}
+              <div class="mini-card">
+                <a href="{{ p.url }}" class="mini-card__media">
+                  {%- if p.featured_media -%}{{ p.featured_media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: p.title }}{%- endif -%}
+                </a>
+                <div class="mini-card__info">
+                  <p class="mini-card__vendor">{{ p.vendor }}</p>
+                  <a href="{{ p.url }}" class="mini-card__title">{{ p.title }}</a>
+                  <p class="mini-card__price">{% render 'money', amount: p.price %}</p>
+                  {%- if p.has_only_default_variant -%}
+                    <product-form>
+                      {%- form 'product', p, novalidate: 'novalidate' -%}
+                        <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
+                        <button type="submit" class="link-underline mini-card__add" data-add-button><span data-add-label>{{ 'products.product.add' | t }}</span></button>
+                      {%- endform -%}
+                    </product-form>
+                  {%- else -%}
+                    <button type="button" class="link-underline mini-card__add" data-quick-view="{{ p.url }}">{{ 'products.product.choose_options' | t }}</button>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="drawer__footer">
+      {% render 'cart-summary', context: 'drawer', form_id: 'CartDrawerForm' %}
+    </div>
+  {%- else -%}
+    <div class="drawer__body cart-empty">
+      <span class="cart-empty__icon">{% render 'icon', icon: 'bag', class: 'icon--xl' %}</span>
+      <p class="h3">{{ 'cart.general.empty' | t }}</p>
+      <p class="cart-empty__text">{{ 'cart.general.empty_text' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">{{ 'cart.general.continue_shopping' | t }}</a>
+      {%- if cart.item_count == 0 and customer == nil and shop.customer_accounts_enabled -%}
+        <p class="cart-empty__login">{{ 'cart.general.have_account' | t }} <a href="{{ routes.account_login_url }}" class="link-underline">{{ 'customer.login.sign_in' | t }}</a></p>
+      {%- endif -%}
+      {%- if settings.cart_show_trust -%}{% render 'trust-list', class: 'trust-list--compact' %}{%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

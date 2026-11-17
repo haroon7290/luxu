@@ -1,0 +1,89 @@
+{%- comment -%}
+  Shared filter + grid layout for collection & search.
+  - results: collection or search, paginate (object), section, clear_url, empty_html
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<facet-filters class="collection-layout collection-layout--{{ s.filter_layout }}" data-section-id="{{ section.id }}">
+  {%- if s.enable_filtering and results.filters.size > 0 -%}
+    <div class="facets-overlay" data-close-facets></div>
+    <aside class="facets-panel" aria-label="{{ 'collections.filters.title' | t }}">
+      <div class="facets-panel__header">
+        <p class="h4">{{ 'collections.filters.title' | t }}</p>
+        <button type="button" class="icon-btn" data-close-facets aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+      </div>
+      <div class="facets-panel__body" data-facets-body>
+        {% render 'facets', results: results, section_id: section.id, open_first: s.open_filters %}
+      </div>
+      <div class="facets-panel__footer">
+        <a href="{{ clear_url }}" class="btn btn--secondary" data-facet-link>{{ 'collections.filters.clear_all' | t }}</a>
+        <button type="button" class="btn btn--primary" data-close-facets>{{ 'collections.filters.show_results' | t }}</button>
+      </div>
+    </aside>
+  {%- endif -%}
+
+  <div class="collection-layout__main">
+    <div class="toolbar">
+      <div class="toolbar__left">
+        {%- if s.enable_filtering and results.filters.size > 0 -%}
+          <button type="button" class="toolbar__filter-btn" data-open-facets>{% render 'icon', icon: 'filter' %} {{ 'collections.filters.title' | t }}</button>
+        {%- endif -%}
+        {%- assign result_count = results.products_count | default: paginate.items | default: 0 -%}
+        <span class="toolbar__count" data-results-count>{{ 'collections.general.items' | t: count: result_count }}</span>
+      </div>
+      <div class="toolbar__right">
+        {%- if s.enable_density -%}
+          <div class="toolbar__density" role="group" aria-label="{{ 'collections.general.grid' | t }}">
+            <button type="button" data-density="2" aria-pressed="false" aria-label="2">{% render 'icon', icon: 'grid-2' %}</button>
+            <button type="button" data-density="3" aria-pressed="false" aria-label="3">{% render 'icon', icon: 'grid-3' %}</button>
+            <button type="button" data-density="4" aria-pressed="{% if s.columns == 4 %}true{% else %}false{% endif %}" aria-label="4">{% render 'icon', icon: 'grid-4' %}</button>
+          </div>
+        {%- endif -%}
+        {%- if s.enable_sorting -%}
+          {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
+          <label class="visually-hidden" for="SortBy-{{ section.id }}">{{ 'collections.sorting.title' | t }}</label>
+          <div class="select">
+            <select id="SortBy-{{ section.id }}" data-sort>
+              {%- for option in results.sort_options -%}
+                <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+              {%- endfor -%}
+            </select>
+            {% render 'icon', icon: 'chevron-down', class: 'select__caret' %}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {% render 'active-facets', results: results, clear_url: clear_url %}
+
+    <div class="product-grid-wrap" data-grid-wrap>
+      {%- if results.products.size > 0 or results.results.size > 0 -%}
+        <ul class="grid product-grid" data-product-grid role="list" style="--cols: {{ s.columns }}; --cols-mobile: {{ s.columns_mobile }}; --grid-cols: {{ s.columns }};">
+          {%- if results.products -%}
+            {%- for product in results.products -%}
+              <li class="reveal" style="--i: {{ forloop.index0 | modulo: 4 }};">{% render 'product-card', product: product, eager: forloop.first %}</li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for item in results.results -%}
+              <li class="reveal" style="--i: {{ forloop.index0 | modulo: 4 }};">
+                {%- if item.object_type == 'product' -%}
+                  {% render 'product-card', product: item %}
+                {%- else -%}
+                  <a href="{{ item.url }}" class="article-card">
+                    <div class="media">
+                      {%- if item.image -%}{{ item.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: item.title }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+                    </div>
+                    <p class="article-card__meta">{{ item.object_type }}</p>
+                    <h3 class="article-card__title">{{ item.title }}</h3>
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+        {% render 'pagination', paginate: paginate, style: s.pagination %}
+      {%- else -%}
+        {{ empty_html }}
+      {%- endif -%}
+    </div>
+  </div>
+</facet-filters>

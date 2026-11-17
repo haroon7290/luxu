@@ -1,0 +1,18 @@
+{%- comment -%} Shared section heading. Params: eyebrow, title, text, link_label, link_url, align, heading_size, extra {%- endcomment -%}
+{%- if eyebrow != blank or title != blank or text != blank or link_label != blank -%}
+  <div class="section-header section-header--{{ align | default: 'left' }}">
+    <div class="section-header__copy">
+      {%- if eyebrow != blank -%}<p class="eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
+      {%- if title != blank -%}<h2 class="section-header__title {{ heading_size | default: 'h2' }}">{{ title }}</h2>{%- endif -%}
+      {%- if text != blank -%}<div class="section-header__text rte">{{ text }}</div>{%- endif -%}
+    </div>
+    {%- if link_label != blank or extra != blank -%}
+      <div class="section-header__aside">
+        {{ extra }}
+        {%- if link_label != blank -%}
+          <a href="{{ link_url | default: routes.all_products_collection_url }}" class="link-arrow">{{ link_label | escape }} {% render 'icon', icon: 'arrow-right' %}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

@@ -1,0 +1,63 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: 56px; --pb: 88px;">
+  <div class="page-width">
+    <header class="section-header">
+      <div class="section-header__copy">
+        <a href="{{ routes.account_url }}" class="link-arrow" style="flex-direction: row-reverse; justify-content: flex-end;">{{ 'customer.account.return' | t }} {% render 'icon', icon: 'arrow-left' %}</a>
+        <h1 class="h1">{{ 'customer.order.title' | t: name: order.name }}</h1>
+        {%- assign order_date = order.created_at | time_tag: format: 'date' -%}
+        <p class="muted">{{ 'customer.order.date' | t: date: order_date }}</p>
+        {%- if order.cancelled -%}
+          <p class="form-message form-message--error">{{ 'customer.order.cancelled' | t }} — {{ order.cancel_reason_label }}</p>
+        {%- endif -%}
+      </div>
+    </header>
+    <div class="account">
+      <div>
+        <ul class="cart-items cart-items--page" role="list">
+          {%- for line in order.line_items -%}
+            <li class="cart-item">
+              <div class="cart-item__media">{%- if line.image -%}{{ line.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: line.title }}{%- endif -%}</div>
+              <div class="cart-item__info">
+                <p class="cart-item__vendor">{{ line.vendor }}</p>
+                {%- if line.url -%}<a href="{{ line.url }}" class="cart-item__title">{{ line.title }}</a>{%- else -%}<p class="cart-item__title">{{ line.title }}</p>{%- endif -%}
+                <p class="cart-item__meta">{{ 'cart.general.quantity' | t }}: {{ line.quantity }}{% if line.sku != blank %} · {{ line.sku }}{% endif %}</p>
+                {%- if line.fulfillment -%}
+                  {%- assign ful_date = line.fulfillment.created_at | time_tag: format: 'date' -%}
+                  <p class="cart-item__meta">{{ 'customer.order.fulfilled_at' | t: date: ful_date }}
+                    {%- if line.fulfillment.tracking_url -%} · <a href="{{ line.fulfillment.tracking_url }}" class="link-underline" target="_blank" rel="noopener">{{ 'customer.order.track' | t }}</a>{%- endif -%}
+                  </p>
+                {%- endif -%}
+                <div class="cart-item__price">{% render 'money', amount: line.final_line_price %}</div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <aside style="display: grid; gap: 1.25rem; align-content: start;">
+        <div class="address-card">
+          <div class="cart-totals" style="border: 0; padding: 0;">
+            <div class="cart-totals__row"><span>{{ 'customer.order.subtotal' | t }}</span><span>{% render 'money', amount: order.line_items_subtotal_price %}</span></div>
+            {%- for discount in order.cart_level_discount_applications -%}
+              <div class="cart-totals__row" style="color: var(--c-success);"><span>{{ discount.title }}</span><span>&minus;{% render 'money', amount: discount.total_allocated_amount %}</span></div>
+            {%- endfor -%}
+            {%- for shipping in order.shipping_methods -%}
+              <div class="cart-totals__row"><span>{{ 'customer.order.shipping' | t }} ({{ shipping.title }})</span><span>{% render 'money', amount: shipping.price %}</span></div>
+            {%- endfor -%}
+            {%- for tax in order.tax_lines -%}
+              <div class="cart-totals__row"><span>{{ 'customer.order.tax' | t }} ({{ tax.title }} {{ tax.rate | times: 100 }}%)</span><span>{% render 'money', amount: tax.price %}</span></div>
+            {%- endfor -%}
+            <div class="cart-totals__row cart-totals__row--total"><span>{{ 'customer.order.total' | t }}</span><span>{% render 'money', amount: order.total_price %}</span></div>
+          </div>
+        </div>
+        {%- if order.shipping_address -%}
+          <div class="address-card"><p class="eyebrow">{{ 'customer.order.shipping_address' | t }}</p><div style="font-size: var(--fs-sm);">{{ order.shipping_address | format_address }}</div><span class="status-pill">{{ order.fulfillment_status_label }}</span></div>
+        {%- endif -%}
+        <div class="address-card"><p class="eyebrow">{{ 'customer.order.billing_address' | t }}</p><div style="font-size: var(--fs-sm);">{{ order.billing_address | format_address }}</div><span class="status-pill">{{ order.financial_status_label }}</span></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Customer order", "tag": "div", "settings": [ { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" } ] }
+{% endschema %}

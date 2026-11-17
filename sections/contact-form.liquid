@@ -1,0 +1,97 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width page-width--medium">
+    <div class="iwt" style="--iwt-cols: 1fr 1.3fr; align-items: start;">
+      <div class="iwt__copy">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="h1 heading-italic">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="rte muted">{{ section.settings.text }}</div>{%- endif -%}
+        <ul class="footer__contact" role="list" style="margin-top: 1rem;">
+          {%- for block in section.blocks -%}
+            <li {{ block.shopify_attributes }}>{% render 'icon', icon: block.settings.icon %}<span><strong>{{ block.settings.title }}</strong><br>{{ block.settings.text }}</span></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <div>
+        {%- form 'contact', id: 'ContactForm', class: 'form-stack' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success" tabindex="-1" autofocus>{% render 'icon', icon: 'check' %} {{ 'contact.form.success' | t }}</p>
+          {%- elsif form.errors -%}
+            <div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+          <div class="form-row">
+            <div class="field">
+              <input class="field__input" type="text" id="ContactName" name="contact[{{ 'contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" autocomplete="name" placeholder=" ">
+              <label class="field__label" for="ContactName">{{ 'contact.form.name' | t }}</label>
+            </div>
+            <div class="field">
+              <input class="field__input" type="email" id="ContactEmail" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" autocomplete="email" placeholder=" " required>
+              <label class="field__label" for="ContactEmail">{{ 'contact.form.email' | t }} *</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <input class="field__input" type="tel" id="ContactPhone" name="contact[{{ 'contact.form.phone' | t }}]" value="{{ form.phone }}" autocomplete="tel" placeholder=" ">
+              <label class="field__label" for="ContactPhone">{{ 'contact.form.phone' | t }}</label>
+            </div>
+            <div class="field">
+              <input class="field__input" type="text" id="ContactOrder" name="contact[{{ 'contact.form.order' | t }}]" placeholder=" ">
+              <label class="field__label" for="ContactOrder">{{ 'contact.form.order' | t }}</label>
+            </div>
+          </div>
+          {%- assign topics = section.settings.topics | split: ',' -%}
+          {%- if topics.size > 0 -%}
+            <div class="select" style="width: 100%;">
+              <label for="ContactTopic" class="visually-hidden">{{ 'contact.form.topic' | t }}</label>
+              <select id="ContactTopic" name="contact[{{ 'contact.form.topic' | t }}]" style="width: 100%;">
+                {%- for topic in topics -%}<option value="{{ topic | strip | escape }}">{{ topic | strip }}</option>{%- endfor -%}
+              </select>
+              {% render 'icon', icon: 'chevron-down', class: 'select__caret' %}
+            </div>
+          {%- endif -%}
+          <div class="field">
+            <textarea class="field__input" rows="6" id="ContactBody" name="contact[body]" placeholder=" " required>{{ form.body }}</textarea>
+            <label class="field__label" for="ContactBody">{{ 'contact.form.message' | t }} *</label>
+          </div>
+          <button type="submit" class="btn btn--primary">{{ 'contact.form.send' | t }}</button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Client care" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "We're <em>here</em> to help" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Questions about a piece, an order or selling to us? Our specialists usually reply within one business day.</p>" },
+    { "type": "text", "id": "topics", "label": "Topics (comma separated)", "default": "A question about an item, My order, Returns, Selling to us, Something else" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Contact detail",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "mail", "options": [ { "value": "mail", "label": "Email" }, { "value": "phone", "label": "Phone" }, { "value": "map-pin", "label": "Address" }, { "value": "clock", "label": "Hours" }, { "value": "whatsapp", "label": "WhatsApp" }, { "value": "chat", "label": "Chat" }, { "value": "return", "label": "Returns" }, { "value": "globe", "label": "Globe" } ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "Email" },
+        { "type": "text", "id": "text", "label": "Text", "default": "care@example.com" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form",
+      "blocks": [
+        { "type": "info", "settings": { "icon": "mail", "title": "Email", "text": "care@example.com" } },
+        { "type": "info", "settings": { "icon": "clock", "title": "Hours", "text": "Mon–Fri, 9:00–18:00 CET" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

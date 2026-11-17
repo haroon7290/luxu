@@ -1,0 +1,70 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="trust trust--{{ section.settings.layout }} trust--{{ section.settings.style }}">
+      {%- if section.settings.layout == 'split' -%}
+        <div class="trust__aside reveal">
+          {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+          <h2 class="h2 heading-italic">{{ section.settings.heading }}</h2>
+          {%- if section.settings.text != blank -%}<div class="rte muted">{{ section.settings.text }}</div>{%- endif -%}
+          {%- if section.settings.link_label != blank -%}<a href="{{ section.settings.link }}" class="link-arrow">{{ section.settings.link_label }} {% render 'icon', icon: 'arrow-right' %}</a>{%- endif -%}
+        </div>
+      {%- else -%}
+        {% render 'section-header', eyebrow: section.settings.eyebrow, title: section.settings.heading, text: section.settings.text, link_label: section.settings.link_label, link_url: section.settings.link, align: 'center' %}
+      {%- endif -%}
+      <div class="trust__items" style="--cols: {{ section.blocks.size | at_most: 4 | at_least: 1 }};">
+        {%- for block in section.blocks -%}
+          <div class="trust__item reveal" style="--i: {{ forloop.index }};" {{ block.shopify_attributes }}>
+            <span class="trust__icon">{% render 'icon', icon: block.settings.icon %}</span>
+            <h3 class="trust__title">{{ block.settings.title }}</h3>
+            <div class="trust__text rte">{{ block.settings.text }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust block",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 6,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "select", "id": "layout", "label": "Layout", "default": "split", "options": [ { "value": "split", "label": "Heading beside items" }, { "value": "stacked", "label": "Heading above items" } ] },
+    { "type": "select", "id": "style", "label": "Item style", "default": "cards", "options": [ { "value": "cards", "label": "Cards" }, { "value": "minimal", "label": "Minimal" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Peace of mind" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Bought with <em>certainty</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Pre-owned should never mean uncertain. Here is what stands behind every order.</p>" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "How we check your item" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "shield", "options": [
+          { "value": "shield", "label": "Shield" }, { "value": "double-check", "label": "Double check" }, { "value": "loupe", "label": "Magnifier" }, { "value": "video", "label": "Video" },
+          { "value": "certificate", "label": "Certificate" }, { "value": "truck", "label": "Truck" }, { "value": "return", "label": "Return" }, { "value": "lock", "label": "Lock" },
+          { "value": "gift", "label": "Gift" }, { "value": "diamond", "label": "Diamond" }, { "value": "box", "label": "Box" }, { "value": "leaf", "label": "Leaf" }, { "value": "chat", "label": "Chat" }, { "value": "qr", "label": "QR code" } ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "Authenticated twice" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Two independent specialists review every piece before it is listed.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust block",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "double-check", "title": "Authenticated twice", "text": "<p>Two independent specialists review materials, construction, hardware and codes before a piece is listed.</p>" } },
+        { "type": "item", "settings": { "icon": "loupe", "title": "Condition, honestly graded", "text": "<p>We check every item against its listing photos and our grading scale, then note even the smallest marks.</p>" } },
+        { "type": "item", "settings": { "icon": "video", "title": "Inspection on film", "text": "<p>Your final check is recorded. Scan the card in your parcel to watch exactly what we saw.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

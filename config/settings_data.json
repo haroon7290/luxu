@@ -1,0 +1,98 @@
+{
+  "current": {
+    "logo_tagline": "Certified pre-owned luxury",
+    "font_source": "google",
+    "google_heading_font": "Cormorant Garamond",
+    "google_body_font": "Jost",
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FAF7F2",
+          "background_gradient": "",
+          "text": "#161412",
+          "accent": "#9C7A4B",
+          "surface": "#F1EBE2",
+          "button": "#161412",
+          "button_label": "#FAF7F2",
+          "secondary_button_label": "#161412"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#EFE7DB",
+          "background_gradient": "",
+          "text": "#161412",
+          "accent": "#7F6038",
+          "surface": "#E6DBCB",
+          "button": "#161412",
+          "button_label": "#FAF7F2",
+          "secondary_button_label": "#161412"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#141210",
+          "background_gradient": "",
+          "text": "#F4EEE5",
+          "accent": "#C9A877",
+          "surface": "#211E1A",
+          "button": "#F4EEE5",
+          "button_label": "#141210",
+          "secondary_button_label": "#F4EEE5"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#FFFFFF",
+          "background_gradient": "",
+          "text": "#161412",
+          "accent": "#9C7A4B",
+          "surface": "#F6F3EE",
+          "button": "#161412",
+          "button_label": "#FFFFFF",
+          "secondary_button_label": "#161412"
+        }
+      },
+      "scheme-5": {
+        "settings": {
+          "background": "#1E2B25",
+          "background_gradient": "",
+          "text": "#F1ECE2",
+          "accent": "#D2B583",
+          "surface": "#26352E",
+          "button": "#D2B583",
+          "button_label": "#1E2B25",
+          "secondary_button_label": "#F1ECE2"
+        }
+      },
+      "scheme-6": {
+        "settings": {
+          "background": "#DCC7A4",
+          "background_gradient": "",
+          "text": "#1A1714",
+          "accent": "#1A1714",
+          "surface": "#D1BA93",
+          "button": "#1A1714",
+          "button_label": "#F6EFE3",
+          "secondary_button_label": "#1A1714"
+        }
+      }
+    }
+  },
+  "presets": {
+    "Default": {
+      "logo_tagline": "Certified pre-owned luxury",
+      "font_source": "google",
+      "google_heading_font": "Cormorant Garamond",
+      "google_body_font": "Jost",
+      "color_schemes": {
+        "scheme-1": { "settings": { "background": "#FAF7F2", "background_gradient": "", "text": "#161412", "accent": "#9C7A4B", "surface": "#F1EBE2", "button": "#161412", "button_label": "#FAF7F2", "secondary_button_label": "#161412" } },
+        "scheme-2": { "settings": { "background": "#EFE7DB", "background_gradient": "", "text": "#161412", "accent": "#7F6038", "surface": "#E6DBCB", "button": "#161412", "button_label": "#FAF7F2", "secondary_button_label": "#161412" } },
+        "scheme-3": { "settings": { "background": "#141210", "background_gradient": "", "text": "#F4EEE5", "accent": "#C9A877", "surface": "#211E1A", "button": "#F4EEE5", "button_label": "#141210", "secondary_button_label": "#F4EEE5" } },
+        "scheme-4": { "settings": { "background": "#FFFFFF", "background_gradient": "", "text": "#161412", "accent": "#9C7A4B", "surface": "#F6F3EE", "button": "#161412", "button_label": "#FFFFFF", "secondary_button_label": "#161412" } },
+        "scheme-5": { "settings": { "background": "#1E2B25", "background_gradient": "", "text": "#F1ECE2", "accent": "#D2B583", "surface": "#26352E", "button": "#D2B583", "button_label": "#1E2B25", "secondary_button_label": "#F1ECE2" } },
+        "scheme-6": { "settings": { "background": "#DCC7A4", "background_gradient": "", "text": "#1A1714", "accent": "#1A1714", "surface": "#D1BA93", "button": "#1A1714", "button_label": "#F6EFE3", "secondary_button_label": "#1A1714" } }
+      }
+    }
+  }
+}

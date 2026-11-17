@@ -1,0 +1,19 @@
+{%- comment -%} Social links from Theme settings › Social media. Usage: {% render 'social-icons', class: 'social--lg', show_labels: true %} {%- endcomment -%}
+{%- liquid
+  assign networks = 'instagram,tiktok,facebook,youtube,pinterest,x,whatsapp,linkedin' | split: ','
+  assign labels = 'Instagram,TikTok,Facebook,YouTube,Pinterest,X,WhatsApp,LinkedIn' | split: ','
+-%}
+<ul class="social{% if class %} {{ class }}{% endif %}" role="list">
+  {%- for network in networks -%}
+    {%- assign key = 'social_' | append: network -%}
+    {%- assign url = settings[key] -%}
+    {%- if url != blank -%}
+      <li>
+        <a href="{{ url }}" class="social__link" target="_blank" rel="noopener" aria-label="{{ labels[forloop.index0] }}">
+          {% render 'icon', icon: network %}
+          {%- if show_labels -%}<span class="social__label">{{ labels[forloop.index0] }}</span>{%- endif -%}
+        </a>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>

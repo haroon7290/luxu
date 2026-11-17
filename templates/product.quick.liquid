@@ -1,0 +1,24 @@
+{%- layout none -%}
+{%- comment -%} Quick view content, fetched by theme.js with ?view=quick {%- endcomment -%}
+{%- capture condition -%}{% render 'product-condition', product: product %}{%- endcapture -%}
+{%- assign qv_id = 'quick-' | append: product.id -%}
+<div class="quick-view" data-product-scope>
+  {% render 'product-gallery', product: product, section_id: qv_id, layout: 'thumbs', ratio: '1.25', zoom: false %}
+  <div class="quick-view__info">
+    {%- if product.vendor != blank -%}<p class="product__vendor">{{ product.vendor }}</p>{%- endif -%}
+    <h2 class="product__title h2">{{ product.title }}</h2>
+    {%- if condition != blank -%}<span class="product__condition">{% render 'icon', icon: 'sparkle' %}{{ 'products.product.condition_label' | t }}: <strong>{{ condition }}</strong></span>{%- endif -%}
+    {% render 'price', product: product, use_variant: true, size: 'lg' %}
+    {% render 'variant-picker', product: product, section_id: qv_id %}
+    {% render 'product-form', product: product, section_id: qv_id, show_dynamic_checkout: true, show_wishlist: true %}
+    <div class="auth-card">
+      <span class="auth-card__icon">{% render 'icon', icon: 'shield' %}</span>
+      <div>
+        <p class="auth-card__title">{{ 'products.product.auth_title' | t }}</p>
+        <p class="auth-card__text">{{ 'products.product.auth_text' | t }}</p>
+      </div>
+    </div>
+    <div class="product__text rte">{{ product.description | strip_html | truncatewords: 45 }}</div>
+    <a href="{{ product.url }}" class="link-arrow">{{ 'products.product.view_details' | t }} {% render 'icon', icon: 'arrow-right' %}</a>
+  </div>
+</div>

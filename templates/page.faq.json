@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "Are your items authentic?", "answer": "<p>Every piece is authenticated twice by independent specialists and backed by our authenticity guarantee.</p>" } },
+        "q2": { "type": "question", "settings": { "question": "How do you grade condition?", "answer": "<p>We use a six-step scale from New to Fair. Each listing includes a written condition report and detailed photos.</p>" } },
+        "q3": { "type": "question", "settings": { "question": "Where do you ship?", "answer": "<p>We ship worldwide with insured, tracked couriers. Duties and taxes are shown at checkout.</p>" } },
+        "q4": { "type": "question", "settings": { "question": "What is your return policy?", "answer": "<p>Returns are accepted within 14 days of delivery for items in the condition they arrived.</p>" } },
+        "q5": { "type": "question", "settings": { "question": "Which payment methods do you accept?", "answer": "<p>All major cards, PayPal, Apple Pay, Google Pay and Shop Pay, including instalments where available.</p>" } },
+        "q6": { "type": "question", "settings": { "question": "Is gift wrapping available?", "answer": "<p>Yes, complimentary gift wrapping can be added in your bag before checkout.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"],
+      "settings": { "layout": "stacked", "eyebrow": "Help centre", "heading": "Orders & <em>FAQs</em>", "padding_top": 72, "padding_bottom": 88 }
+    }
+  },
+  "order": ["faq"]
+}

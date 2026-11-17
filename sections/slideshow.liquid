@@ -1,0 +1,119 @@
+{%- liquid
+  case section.settings.height
+    when 'small'
+      assign h = '56vh'
+    when 'medium'
+      assign h = '72vh'
+    when 'large'
+      assign h = '86vh'
+    when 'full'
+      assign h = 'calc(100vh - var(--header-h, 0px))'
+    else
+      assign h = 'auto'
+  endcase
+-%}
+<section class="section section--flush color-{{ section.settings.color_scheme }}{% if section.settings.full_width == false %} page-width-section{% endif %}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px; padding-top: var(--pt); padding-bottom: var(--pb);">
+  <div class="{% if section.settings.full_width == false %}page-width{% endif %}">
+    <slide-show class="slideshow{% if section.settings.height == 'adapt' %} slideshow--adapt{% endif %}" style="--slide-h: {{ h }};{% if section.settings.full_width == false %} border-radius: var(--radius); overflow: hidden;{% endif %}" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.speed }}" role="region" aria-roledescription="carousel" aria-label="{{ section.settings.label | escape }}" tabindex="0">
+      <div class="slideshow__track">
+        {%- for block in section.blocks -%}
+          <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ forloop.length }}" {{ block.shopify_attributes }}>
+            <div class="slideshow__media">
+              {%- assign load = 'lazy' -%}{%- if forloop.first -%}{%- assign load = 'eager' -%}{%- endif -%}
+              {%- assign slide_alt = block.settings.image.alt | default: block.settings.heading | strip_html | escape -%}
+              {%- if block.settings.image != blank -%}
+                {%- if block.settings.image_mobile != blank -%}
+                  <picture>
+                    <source media="(max-width: 749px)" srcset="{{ block.settings.image_mobile | image_url: width: 1200 }}">
+                    {{ block.settings.image | image_url: width: 2800 | image_tag: loading: load, widths: '750,1100,1500,1900,2400,2800', sizes: '100vw', alt: slide_alt }}
+                  </picture>
+                {%- else -%}
+                  {{ block.settings.image | image_url: width: 2800 | image_tag: loading: load, widths: '750,1100,1500,1900,2400,2800', sizes: '100vw', alt: slide_alt }}
+                {%- endif -%}
+              {%- else -%}
+                {%- assign ph = forloop.index | modulo: 2 | plus: 1 -%}
+                {{ 'lifestyle-' | append: ph | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+              <div class="slideshow__overlay" style="--overlay: {{ block.settings.overlay | divided_by: 100.0 }};"></div>
+            </div>
+            <div class="slideshow__content pos-{{ block.settings.position }}">
+              <div class="slideshow__copy">
+                {%- if block.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ block.settings.eyebrow }}</p>{%- endif -%}
+                {%- if block.settings.heading != blank -%}<h2 class="h0 heading-italic">{{ block.settings.heading }}</h2>{%- endif -%}
+                {%- if block.settings.text != blank -%}<div class="rte" style="font-size: var(--fs-md); opacity: .9;">{{ block.settings.text }}</div>{%- endif -%}
+                {%- if block.settings.button_label != blank -%}
+                  <div class="btn-row">
+                    <a href="{{ block.settings.button_link | default: routes.all_products_collection_url }}" class="btn btn--light">{{ block.settings.button_label }}</a>
+                    {%- if block.settings.button_2_label != blank -%}<a href="{{ block.settings.button_2_link }}" class="btn btn--ghost-light">{{ block.settings.button_2_label }}</a>{%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if section.blocks.size > 1 -%}
+        <div class="slideshow__controls">
+          {%- if section.settings.show_counter -%}
+            <span class="slideshow__counter"><span data-slide-current>1</span> / {{ section.blocks.size }}</span>
+          {%- endif -%}
+          {%- if section.settings.autoplay -%}<span class="slideshow__progress" aria-hidden="true"><span></span></span>{%- endif -%}
+          <button type="button" class="slideshow__arrow" data-slide-prev aria-label="{{ 'accessibility.previous' | t }}">{% render 'icon', icon: 'arrow-left' %}</button>
+          <button type="button" class="slideshow__arrow" data-slide-next aria-label="{{ 'accessibility.next' | t }}">{% render 'icon', icon: 'arrow-right' %}</button>
+        </div>
+      {%- endif -%}
+    </slide-show>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Accessible label", "default": "Featured collections" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "select", "id": "height", "label": "Height", "default": "medium", "options": [ { "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" }, { "value": "full", "label": "Full screen" }, { "value": "adapt", "label": "Adapt to image" } ] },
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate slides", "default": true },
+    { "type": "range", "id": "speed", "label": "Change slides every", "min": 3, "max": 12, "step": 1, "unit": "s", "default": 6 },
+    { "type": "checkbox", "id": "show_counter", "label": "Show slide counter (1 / 3)", "default": true },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "2800 × 1400px recommended" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Mobile image", "info": "Portrait, 1200 × 1600px" },
+        { "type": "range", "id": "overlay", "label": "Shade", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 35 },
+        { "type": "select", "id": "position", "label": "Content position", "default": "bottom-left", "options": [
+          { "value": "top-left", "label": "Top left" }, { "value": "top-center", "label": "Top centre" }, { "value": "top-right", "label": "Top right" },
+          { "value": "middle-left", "label": "Middle left" }, { "value": "middle-center", "label": "Middle centre" }, { "value": "middle-right", "label": "Middle right" },
+          { "value": "bottom-left", "label": "Bottom left" }, { "value": "bottom-center", "label": "Bottom centre" }, { "value": "bottom-right", "label": "Bottom right" } ] },
+        { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Your next favourite" },
+        { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Quiet icons, <em>second</em> chapters" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the collection" },
+        { "type": "url", "id": "button_link", "label": "Button link" },
+        { "type": "text", "id": "button_2_label", "label": "Second button label" },
+        { "type": "url", "id": "button_2_link", "label": "Second button link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        { "type": "slide", "settings": { "eyebrow": "Your next favourite", "heading": "Quiet icons, <em>second</em> chapters" } },
+        { "type": "slide", "settings": { "eyebrow": "Just landed", "heading": "The leather goods <em>edit</em>" } },
+        { "type": "slide", "settings": { "eyebrow": "Fine jewellery", "heading": "Gold that <em>remembers</em>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

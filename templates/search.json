@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "main-search", "settings": {} },
+    "recent": { "type": "recently-viewed", "settings": {} }
+  },
+  "order": ["main", "recent"]
+}

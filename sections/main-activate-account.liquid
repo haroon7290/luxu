@@ -1,0 +1,21 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: 72px; --pb: 88px;">
+  <div class="page-width">
+    <div class="customer">
+      <header class="customer__header">
+        <h1 class="h1">{{ 'customer.activate_account.title' | t }}</h1>
+        <p class="muted">{{ 'customer.activate_account.subtext' | t }}</p>
+      </header>
+      {%- form 'activate_customer_password', class: 'form-stack' -%}
+        {%- if form.errors -%}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <div class="field"><input type="password" name="customer[password]" id="ActivatePassword" class="field__input" autocomplete="new-password" placeholder=" " required><label for="ActivatePassword" class="field__label">{{ 'customer.reset_password.password' | t }}</label></div>
+        <div class="field"><input type="password" name="customer[password_confirmation]" id="ActivatePasswordConfirm" class="field__input" autocomplete="new-password" placeholder=" " required><label for="ActivatePasswordConfirm" class="field__label">{{ 'customer.reset_password.password_confirm' | t }}</label></div>
+        <button type="submit" class="btn btn--primary btn--full">{{ 'customer.activate_account.submit' | t }}</button>
+        <button type="submit" name="decline" class="btn btn--secondary btn--full">{{ 'customer.activate_account.cancel' | t }}</button>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Activate account", "tag": "div", "settings": [ { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" } ] }
+{% endschema %}

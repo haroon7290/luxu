@@ -1,0 +1,12 @@
+{%- comment -%} Global trust messages from Theme settings › Cart. {%- endcomment -%}
+{%- liquid
+  assign icons = 'shield,return,truck,lock,gift' | split: ','
+-%}
+<ul class="trust-list{% if class %} {{ class }}{% endif %}" role="list">
+  {%- for i in (1..5) -%}
+    {%- assign key = 'trust_' | append: i -%}
+    {%- if settings[key] != blank -%}
+      <li class="trust-list__item">{% render 'icon', icon: icons[forloop.index0] %}<span>{{ settings[key] }}</span></li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>

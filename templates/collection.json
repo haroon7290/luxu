@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": { "show_description": true, "show_image": true, "padding_top": 24, "padding_bottom": 32 }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": { "per_page": 24, "columns": 4, "columns_mobile": "2", "enable_density": true, "pagination": "load_more", "enable_filtering": true, "filter_layout": "sidebar", "open_filters": 3, "enable_sorting": true }
+    },
+    "standard": {
+      "type": "trust-block",
+      "blocks": {
+        "t1": { "type": "item", "settings": { "icon": "double-check", "title": "Authenticated twice", "text": "<p>Two specialists review every piece before it is listed.</p>" } },
+        "t2": { "type": "item", "settings": { "icon": "loupe", "title": "Honestly graded", "text": "<p>Every mark noted and photographed.</p>" } },
+        "t3": { "type": "item", "settings": { "icon": "video", "title": "Inspection on film", "text": "<p>Scan the card in your parcel to watch it.</p>" } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": { "color_scheme": "scheme-2", "layout": "stacked", "style": "minimal", "heading": "Bought with <em>certainty</em>", "padding_top": 64, "padding_bottom": 64 }
+    },
+    "recent": { "type": "recently-viewed", "settings": { "limit": 8 } }
+  },
+  "order": ["banner", "main", "standard", "recent"]
+}

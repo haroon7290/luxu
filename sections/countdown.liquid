@@ -1,0 +1,43 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;{% if section.settings.image != blank %} background-image: linear-gradient(rgba(0,0,0,{{ section.settings.overlay | divided_by: 100.0 }}), rgba(0,0,0,{{ section.settings.overlay | divided_by: 100.0 }})), url({{ section.settings.image | image_url: width: 2400 }}); background-size: cover; background-position: center;{% endif %}">
+  <div class="page-width page-width--medium">
+    <countdown-timer class="countdown reveal" data-end="{{ section.settings.end_date | escape }}" data-hide-on-end="{{ section.settings.hide_on_end }}">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="h1 heading-italic">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<div class="rte muted">{{ section.settings.text }}</div>{%- endif -%}
+      <div class="countdown__timer" data-countdown-timer role="timer">
+        <div class="countdown__unit"><span class="countdown__num" data-d>00</span><span class="countdown__label">{{ 'sections.countdown.days' | t }}</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-h>00</span><span class="countdown__label">{{ 'sections.countdown.hours' | t }}</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-m>00</span><span class="countdown__label">{{ 'sections.countdown.minutes' | t }}</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-s>00</span><span class="countdown__label">{{ 'sections.countdown.seconds' | t }}</span></div>
+      </div>
+      <p class="countdown__expired" data-countdown-expired hidden>{{ section.settings.expired_text }}</p>
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn btn--primary">{{ section.settings.button_label }}</a>
+      {%- endif -%}
+    </countdown-timer>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Countdown",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-3" },
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "range", "id": "overlay", "label": "Image shade", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 45 },
+    { "type": "text", "id": "end_date", "label": "Ends at", "default": "2026-12-01 00:00", "info": "Format: YYYY-MM-DD HH:MM (visitor's local time). Add +01:00 for a fixed time zone, e.g. 2026-12-01 00:00+01:00" },
+    { "type": "checkbox", "id": "hide_on_end", "label": "Hide section when the timer ends", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Black Week" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "The private sale <em>ends soon</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Our deepest reductions of the year, on pieces that rarely come back.</p>" },
+    { "type": "text", "id": "expired_text", "label": "Message after the timer ends", "default": "This event has ended — thank you for shopping with us." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the sale" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "presets": [ { "name": "Countdown" } ]
+}
+{% endschema %}

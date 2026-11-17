@@ -1,0 +1,385 @@
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  capture condition
+    render 'product-condition', product: product
+  endcapture
+  assign condition = condition | strip
+  assign buy_block_id = 'BuyButtons-' | append: section.id
+  assign form_id = 'ProductForm-' | append: section.id
+-%}
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width" data-product-scope>
+    <span data-recent-handle="{{ product.handle }}" hidden></span>
+    {%- if section.settings.show_breadcrumbs -%}
+      <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+        <a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a><span aria-hidden="true">/</span>
+        {%- if collection -%}
+          <a href="{{ collection.url }}">{{ collection.title }}</a><span aria-hidden="true">/</span>
+        {%- elsif product.vendor != blank -%}
+          <a href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a><span aria-hidden="true">/</span>
+        {%- endif -%}
+        <span aria-current="page">{{ product.title }}</span>
+      </nav>
+    {%- endif -%}
+
+    <div class="product" style="--product-cols: {% if section.settings.media_width == 'large' %}1.45fr 1fr{% elsif section.settings.media_width == 'small' %}1fr 1fr{% else %}1.25fr 1fr{% endif %};">
+      <div class="product__media">
+        {% render 'product-gallery', product: product, section_id: section.id, layout: section.settings.gallery_layout, ratio: section.settings.media_ratio, zoom: section.settings.enable_zoom %}
+      </div>
+
+      <div class="product__info">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+            {%- when 'vendor' -%}
+              {%- if product.vendor != blank -%}
+                <p class="product__vendor" {{ block.shopify_attributes }}><a href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a></p>
+              {%- endif -%}
+            {%- when 'title' -%}
+              <h1 class="product__title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+            {%- when 'condition' -%}
+              {%- if condition != blank -%}
+                <span class="product__condition" {{ block.shopify_attributes }}>{% render 'icon', icon: 'sparkle' %}{{ 'products.product.condition_label' | t }}: <strong>{{ condition }}</strong></span>
+              {%- endif -%}
+            {%- when 'price' -%}
+              <div {{ block.shopify_attributes }}>
+                {% render 'price', product: product, use_variant: true, size: 'lg' %}
+                {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+                  <p class="product__installments" style="margin-top: .3rem; font-size: var(--fs-xs);">
+                    {%- if cart.duties_included and cart.taxes_included -%}{{ 'products.product.duties_and_taxes_included' | t }}{%- elsif cart.taxes_included -%}{{ 'products.product.taxes_included' | t }}{%- endif -%}
+                    {%- if shop.shipping_policy.body != blank %} {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}{%- endif -%}
+                  </p>
+                {%- endif -%}
+              </div>
+            {%- when 'installments' -%}
+              <div class="product__installments" {{ block.shopify_attributes }}>
+                {%- assign inst_id = 'Installments-' | append: section.id -%}
+                {%- form 'product', product, id: inst_id -%}
+                  <input type="hidden" name="id" value="{{ variant.id }}">
+                  {{ form | payment_terms }}
+                {%- endform -%}
+              </div>
+            {%- when 'inventory' -%}
+              {%- if variant.inventory_management == 'shopify' -%}
+                {%- if variant.inventory_quantity <= 0 and variant.inventory_policy == 'deny' -%}
+                  <p class="product__inventory product__inventory--out" {{ block.shopify_attributes }}>{{ 'products.product.sold_out' | t }}</p>
+                {%- elsif variant.inventory_quantity == 1 -%}
+                  <p class="product__inventory product__inventory--low" {{ block.shopify_attributes }}>{{ 'products.product.only_one' | t }}</p>
+                {%- elsif variant.inventory_quantity <= block.settings.threshold -%}
+                  <p class="product__inventory product__inventory--low" {{ block.shopify_attributes }}>{{ 'products.product.low_stock' | t: count: variant.inventory_quantity }}</p>
+                {%- else -%}
+                  <p class="product__inventory" {{ block.shopify_attributes }}>{{ 'products.product.in_stock' | t }}</p>
+                {%- endif -%}
+              {%- endif -%}
+            {%- when 'sku' -%}
+              <p class="product__sku" data-sku-wrap {{ block.shopify_attributes }}{% if variant.sku == blank %} hidden{% endif %}>{{ 'products.product.sku' | t }}: <span data-sku>{{ variant.sku }}</span></p>
+            {%- when 'text' -%}
+              <div class="product__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- when 'divider' -%}
+              <hr class="product__divider" {{ block.shopify_attributes }}>
+            {%- when 'variant_picker' -%}
+              <div {{ block.shopify_attributes }}>{% render 'variant-picker', product: product, section_id: section.id, update_url: true %}</div>
+            {%- when 'buy_buttons' -%}
+              <div id="{{ buy_block_id }}" {{ block.shopify_attributes }}>
+                {% render 'product-form', product: product, section_id: section.id, show_quantity: block.settings.show_quantity, show_dynamic_checkout: block.settings.show_dynamic_checkout, show_wishlist: block.settings.show_wishlist %}
+                {%- if block.settings.show_pickup -%}
+                  <div class="product__text mt-1">{% render 'icon', icon: 'map-pin', class: 'icon--sm' %} {{ block.settings.pickup_text }}</div>
+                {%- endif -%}
+              </div>
+            {%- when 'authenticity' -%}
+              <div class="auth-card" {{ block.shopify_attributes }}>
+                <span class="auth-card__icon">{% render 'icon', icon: 'shield' %}</span>
+                <div>
+                  <p class="auth-card__title">{{ block.settings.title }}</p>
+                  {%- if block.settings.text != blank -%}<p class="auth-card__text">{{ block.settings.text }}</p>{%- endif -%}
+                  <ul class="auth-card__list" role="list">
+                    {%- if block.settings.point_1 != blank -%}<li>{% render 'icon', icon: 'check' %}{{ block.settings.point_1 }}</li>{%- endif -%}
+                    {%- if block.settings.point_2 != blank -%}<li>{% render 'icon', icon: 'check' %}{{ block.settings.point_2 }}</li>{%- endif -%}
+                    {%- if block.settings.point_3 != blank -%}<li>{% render 'icon', icon: 'check' %}{{ block.settings.point_3 }}</li>{%- endif -%}
+                  </ul>
+                  {%- if block.settings.link_label != blank -%}<a href="{{ block.settings.link }}" class="auth-card__link link-underline">{{ block.settings.link_label }}</a>{%- endif -%}
+                </div>
+              </div>
+            {%- when 'inspection_video' -%}
+              {%- assign video_url = product.metafields.custom.inspection_video.value -%}
+              {%- if video_url != blank -%}
+                <a href="{{ video_url }}" target="_blank" rel="noopener" class="product__video-btn" {{ block.shopify_attributes }}>
+                  {% render 'icon', icon: 'video' %}
+                  <span>{{ block.settings.label }}<small>{{ block.settings.subtext }}</small></span>
+                </a>
+              {%- endif -%}
+            {%- when 'condition_report' -%}
+              <details class="accordion accordion--sm" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary class="accordion__summary"><span>{% render 'icon', icon: 'loupe' %}{{ block.settings.heading }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
+                <div class="accordion__content condition-report">
+                  {% render 'condition-scale', condition: condition, grades: block.settings.grades %}
+                  {%- assign notes = product.metafields.custom.condition_notes.value -%}
+                  {%- if notes != blank -%}<div class="condition-report__notes rte">{{ notes | newline_to_br }}</div>{%- endif -%}
+                  {%- if block.settings.guide != blank -%}<div class="condition-report__notes rte">{{ block.settings.guide }}</div>{%- endif -%}
+                </div>
+              </details>
+            {%- when 'specs' -%}
+              {%- liquid
+                assign m = product.metafields.custom
+                capture rows
+                  if block.settings.show_designer and product.vendor != blank
+                    echo '<dt>' | append: block.settings.label_designer | append: '</dt><dd>' | append: product.vendor | append: '</dd>'
+                  endif
+                  if product.type != blank
+                    echo '<dt>' | append: block.settings.label_type | append: '</dt><dd>' | append: product.type | append: '</dd>'
+                  endif
+                  if m.model.value != blank
+                    echo '<dt>' | append: block.settings.label_model | append: '</dt><dd>' | append: m.model.value | append: '</dd>'
+                  endif
+                  if m.material.value != blank
+                    echo '<dt>' | append: block.settings.label_material | append: '</dt><dd>' | append: m.material.value | append: '</dd>'
+                  endif
+                  if m.color.value != blank
+                    echo '<dt>' | append: block.settings.label_color | append: '</dt><dd>' | append: m.color.value | append: '</dd>'
+                  endif
+                  if m.hardware.value != blank
+                    echo '<dt>' | append: block.settings.label_hardware | append: '</dt><dd>' | append: m.hardware.value | append: '</dd>'
+                  endif
+                  if m.dimensions.value != blank
+                    echo '<dt>' | append: block.settings.label_dimensions | append: '</dt><dd>' | append: m.dimensions.value | append: '</dd>'
+                  endif
+                  if m.year.value != blank
+                    echo '<dt>' | append: block.settings.label_year | append: '</dt><dd>' | append: m.year.value | append: '</dd>'
+                  endif
+                  if m.serial.value != blank
+                    echo '<dt>' | append: block.settings.label_serial | append: '</dt><dd>' | append: m.serial.value | append: '</dd>'
+                  endif
+                  if m.accessories.value != blank
+                    echo '<dt>' | append: block.settings.label_accessories | append: '</dt><dd>' | append: m.accessories.value | append: '</dd>'
+                  endif
+                  if variant.sku != blank and block.settings.show_sku
+                    echo '<dt>' | append: block.settings.label_reference | append: '</dt><dd>' | append: variant.sku | append: '</dd>'
+                  endif
+                endcapture
+              -%}
+              {%- if rows != blank -%}
+                <details class="accordion accordion--sm" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+                  <summary class="accordion__summary"><span>{% render 'icon', icon: 'ruler' %}{{ block.settings.heading }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
+                  <div class="accordion__content"><dl class="specs">{{ rows }}</dl></div>
+                </details>
+              {%- endif -%}
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}
+                {%- if block.settings.collapsible -%}
+                  <details class="accordion accordion--sm" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+                    <summary class="accordion__summary"><span>{% render 'icon', icon: 'tag' %}{{ block.settings.heading }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
+                    <div class="accordion__content rte">{{ product.description }}</div>
+                  </details>
+                {%- else -%}
+                  <div class="product__text rte" {{ block.shopify_attributes }}>{{ product.description }}</div>
+                {%- endif -%}
+              {%- endif -%}
+            {%- when 'collapsible' -%}
+              <details class="accordion accordion--sm" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary class="accordion__summary"><span>{% render 'icon', icon: block.settings.icon %}{{ block.settings.heading }}</span><span class="accordion__icon" aria-hidden="true"></span></summary>
+                <div class="accordion__content rte">
+                  {{ block.settings.content }}
+                  {{ block.settings.page.content }}
+                </div>
+              </details>
+            {%- when 'trust_icons' -%}
+              <div class="product__trust" {{ block.shopify_attributes }}>
+                {%- assign icons = 'shield,return,truck,lock,gift' | split: ',' -%}
+                {%- for i in (1..block.settings.count) -%}
+                  {%- assign key = 'trust_' | append: i -%}
+                  {%- if settings[key] != blank -%}
+                    <div class="product__trust-item">{% render 'icon', icon: icons[forloop.index0] %}<span>{{ settings[key] }}</span></div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- when 'contact' -%}
+              <div class="product__contact" {{ block.shopify_attributes }}>
+                {% render 'icon', icon: 'chat' %}
+                <div>
+                  <p>{{ block.settings.text }}</p>
+                  <a href="{{ block.settings.link | default: '/pages/contact' }}" class="link-underline" style="font-size: var(--fs-xs); letter-spacing: .1em; text-transform: uppercase;">{{ block.settings.link_label }}</a>
+                </div>
+              </div>
+            {%- when 'share' -%}
+              <div class="product__share" {{ block.shopify_attributes }}>
+                <button type="button" class="link-underline" data-share data-title="{{ product.title | escape }}" data-url="{{ request.origin }}{{ product.url }}">{% render 'icon', icon: 'share' %} {{ 'general.share' | t }}</button>
+                {%- if settings.wishlist_enabled -%}
+                  {% render 'wishlist-button', product: product, label: true %}
+                {%- endif -%}
+              </div>
+            {%- when 'custom_liquid' -%}
+              <div {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.sticky_atc -%}
+    <sticky-atc class="sticky-atc color-{{ section.settings.color_scheme }}" data-target="{{ buy_block_id }}" data-form="{{ form_id }}" data-product-scope>
+      <div class="page-width sticky-atc__inner">
+        <div class="sticky-atc__media">
+          {%- if product.featured_media -%}{{ product.featured_media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+        </div>
+        <div class="sticky-atc__info">
+          <p class="sticky-atc__vendor">{{ product.vendor }}</p>
+          <p class="sticky-atc__title">{{ product.title }}</p>
+        </div>
+        {% render 'price', product: product, use_variant: true %}
+        <button type="button" class="btn btn--primary" data-sticky-submit {% unless variant.available %}disabled{% endunless %}>
+          {%- if variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+        </button>
+      </div>
+    </sticky-atc>
+  {%- endif -%}
+</section>
+
+{%- liquid
+  assign seo_media = product.featured_media
+  assign item_condition = 'https://schema.org/UsedCondition'
+  assign condition_lower = condition | downcase
+  if condition_lower contains 'new' or condition_lower contains 'unused'
+    assign item_condition = 'https://schema.org/NewCondition'
+  endif
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {%- if seo_media -%}"image": [{{ seo_media | image_url: width: 1920 | prepend: 'https:' | json }}],{%- endif -%}
+    "description": {{ product.description | strip_html | json }},
+    {%- if variant.sku != blank -%}"sku": {{ variant.sku | json }},{%- endif -%}
+    {%- if variant.barcode != blank -%}"gtin": {{ variant.barcode | json }},{%- endif -%}
+    "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+    "offers": [
+      {%- for v in product.variants -%}
+        {
+          "@type": "Offer",
+          {%- if v.sku != blank -%}"sku": {{ v.sku | json }},{%- endif -%}
+          "itemCondition": {{ item_condition | json }},
+          "availability": "http://schema.org/{% if v.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": {{ v.price | divided_by: 100.00 | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "url": {{ request.origin | append: v.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product information",
+  "tag": "div",
+  "class": "section-main-product",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
+    { "type": "select", "id": "gallery_layout", "label": "Gallery layout (desktop)", "default": "thumbs", "options": [ { "value": "thumbs", "label": "Slider with thumbnails" }, { "value": "stacked", "label": "Stacked" }, { "value": "grid", "label": "Grid" } ] },
+    { "type": "select", "id": "media_ratio", "label": "Image ratio", "default": "1.25", "options": [ { "value": "1", "label": "Square" }, { "value": "1.25", "label": "Portrait" }, { "value": "natural", "label": "Original" } ] },
+    { "type": "select", "id": "media_width", "label": "Gallery width", "default": "medium", "options": [ { "value": "small", "label": "Half" }, { "value": "medium", "label": "Wide" }, { "value": "large", "label": "Extra wide" } ] },
+    { "type": "checkbox", "id": "enable_zoom", "label": "Enable full-screen zoom", "default": true },
+    { "type": "checkbox", "id": "sticky_atc", "label": "Show sticky add-to-bag bar", "default": true },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "vendor", "name": "Designer", "limit": 1 },
+    { "type": "title", "name": "Title", "limit": 1 },
+    { "type": "condition", "name": "Condition badge", "limit": 1, "settings": [ { "type": "paragraph", "content": "Reads metafield custom.condition, or a tag like condition:Excellent." } ] },
+    { "type": "price", "name": "Price", "limit": 1 },
+    { "type": "installments", "name": "Instalments (Shop Pay)", "limit": 1 },
+    { "type": "inventory", "name": "Stock status", "limit": 1, "settings": [ { "type": "range", "id": "threshold", "label": "Low stock threshold", "min": 1, "max": 10, "step": 1, "default": 3 } ] },
+    { "type": "sku", "name": "SKU", "limit": 1 },
+    { "type": "text", "name": "Text", "settings": [ { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Text block</p>" } ] },
+    { "type": "divider", "name": "Divider" },
+    { "type": "variant_picker", "name": "Variant picker", "limit": 1 },
+    {
+      "type": "buy_buttons", "name": "Buy buttons", "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_quantity", "label": "Show quantity selector", "default": false },
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons", "default": true },
+        { "type": "checkbox", "id": "show_wishlist", "label": "Show save button", "default": true },
+        { "type": "checkbox", "id": "show_pickup", "label": "Show note under buttons", "default": false },
+        { "type": "text", "id": "pickup_text", "label": "Note", "default": "Viewing by appointment at our studio" }
+      ]
+    },
+    {
+      "type": "authenticity", "name": "Authenticity card", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Authenticity guaranteed" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Checked by two specialists. Full refund if it's ever proven otherwise." },
+        { "type": "text", "id": "point_1", "label": "Point 1", "default": "Authenticated twice" },
+        { "type": "text", "id": "point_2", "label": "Point 2", "default": "Condition checked against photos" },
+        { "type": "text", "id": "point_3", "label": "Point 3", "default": "Inspection & packing filmed" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "How we check your item" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "inspection_video", "name": "Inspection video", "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Shown when the product metafield custom.inspection_video (URL) is filled." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Watch this item's inspection" },
+        { "type": "text", "id": "subtext", "label": "Subtext", "default": "Recorded in our studio before listing" }
+      ]
+    },
+    {
+      "type": "condition_report", "name": "Condition report", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Condition report" },
+        { "type": "text", "id": "grades", "label": "Grades (best to worst)", "default": "New, Pristine, Excellent, Very good, Good, Fair", "info": "The product's condition is highlighted on this scale. Notes come from metafield custom.condition_notes." },
+        { "type": "richtext", "id": "guide", "label": "Grading guide", "default": "<p>Graded after inspection of exterior, interior, corners, edges, hardware and odour. Pre-owned items may show light signs of use, all described above.</p>" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": true }
+      ]
+    },
+    {
+      "type": "specs", "name": "Details & dimensions", "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Reads product metafields in the custom namespace: model, material, color, hardware, dimensions, year, serial, accessories." },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Details & dimensions" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false },
+        { "type": "checkbox", "id": "show_designer", "label": "Show designer row", "default": true },
+        { "type": "checkbox", "id": "show_sku", "label": "Show reference (SKU) row", "default": true },
+        { "type": "text", "id": "label_designer", "label": "Designer label", "default": "Designer" },
+        { "type": "text", "id": "label_type", "label": "Type label", "default": "Category" },
+        { "type": "text", "id": "label_model", "label": "Model label", "default": "Model" },
+        { "type": "text", "id": "label_material", "label": "Material label", "default": "Material" },
+        { "type": "text", "id": "label_color", "label": "Colour label", "default": "Colour" },
+        { "type": "text", "id": "label_hardware", "label": "Hardware label", "default": "Hardware" },
+        { "type": "text", "id": "label_dimensions", "label": "Dimensions label", "default": "Dimensions" },
+        { "type": "text", "id": "label_year", "label": "Year label", "default": "Year" },
+        { "type": "text", "id": "label_serial", "label": "Serial / date code label", "default": "Date code" },
+        { "type": "text", "id": "label_accessories", "label": "Accessories label", "default": "Comes with" },
+        { "type": "text", "id": "label_reference", "label": "Reference label", "default": "Reference" }
+      ]
+    },
+    {
+      "type": "description", "name": "Description", "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "collapsible", "label": "Show as collapsible row", "default": true },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Description" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    },
+    {
+      "type": "collapsible", "name": "Collapsible row",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shipping & returns" },
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [ { "value": "truck", "label": "Truck" }, { "value": "return", "label": "Return" }, { "value": "shield", "label": "Shield" }, { "value": "gift", "label": "Gift" }, { "value": "lock", "label": "Lock" }, { "value": "chat", "label": "Chat" }, { "value": "leaf", "label": "Leaf" }, { "value": "globe", "label": "Globe" } ] },
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Insured, tracked delivery with signature. Duties and taxes are shown at checkout. Returns accepted within 14 days of delivery.</p>" },
+        { "type": "page", "id": "page", "label": "Content from page" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    },
+    { "type": "trust_icons", "name": "Trust icons", "limit": 1, "settings": [ { "type": "paragraph", "content": "Uses the trust messages from Theme settings › Cart." }, { "type": "range", "id": "count", "label": "Number of icons", "min": 2, "max": 5, "step": 1, "default": 3 } ] },
+    { "type": "contact", "name": "Ask a specialist", "limit": 1, "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Questions about this piece? Our specialists reply within a few hours." }, { "type": "text", "id": "link_label", "label": "Link label", "default": "Ask a question" }, { "type": "url", "id": "link", "label": "Link" } ] },
+    { "type": "share", "name": "Share & save", "limit": 1 },
+    { "type": "custom_liquid", "name": "Custom Liquid", "settings": [ { "type": "liquid", "id": "custom_liquid", "label": "Liquid" } ] }
+  ]
+}
+{% endschema %}

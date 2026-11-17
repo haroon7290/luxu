@@ -1,0 +1,21 @@
+{%- comment -%}
+  Outputs the product's condition as plain text.
+  Source order: metafield custom.condition → tag with prefix (Theme settings › Badges & condition).
+  Usage: {%- capture condition -%}{% render 'product-condition', product: product %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign condition = product.metafields.custom.condition.value
+  if condition == blank
+    assign prefix = settings.condition_tag_prefix | default: 'condition:' | downcase
+    assign prefix_size = prefix | size
+    for tag in product.tags
+      assign tag_lower = tag | downcase
+      assign tag_head = tag_lower | slice: 0, prefix_size
+      if tag_head == prefix
+        assign condition = tag | slice: prefix_size, 120 | strip
+        break
+      endif
+    endfor
+  endif
+  echo condition | escape
+-%}

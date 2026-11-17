@@ -1,0 +1,30 @@
+{%- comment -%} Active filter pills. Params: results, clear_url {%- endcomment -%}
+{%- assign any_active = false -%}
+{%- capture pills -%}
+  {%- for filter in results.filters -%}
+    {%- if filter.type == 'price_range' -%}
+      {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+        {%- assign any_active = true -%}
+        {%- assign p_min = filter.min_value.value | default: 0 -%}
+        {%- assign p_max = filter.max_value.value | default: filter.range_max -%}
+        <a href="{{ filter.url_to_remove }}" class="pill" data-facet-link>
+          {%- render 'money', amount: p_min -%} &ndash; {% render 'money', amount: p_max -%}
+          {% render 'icon', icon: 'close' %}
+        </a>
+      {%- endif -%}
+    {%- else -%}
+      {%- for value in filter.active_values -%}
+        {%- assign any_active = true -%}
+        <a href="{{ value.url_to_remove }}" class="pill" data-facet-link>
+          <span class="pill__group">{{ filter.label }}:</span> {{ value.label | escape }} {% render 'icon', icon: 'close' %}
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+<div class="active-facets" data-active-facets>
+  {%- if any_active -%}
+    {{ pills }}
+    <a href="{{ clear_url }}" class="active-facets__clear link-underline" data-facet-link>{{ 'collections.filters.clear_all' | t }}</a>
+  {%- endif -%}
+</div>

@@ -1,0 +1,38 @@
+{%- comment -%} Params: paginate, style ('numbers' | 'load_more' | 'infinite') {%- endcomment -%}
+{%- if paginate.pages > 1 -%}
+  {%- if style == 'load_more' or style == 'infinite' -%}
+    {%- assign shown = paginate.current_offset | plus: paginate.page_size -%}
+    {%- if shown > paginate.items -%}{%- assign shown = paginate.items -%}{%- endif -%}
+    <div class="load-more" data-load-more{% if style == 'infinite' %} data-infinite{% endif %}>
+      <p class="load-more__status">{{ 'collections.general.showing' | t: shown: shown, total: paginate.items }}</p>
+      <div class="load-more__track" aria-hidden="true">
+        <span style="width: {{ shown | times: 100.0 | divided_by: paginate.items }}%"></span>
+      </div>
+      {%- if paginate.next -%}
+        <a href="{{ paginate.next.url }}" class="btn btn--secondary" data-load-more-btn>{{ 'collections.general.load_more' | t }}</a>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+      <ul class="pagination__list" role="list">
+        {%- if paginate.previous -%}
+          <li><a href="{{ paginate.previous.url }}" class="pagination__item" data-facet-link aria-label="{{ 'general.pagination.previous' | t }}">{% render 'icon', icon: 'chevron-left' %}</a></li>
+        {%- endif -%}
+        {%- for part in paginate.parts -%}
+          <li>
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="pagination__item" data-facet-link aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="pagination__item is-current" aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span class="pagination__item">{{ part.title }}</span>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+        {%- if paginate.next -%}
+          <li><a href="{{ paginate.next.url }}" class="pagination__item" data-facet-link aria-label="{{ 'general.pagination.next' | t }}">{% render 'icon', icon: 'chevron-right' %}</a></li>
+        {%- endif -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+{%- endif -%}

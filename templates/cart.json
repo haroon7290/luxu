@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": { "type": "main-cart", "settings": {} },
+    "trust": {
+      "type": "multicolumn",
+      "blocks": {
+        "c1": { "type": "column", "settings": { "icon": "shield", "title": "Authenticity guaranteed", "text": "<p>Full refund if an item is ever found not to be genuine.</p>" } },
+        "c2": { "type": "column", "settings": { "icon": "truck", "title": "Insured delivery", "text": "<p>Tracked and signed for, duties shown upfront.</p>" } },
+        "c3": { "type": "column", "settings": { "icon": "return", "title": "14-day returns", "text": "<p>Changed your mind? Send it back within 14 days.</p>" } },
+        "c4": { "type": "column", "settings": { "icon": "lock", "title": "Secure checkout", "text": "<p>Encrypted payments with all major cards and wallets.</p>" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": { "color_scheme": "scheme-2", "heading": "", "columns": 4, "padding_top": 56, "padding_bottom": 56 }
+    },
+    "recent": { "type": "recently-viewed", "settings": {} }
+  },
+  "order": ["main", "trust", "recent"]
+}

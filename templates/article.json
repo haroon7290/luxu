@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "main-article", "settings": {} },
+    "more": { "type": "product-carousel", "settings": { "eyebrow": "Shop the story", "heading": "Pieces we <em>mentioned</em>", "button_label": "" } }
+  },
+  "order": ["main", "more"]
+}

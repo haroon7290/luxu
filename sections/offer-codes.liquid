@@ -1,0 +1,62 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {% render 'section-header', eyebrow: section.settings.eyebrow, title: section.settings.heading, text: section.settings.text, align: section.settings.align %}
+    <div class="offers" style="--cols: {{ section.blocks.size | at_most: 4 | at_least: 1 }};">
+      {%- for block in section.blocks -%}
+        <div class="offer reveal" style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <div>
+            <p class="offer__amount">{{ block.settings.amount }}</p>
+            <p class="offer__desc">{{ block.settings.description }}</p>
+          </div>
+          <div class="offer__code">
+            <span class="offer__code-text">{{ block.settings.code }}</span>
+            <button type="button" class="offer__copy" data-copy="{{ block.settings.code | escape }}" aria-label="{{ 'general.copy_code' | t: code: block.settings.code | escape }}">
+              {% render 'icon', icon: 'copy' %} {{ 'general.copy' | t }}
+            </button>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.terms != blank -%}<p class="offers__terms">{{ section.settings.terms }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Offer codes",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 4,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "This week only" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Spend more, <em>save more</em>" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "select", "id": "align", "label": "Heading alignment", "default": "center", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" } ] },
+    { "type": "text", "id": "terms", "label": "Terms", "default": "One code per order. Applied to the item subtotal before shipping. Cannot be combined with other offers." },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "code",
+      "name": "Code",
+      "settings": [
+        { "type": "text", "id": "amount", "label": "Headline", "default": "€20 off" },
+        { "type": "text", "id": "description", "label": "Condition", "default": "On orders over €300" },
+        { "type": "text", "id": "code", "label": "Discount code", "default": "WELCOME20", "info": "Create the code in Shopify admin › Discounts." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Offer codes",
+      "blocks": [
+        { "type": "code", "settings": { "amount": "€20 off", "description": "On orders over €300", "code": "WELCOME20" } },
+        { "type": "code", "settings": { "amount": "€35 off", "description": "On orders over €500", "code": "SAVE35" } },
+        { "type": "code", "settings": { "amount": "€60 off", "description": "On orders over €800", "code": "SAVE60" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

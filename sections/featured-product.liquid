@@ -1,0 +1,48 @@
+{%- assign product = section.settings.product -%}
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {%- if product != blank -%}
+      {%- capture condition -%}{% render 'product-condition', product: product %}{%- endcapture -%}
+      <div class="featured-product" data-product-scope>
+        {% render 'product-gallery', product: product, section_id: section.id, layout: 'thumbs', ratio: '1', zoom: false %}
+        <div class="product__info">
+          {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+          <p class="product__vendor">{{ product.vendor }}</p>
+          <h2 class="product__title h2">{{ product.title }}</h2>
+          {%- if condition != blank -%}<span class="product__condition">{% render 'icon', icon: 'sparkle' %}{{ 'products.product.condition_label' | t }}: <strong>{{ condition }}</strong></span>{%- endif -%}
+          {% render 'price', product: product, use_variant: true, size: 'lg' %}
+          <div class="product__text rte">{{ product.description | strip_html | truncatewords: 40 }}</div>
+          {% render 'variant-picker', product: product, section_id: section.id %}
+          {% render 'product-form', product: product, section_id: section.id, show_dynamic_checkout: true, show_wishlist: true %}
+          <a href="{{ product.url }}" class="link-arrow">{{ 'products.product.view_details' | t }} {% render 'icon', icon: 'arrow-right' %}</a>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="featured-product">
+        <div class="media" style="--ratio: 1;">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        <div class="product__info">
+          <p class="product__vendor">{{ 'products.product.placeholder_vendor' | t }}</p>
+          <h2 class="product__title h2">{{ 'products.product.placeholder_title' | t }}</h2>
+          <div class="price price--lg"><span class="price__current">{% render 'money', amount: 245000 %}</span></div>
+          <p class="muted">{{ 'sections.featured_product.select' | t }}</p>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-2" },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Piece of the week" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "presets": [ { "name": "Featured product" } ]
+}
+{% endschema %}

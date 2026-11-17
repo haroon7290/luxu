@@ -1,0 +1,83 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <slider-component>
+      {%- capture aside -%}
+        {%- if section.settings.score != blank -%}
+          <div class="reviews-summary">
+            <span class="reviews-summary__score">{{ section.settings.score }}</span>
+            <div>
+              <div class="testimonial__stars">{%- for i in (1..5) -%}{% render 'icon', icon: 'star' %}{%- endfor -%}</div>
+              <p class="muted" style="font-size: var(--fs-xs);">{{ section.settings.score_note }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+        <div class="slider-controls">
+          <button type="button" class="icon-btn icon-btn--round" data-slider-prev aria-label="{{ 'accessibility.previous' | t }}">{% render 'icon', icon: 'chevron-left' %}</button>
+          <button type="button" class="icon-btn icon-btn--round" data-slider-next aria-label="{{ 'accessibility.next' | t }}">{% render 'icon', icon: 'chevron-right' %}</button>
+        </div>
+      {%- endcapture -%}
+      {% render 'section-header', eyebrow: section.settings.eyebrow, title: section.settings.heading, text: section.settings.text, extra: aside %}
+      <ul class="slider" data-slider role="list" style="--per-view: {{ section.settings.per_view }}; --per-view-tablet: 2; --per-view-mobile: 1.15;">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>
+            <figure class="testimonial">
+              <div class="testimonial__stars" aria-label="{{ block.settings.rating }} / 5">
+                {%- for i in (1..block.settings.rating) -%}{% render 'icon', icon: 'star' %}{%- endfor -%}
+              </div>
+              <blockquote class="testimonial__quote">{{ block.settings.quote }}</blockquote>
+              {%- if block.settings.product != blank -%}
+                <a href="{{ block.settings.product.url }}" class="testimonial__product">{% render 'icon', icon: 'tag' %}{{ block.settings.product.vendor }} · {{ block.settings.product.title | truncate: 40 }}</a>
+              {%- endif -%}
+              <figcaption class="testimonial__author">
+                <span class="testimonial__avatar">
+                  {%- if block.settings.avatar != blank -%}{{ block.settings.avatar | image_url: width: 100 | image_tag: loading: 'lazy', alt: block.settings.author }}{%- else -%}{{ block.settings.author | slice: 0 }}{%- endif -%}
+                </span>
+                <span><strong>{{ block.settings.author }}</strong><br><span class="testimonial__meta">{{ block.settings.meta }}</span></span>
+              </figcaption>
+            </figure>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </slider-component>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 12,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Client notes" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Loved <em>twice</em>" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "score", "label": "Average score", "info": "Optional. Only enter your genuine average review score, e.g. 4.8" },
+    { "type": "text", "id": "score_note", "label": "Score note", "default": "Average client rating" },
+    { "type": "range", "id": "per_view", "label": "Cards per view", "min": 1, "max": 4, "step": 0.5, "default": 3 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Add a real customer review here." },
+        { "type": "text", "id": "author", "label": "Name", "default": "Customer name" },
+        { "type": "text", "id": "meta", "label": "Location / detail", "default": "Verified buyer" },
+        { "type": "image_picker", "id": "avatar", "label": "Photo" },
+        { "type": "product", "id": "product", "label": "Product purchased" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [ { "type": "testimonial" }, { "type": "testimonial" }, { "type": "testimonial" } ]
+    }
+  ]
+}
+{% endschema %}

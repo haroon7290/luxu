@@ -1,0 +1,54 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {% render 'section-header', eyebrow: section.settings.eyebrow, title: section.settings.heading %}
+    {%- liquid
+      case section.settings.sort
+        when 'products_high', 'products_low'
+          assign list = collections | sort: 'all_products_count'
+        when 'date', 'date_reversed'
+          assign list = collections | sort: 'published_at'
+        else
+          assign list = collections
+      endcase
+      if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed'
+        assign list = list | reverse
+      endif
+    -%}
+    <ul class="grid" role="list" style="--cols: {{ section.settings.columns }}; --cols-mobile: 2; --tile-ratio: {{ section.settings.ratio }};">
+      {%- for c in list -%}
+        <li class="reveal" style="--i: {{ forloop.index0 | modulo: 4 }};">
+          <a href="{{ c.url }}" class="collection-tile zoom-on-hover">
+            <div class="media">
+              {%- if c.featured_image -%}
+                {{ c.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,500,700,900', sizes: '(min-width: 990px) 25vw, 50vw', alt: c.title }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="collection-tile__label">
+              <div><p class="collection-tile__title">{{ c.title }}</p><p class="collection-tile__count">{{ 'collections.general.items' | t: count: c.products_count }}</p></div>
+              <span class="collection-tile__arrow">{% render 'icon', icon: 'arrow-right' %}</span>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections list page",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Browse" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "All <em>collections</em>" },
+    { "type": "select", "id": "sort", "label": "Sort by", "default": "alphabetical", "options": [ { "value": "alphabetical", "label": "Alphabetical" }, { "value": "products_high", "label": "Most products" }, { "value": "products_low", "label": "Fewest products" }, { "value": "date", "label": "Oldest first" }, { "value": "date_reversed", "label": "Newest first" } ] },
+    { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "select", "id": "ratio", "label": "Image ratio", "default": "1.25", "options": [ { "value": "1", "label": "Square" }, { "value": "1.25", "label": "Portrait" }, { "value": "0.75", "label": "Landscape" } ] },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 72 }
+  ]
+}
+{% endschema %}

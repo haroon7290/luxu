@@ -1,0 +1,195 @@
+{%- liquid
+  assign col_count = 0
+  for block in section.blocks
+    unless block.type == 'brand'
+      assign col_count = col_count | plus: 1
+    endunless
+  endfor
+  if col_count > 4
+    assign col_count = 4
+  endif
+-%}
+<footer class="footer section color-{{ section.settings.color_scheme }}" style="--pt: 0px; --pb: 0px; --footer-cols: {{ col_count | at_least: 1 }};">
+  <div class="page-width">
+    <div class="footer__top">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'brand' -%}
+            <div class="footer__block footer__block--brand" {{ block.shopify_attributes }}>
+              <a href="{{ routes.root_url }}" class="footer__logo">
+                {%- assign flogo = block.settings.logo | default: settings.logo_inverse | default: settings.logo -%}
+                {%- if flogo != blank -%}
+                  {{ flogo | image_url: width: 500 | image_tag: loading: 'lazy', alt: shop.name, style: 'width: 160px' }}
+                {%- else -%}
+                  <span class="footer__logo-text">{{ shop.name }}</span>
+                {%- endif -%}
+              </a>
+              {%- if block.settings.text != blank -%}<div class="footer__text rte">{{ block.settings.text }}</div>{%- endif -%}
+              {%- if block.settings.show_social -%}{% render 'social-icons' %}{%- endif -%}
+            </div>
+          {%- when 'links' -%}
+            <details class="footer__block footer__block--collapsible" open {{ block.shopify_attributes }}>
+              <summary class="footer__heading">{{ block.settings.heading | default: block.settings.menu.title }}</summary>
+              <ul class="footer__links" role="list">
+                {%- for link in block.settings.menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </details>
+          {%- when 'text' -%}
+            <div class="footer__block" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}<p class="footer__heading">{{ block.settings.heading }}</p>{%- endif -%}
+              <div class="footer__text rte">{{ block.settings.text }}</div>
+              {%- if block.settings.link_label != blank -%}<a href="{{ block.settings.link }}" class="link-arrow">{{ block.settings.link_label }} {% render 'icon', icon: 'arrow-right' %}</a>{%- endif -%}
+            </div>
+          {%- when 'contact' -%}
+            <div class="footer__block" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}<p class="footer__heading">{{ block.settings.heading }}</p>{%- endif -%}
+              <ul class="footer__contact" role="list">
+                {%- if block.settings.email != blank -%}<li>{% render 'icon', icon: 'mail' %}<span>{% if block.settings.email_label != blank %}{{ block.settings.email_label }}<br>{% endif %}<a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a></span></li>{%- endif -%}
+                {%- if block.settings.email_2 != blank -%}<li>{% render 'icon', icon: 'return' %}<span>{% if block.settings.email_2_label != blank %}{{ block.settings.email_2_label }}<br>{% endif %}<a href="mailto:{{ block.settings.email_2 }}">{{ block.settings.email_2 }}</a></span></li>{%- endif -%}
+                {%- if block.settings.phone != blank -%}<li>{% render 'icon', icon: 'phone' %}<a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a></li>{%- endif -%}
+                {%- if block.settings.whatsapp != blank -%}<li>{% render 'icon', icon: 'whatsapp' %}<a href="{{ block.settings.whatsapp }}" target="_blank" rel="noopener">WhatsApp</a></li>{%- endif -%}
+                {%- if block.settings.address != blank -%}<li>{% render 'icon', icon: 'map-pin' %}<span>{{ block.settings.address | newline_to_br }}</span></li>{%- endif -%}
+                {%- if block.settings.hours != blank -%}<li>{% render 'icon', icon: 'clock' %}<span>{{ block.settings.hours }}</span></li>{%- endif -%}
+              </ul>
+            </div>
+          {%- when 'newsletter' -%}
+            <div class="footer__block footer__newsletter" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}<p class="footer__heading">{{ block.settings.heading }}</p>{%- endif -%}
+              {%- if block.settings.text != blank -%}<div class="footer__text rte">{{ block.settings.text }}</div>{%- endif -%}
+              {%- form 'customer', id: 'FooterNewsletter', class: 'newsletter-form' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                {%- if form.posted_successfully? -%}
+                  <p class="form-message form-message--success">{% render 'icon', icon: 'check' %} {{ 'newsletter.success' | t }}</p>
+                {%- else -%}
+                  <div class="newsletter__form newsletter__form--underline">
+                    <div class="field">
+                      <input type="email" name="contact[email]" id="FooterNewsletterEmail" class="field__input" autocomplete="email" placeholder=" " required>
+                      <label for="FooterNewsletterEmail" class="field__label">{{ 'newsletter.email' | t }}</label>
+                    </div>
+                    <button type="submit" class="btn" aria-label="{{ 'newsletter.submit' | t }}">{% render 'icon', icon: 'arrow-right' %}</button>
+                  </div>
+                  {%- if form.errors -%}<p class="form-message form-message--error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__middle">
+      <div class="footer__locale">
+        {% render 'localization-form', id: 'FooterLocalization', show_country: section.settings.show_country, show_language: section.settings.show_language %}
+      </div>
+      {%- if section.settings.show_payment -%}{% render 'payment-icons' %}{%- endif -%}
+    </div>
+
+    {%- if section.settings.disclaimer != blank -%}
+      <div class="footer__disclaimer rte">{{ section.settings.disclaimer }}</div>
+    {%- endif -%}
+
+    <div class="footer__bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. {{ section.settings.copyright }}</p>
+      {%- if section.settings.show_policies -%}
+        <ul class="footer__policies" role="list">
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endif -%}
+          {%- endfor -%}
+          {%- if shop.privacy_policy and section.settings.show_cookie_link -%}
+            <li><button type="button" class="link-underline" onclick="window.privacyBanner && window.privacyBanner.showPreferences()">{{ 'general.cookie_preferences' | t }}</button></li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
+      {%- if section.settings.show_powered_by -%}<p>{{ powered_by_link }}</p>{%- endif -%}
+    </div>
+
+    {%- if section.settings.show_wordmark -%}
+      <p class="footer__wordmark" aria-hidden="true">{{ section.settings.wordmark | default: shop.name }}</p>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "enabled_on": { "groups": ["footer"] },
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-3" },
+    { "type": "checkbox", "id": "show_country", "label": "Show country / currency selector", "default": true },
+    { "type": "checkbox", "id": "show_language", "label": "Show language selector", "default": true },
+    { "type": "checkbox", "id": "show_payment", "label": "Show payment icons", "default": true },
+    { "type": "checkbox", "id": "show_policies", "label": "Show policy links", "default": true },
+    { "type": "checkbox", "id": "show_cookie_link", "label": "Show cookie preferences link", "default": false },
+    { "type": "richtext", "id": "disclaimer", "label": "Disclaimer", "default": "<p>We sell pre-owned designer goods. We are an independent reseller and are not affiliated with, authorised by or endorsed by any of the brands we offer. All trademarks belong to their respective owners.</p>" },
+    { "type": "text", "id": "copyright", "label": "Copyright text", "default": "All rights reserved." },
+    { "type": "checkbox", "id": "show_powered_by", "label": "Show “Powered by Shopify”", "default": false },
+    { "type": "checkbox", "id": "show_wordmark", "label": "Show large wordmark", "default": true },
+    { "type": "text", "id": "wordmark", "label": "Wordmark text", "info": "Defaults to your store name." }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "limit": 1,
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Defaults to the logo for dark backgrounds." },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>A curated destination for authenticated, pre-owned designer pieces — each one inspected, graded and filmed before it ships.</p>" },
+        { "type": "checkbox", "id": "show_social", "label": "Show social icons", "default": true }
+      ]
+    },
+    {
+      "type": "links",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shopping" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Authenticity & condition" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Every item is checked by two specialists and graded against our condition scale. Your parcel includes a link to the recording of its inspection.</p>" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Our standard" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Client care",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Client care" },
+        { "type": "text", "id": "email_label", "label": "Email label", "default": "Orders & questions" },
+        { "type": "text", "id": "email", "label": "Email", "default": "care@example.com" },
+        { "type": "text", "id": "email_2_label", "label": "Second email label", "default": "Returns" },
+        { "type": "text", "id": "email_2", "label": "Second email" },
+        { "type": "text", "id": "phone", "label": "Phone" },
+        { "type": "text", "id": "whatsapp", "label": "WhatsApp link" },
+        { "type": "textarea", "id": "address", "label": "Address" },
+        { "type": "text", "id": "hours", "label": "Opening hours", "default": "Mon–Fri, 9:00–18:00 CET" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "First look" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>New arrivals and private offers, before anyone else.</p>" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "brand" },
+      { "type": "links", "settings": { "heading": "Shopping" } },
+      { "type": "text" },
+      { "type": "contact" },
+      { "type": "newsletter" }
+    ]
+  }
+}
+{% endschema %}

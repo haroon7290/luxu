@@ -1,0 +1,2 @@
+{%- comment -%} Usage: {% render 'money', amount: 12345 %} {%- endcomment -%}
+{%- if settings.currency_code_enabled -%}{{ amount | money_with_currency }}{%- else -%}{{ amount | money }}{%- endif -%}

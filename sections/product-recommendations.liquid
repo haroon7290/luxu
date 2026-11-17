@@ -1,0 +1,58 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <product-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent={{ section.settings.intent }}">
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        <slider-component>
+          {%- capture controls -%}
+            <div class="slider-controls">
+              <button type="button" class="icon-btn icon-btn--round" data-slider-prev aria-label="{{ 'accessibility.previous' | t }}">{% render 'icon', icon: 'chevron-left' %}</button>
+              <button type="button" class="icon-btn icon-btn--round" data-slider-next aria-label="{{ 'accessibility.next' | t }}">{% render 'icon', icon: 'chevron-right' %}</button>
+            </div>
+          {%- endcapture -%}
+          {% render 'section-header', eyebrow: section.settings.eyebrow, title: section.settings.heading, extra: controls %}
+          <ul class="slider" data-slider role="list" style="--per-view: {{ section.settings.per_view }}; --per-view-tablet: 2.6; --per-view-mobile: 1.6;">
+            {%- for rec in recommendations.products -%}
+              <li>{% render 'product-card', product: rec, sizes: '(min-width: 990px) 22vw, 60vw' %}</li>
+            {%- endfor -%}
+          </ul>
+          <div class="slider-progress" data-slider-progress aria-hidden="true"><span></span></div>
+        </slider-component>
+      {%- endif -%}
+    </product-recommendations>
+  </div>
+</section>
+
+<script>
+  if (!customElements.get('product-recommendations')) {
+    customElements.define('product-recommendations', class extends HTMLElement {
+      connectedCallback() {
+        if (this.children.length) return;
+        fetch(this.dataset.url).then((r) => r.text()).then((html) => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const fresh = doc.querySelector('product-recommendations');
+          if (fresh && fresh.innerHTML.trim().length) { this.innerHTML = fresh.innerHTML; window.theme && window.theme.wishlist && window.theme.wishlist.sync(this); }
+          else { const s = this.closest('.shopify-section'); if (s) s.hidden = true; }
+        }).catch(() => {});
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "tag": "div",
+  "settings": [
+    { "type": "paragraph", "content": "Recommendations are generated automatically by Shopify Search & Discovery." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Chosen for you" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "You may also <em>love</em>" },
+    { "type": "select", "id": "intent", "label": "Type", "default": "related", "options": [ { "value": "related", "label": "Related" }, { "value": "complementary", "label": "Complementary" } ] },
+    { "type": "range", "id": "limit", "label": "Products", "min": 2, "max": 10, "step": 1, "default": 8 },
+    { "type": "range", "id": "per_view", "label": "Cards per view", "min": 2, "max": 6, "step": 0.5, "default": 4 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "presets": [ { "name": "Product recommendations" } ]
+}
+{% endschema %}

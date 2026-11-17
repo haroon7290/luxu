@@ -1,0 +1,354 @@
+{
+  "accessibility": {
+    "back_to_top": "Retour en haut",
+    "close": "Fermer",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "skip_to_content": "Passer au contenu"
+  },
+  "blogs": {
+    "article": {
+      "by": "Par {{ author }}",
+      "placeholder": "Titre de votre article",
+      "read_more": "Lire la suite"
+    },
+    "comments": {
+      "email": "E-mail",
+      "leave": "Laisser un commentaire",
+      "message": "Message",
+      "moderated": "Les commentaires sont vérifiés avant publication.",
+      "name": "Nom",
+      "post": "Publier",
+      "success": "Votre commentaire a été publié. Merci !",
+      "success_moderated": "Merci — votre commentaire apparaîtra après validation.",
+      "title": {
+        "one": "{{ count }} commentaire",
+        "other": "{{ count }} commentaires"
+      }
+    },
+    "general": {
+      "all": "Tous",
+      "empty": "Aucun article pour le moment.",
+      "journal": "Journal"
+    }
+  },
+  "cart": {
+    "general": {
+      "apply": "Appliquer",
+      "checkout": "Paiement sécurisé",
+      "continue_shopping": "Continuer mes achats",
+      "decrease": "Diminuer la quantité",
+      "discount": "Code promo",
+      "discount_invalid": "Ce code ne peut pas être appliqué à votre panier.",
+      "discount_placeholder": "Saisir le code",
+      "duties_and_taxes_included": "Droits et taxes inclus. Livraison calculée au paiement.",
+      "empty": "Votre panier est vide",
+      "empty_text": "Chaque pièce est unique — lorsque vous trouverez la bonne, elle vous attendra ici.",
+      "error": "Une erreur est survenue. Veuillez réessayer.",
+      "free_shipping_away": "Plus que {{ amount }} pour la livraison offerte",
+      "free_shipping_reached": "Livraison offerte débloquée",
+      "have_account": "Vous avez un compte ?",
+      "increase": "Augmenter la quantité",
+      "items_count": {
+        "one": "{{ count }} pièce",
+        "other": "{{ count }} pièces"
+      },
+      "note": "Ajouter une note",
+      "note_placeholder": "Instructions particulières ou message cadeau",
+      "quantity": "Quantité",
+      "remove": "Retirer",
+      "remove_title": "Retirer {{ title }}",
+      "subtotal": "Sous-total",
+      "taxes_at_checkout": "Taxes et livraison calculées au paiement.",
+      "taxes_included": "Taxes incluses. Livraison calculée au paiement.",
+      "title": "Votre panier",
+      "upsell": "Vous aimerez aussi",
+      "view_cart": "Voir le panier"
+    }
+  },
+  "collections": {
+    "filters": {
+      "apply": "Appliquer",
+      "clear_all": "Tout effacer",
+      "from": "De",
+      "max_price": "Le prix le plus élevé est {{ price }}",
+      "search_in": "Rechercher : {{ filter }}",
+      "show_results": "Voir les résultats",
+      "title": "Filtrer",
+      "to": "À"
+    },
+    "general": {
+      "all": "Collections",
+      "grid": "Colonnes de la grille",
+      "items": {
+        "one": "{{ count }} pièce",
+        "other": "{{ count }} pièces"
+      },
+      "load_more": "Voir plus",
+      "no_matches": "Aucune pièce ne correspond à ces filtres",
+      "no_matches_text": "Essayez de retirer un filtre — de nouvelles pièces arrivent chaque semaine.",
+      "showing": "{{ shown }} sur {{ total }}"
+    },
+    "sorting": {
+      "title": "Trier par"
+    }
+  },
+  "contact": {
+    "form": {
+      "email": "E-mail",
+      "message": "Message",
+      "name": "Nom",
+      "order": "Numéro de commande (facultatif)",
+      "phone": "Téléphone",
+      "send": "Envoyer",
+      "success": "Merci — nous revenons vers vous très vite.",
+      "topic": "Sujet"
+    }
+  },
+  "customer": {
+    "account": {
+      "addresses": "Adresses",
+      "details": "Informations du compte",
+      "log_out": "Déconnexion",
+      "orders": "Commandes",
+      "return": "Retour au compte",
+      "title": "Compte",
+      "view_addresses": "Voir les adresses",
+      "welcome": "Bon retour, {{ name }}"
+    },
+    "activate_account": {
+      "cancel": "Refuser l'invitation",
+      "submit": "Activer le compte",
+      "subtext": "Créez un mot de passe pour activer votre compte.",
+      "title": "Activer votre compte"
+    },
+    "addresses": {
+      "add": "Ajouter une adresse",
+      "address1": "Adresse",
+      "address2": "Appartement, étage, etc.",
+      "city": "Ville",
+      "company": "Société",
+      "country": "Pays/région",
+      "default": "Par défaut",
+      "delete": "Supprimer",
+      "delete_confirm": "Voulez-vous vraiment supprimer cette adresse ?",
+      "edit": "Modifier",
+      "province": "Région / province",
+      "save": "Enregistrer l'adresse",
+      "set_default": "Définir comme adresse par défaut",
+      "zip": "Code postal"
+    },
+    "login": {
+      "drawer_intro": "Connectez-vous pour suivre vos commandes, payer plus vite et découvrir les nouveautés en avant-première.",
+      "email": "E-mail",
+      "forgot_password": "Mot de passe oublié ?",
+      "guest": "Continuer en tant qu'invité",
+      "new_customer": "Nouveau client ?",
+      "password": "Mot de passe",
+      "perk_checkout": "Paiement rapide et enregistré",
+      "perk_early": "Accès anticipé aux nouveautés",
+      "perk_orders": "Suivi des commandes et retours",
+      "sign_in": "Se connecter",
+      "title": "Connexion"
+    },
+    "order": {
+      "billing_address": "Adresse de facturation",
+      "cancelled": "Commande annulée",
+      "date": "Passée le {{ date }}",
+      "fulfilled_at": "Expédiée le {{ date }}",
+      "shipping": "Livraison",
+      "shipping_address": "Adresse de livraison",
+      "subtotal": "Sous-total",
+      "tax": "Taxe",
+      "title": "Commande {{ name }}",
+      "total": "Total",
+      "track": "Suivre le colis"
+    },
+    "orders": {
+      "date": "Date",
+      "fulfillment_status": "Expédition",
+      "none": "Vous n'avez pas encore passé de commande.",
+      "order_number": "Commande",
+      "payment_status": "Paiement",
+      "total": "Total"
+    },
+    "recover_password": {
+      "cancel": "Retour à la connexion",
+      "submit": "Envoyer le lien",
+      "subtext": "Nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+      "success": "Un e-mail contenant un lien de réinitialisation vous a été envoyé.",
+      "title": "Réinitialiser votre mot de passe"
+    },
+    "register": {
+      "first_name": "Prénom",
+      "have_account": "Vous avez déjà un compte ?",
+      "last_name": "Nom",
+      "marketing": "Recevoir les nouveautés et offres privées par e-mail",
+      "submit": "Créer un compte",
+      "subtext": "Enregistrez vos informations, suivez vos commandes et découvrez les nouveautés en premier.",
+      "title": "Créer un compte"
+    },
+    "reset_password": {
+      "password": "Mot de passe",
+      "password_confirm": "Confirmer le mot de passe",
+      "submit": "Réinitialiser",
+      "subtext": "Saisissez un nouveau mot de passe pour votre compte.",
+      "title": "Réinitialiser le mot de passe"
+    }
+  },
+  "general": {
+    "breadcrumbs": "Fil d'Ariane",
+    "cookie_preferences": "Préférences cookies",
+    "copied": "Copié",
+    "copy": "Copier",
+    "copy_code": "Copier le code {{ code }}",
+    "home": "Accueil",
+    "meta": {
+      "page": "Page {{ page }}",
+      "tags": "Étiqueté « {{ tags }} »"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "next": "Page suivante",
+      "page": "Page {{ number }}",
+      "previous": "Page précédente"
+    },
+    "payment_methods": "Moyens de paiement",
+    "search": {
+      "clear": "Effacer",
+      "collections": "Collections",
+      "designers": "Créateurs",
+      "no_results": "Aucun résultat pour « {{ terms }} »",
+      "no_results_text": "Vérifiez l'orthographe ou essayez un créateur, une catégorie ou une couleur.",
+      "pages": "Pages et articles",
+      "placeholder": "Rechercher créateurs, styles, pièces…",
+      "popular": "Recherches populaires",
+      "products": "Pièces",
+      "results_for": "Résultats pour « {{ terms }} »",
+      "start": "Que recherchez-vous ?",
+      "submit": "Rechercher",
+      "suggestions": "Suggestions",
+      "title": "Recherche",
+      "trending": "Tendances",
+      "view_all": "Voir tous les résultats pour « {{ terms }} »"
+    },
+    "share": "Partager"
+  },
+  "gift_cards": {
+    "issued": {
+      "add_to_apple_wallet": "Ajouter à Apple Wallet",
+      "copy_code": "Copier le code",
+      "disabled": "Cette carte cadeau est désactivée",
+      "expiration_date": "Expire le {{ expires_on }}",
+      "expired": "Cette carte cadeau a expiré",
+      "initial_value": "Valeur initiale {{ value }}",
+      "label": "Carte cadeau",
+      "print": "Imprimer",
+      "redeem_html": "Utilisez ce code au paiement pour utiliser votre carte cadeau",
+      "shop_link": "Commencer mes achats",
+      "subtext": "Voici votre carte cadeau",
+      "title": "Votre carte cadeau de {{ value }} pour {{ shop }}"
+    }
+  },
+  "header": {
+    "main_navigation": "Navigation principale",
+    "menu": "Menu",
+    "shop": "Boutique",
+    "view_all": "Tout voir : {{ title }}"
+  },
+  "localization": {
+    "country_label": "Pays / devise",
+    "language_label": "Langue",
+    "update": "Mettre à jour"
+  },
+  "newsletter": {
+    "email": "Adresse e-mail",
+    "submit": "S'inscrire",
+    "success": "Merci pour votre inscription."
+  },
+  "password": {
+    "admin_link_html": "Vous êtes le propriétaire ? <a href=\"{{ link }}\" class=\"link-underline\">Connectez-vous ici</a>",
+    "enter": "Entrer",
+    "enter_password": "Entrer avec un mot de passe",
+    "notify": "Me prévenir",
+    "password": "Mot de passe"
+  },
+  "products": {
+    "product": {
+      "add": "Ajouter",
+      "add_to_cart": "Ajouter au panier",
+      "added": "Ajouté à votre panier",
+      "adding": "Ajout…",
+      "auth_text": "Vérifiée par deux experts avant la mise en vente.",
+      "auth_title": "Authenticité garantie",
+      "choose_options": "Choisir les options",
+      "condition_label": "État",
+      "duties_and_taxes_included": "Droits et taxes inclus.",
+      "in_stock": "En stock, prêt à expédier",
+      "low_stock": {
+        "one": "Plus que {{ count }}",
+        "other": "Plus que {{ count }}"
+      },
+      "new_in": "Nouveau",
+      "on_sale": "Soldes",
+      "one_of_one": "Pièce unique",
+      "only_one": "Pièce unique — un seul exemplaire disponible",
+      "placeholder_condition": "Excellent",
+      "placeholder_title": "Titre de votre produit",
+      "placeholder_vendor": "Créateur",
+      "price_from": "À partir de",
+      "quick_view": "Aperçu rapide",
+      "regular_price": "Prix normal",
+      "sale_price": "Prix soldé",
+      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link-underline\">Livraison</a> calculée au paiement.",
+      "sku": "Référence",
+      "sold_out": "Vendu",
+      "taxes_included": "Taxes incluses.",
+      "unavailable": "Indisponible",
+      "view_details": "Voir tous les détails",
+      "view_media": "Voir l'image {{ index }}",
+      "zoom": "Agrandir l'image"
+    }
+  },
+  "sections": {
+    "announcement": {
+      "label": "Annonces"
+    },
+    "brands": {
+      "jump": "Aller à la lettre",
+      "search": "Trouver un créateur"
+    },
+    "countdown": {
+      "days": "Jours",
+      "hours": "Heures",
+      "minutes": "Minutes",
+      "seconds": "Secondes"
+    },
+    "featured_product": {
+      "select": "Sélectionnez un produit dans l'éditeur de thème."
+    },
+    "video": {
+      "play": "Lire la vidéo"
+    }
+  },
+  "templates": {
+    "404": {
+      "link": "Voir les nouveautés",
+      "subtext": "La page que vous cherchez a été déplacée, vendue ou n'a jamais existé. Trouvons-vous autre chose de beau.",
+      "title": "Cette pièce a trouvé un nouveau foyer"
+    }
+  },
+  "wishlist": {
+    "added": "Ajouté à votre sélection",
+    "clear": "Tout effacer",
+    "count": "Sélection",
+    "empty": "Aucune pièce enregistrée",
+    "empty_text": "Touchez le cœur sur une pièce pour la retrouver ici.",
+    "removed": "Retiré de votre sélection",
+    "save": "Enregistrer",
+    "save_item": "Enregistrer {{ title }}",
+    "saved": "Enregistré",
+    "share": "Partager la liste",
+    "title": "Ma sélection"
+  }
+}

@@ -1,0 +1,72 @@
+<search-modal id="SearchModal" class="search-modal" aria-hidden="true">
+  <div class="search-modal__overlay" data-close></div>
+  <div class="search-modal__panel color-scheme-1" role="dialog" aria-modal="true" aria-label="{{ 'general.search.title' | t }}">
+    <div class="page-width">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-modal__form" data-search-form>
+        <input type="hidden" name="options[prefix]" value="last">
+        <label for="SearchModalInput" class="visually-hidden">{{ 'general.search.title' | t }}</label>
+        {% render 'icon', icon: 'search', class: 'search-modal__icon' %}
+        <input
+          id="SearchModalInput"
+          class="search-modal__input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          {% if settings.predictive_search_enabled %}data-predictive-input{% endif %}
+          aria-controls="PredictiveResults"
+        >
+        <button type="reset" class="search-modal__reset link-underline" data-search-reset hidden>{{ 'general.search.clear' | t }}</button>
+        <button type="button" class="icon-btn" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+      </form>
+
+      <div class="search-modal__body">
+        <div class="search-modal__default" data-search-default>
+          <div class="search-modal__lists">
+            {%- assign shortcuts = settings.search_shortcuts | split: ',' -%}
+            {%- if shortcuts.size > 0 -%}
+              <div class="search-modal__group">
+                <p class="eyebrow">{{ 'general.search.designers' | t }}</p>
+                <ul class="chips" role="list">
+                  {%- for name in shortcuts -%}
+                    {%- assign n = name | strip -%}
+                    {%- if n != blank -%}<li><a class="chip" href="{{ n | url_for_vendor }}">{{ n }}</a></li>{%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+            {%- assign popular = settings.search_popular | split: ',' -%}
+            {%- if popular.size > 0 -%}
+              <div class="search-modal__group">
+                <p class="eyebrow">{{ 'general.search.popular' | t }}</p>
+                <ul class="search-modal__popular" role="list">
+                  {%- for term in popular -%}
+                    {%- assign t_term = term | strip -%}
+                    {%- if t_term != blank -%}
+                      <li><a href="{{ routes.search_url }}?q={{ t_term | url_encode }}&options%5Bprefix%5D=last">{% render 'icon', icon: 'search' %} {{ t_term }}</a></li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          </div>
+          {%- assign featured = settings.search_featured_collection -%}
+          {%- if featured != blank and featured.products_count > 0 -%}
+            <div class="search-modal__group search-modal__featured">
+              <p class="eyebrow">{{ 'general.search.trending' | t }}</p>
+              <div class="grid grid--4 grid--mobile-2">
+                {%- for product in featured.products limit: 4 -%}
+                  {% render 'product-card', product: product, sizes: '(min-width: 990px) 20vw, 50vw' %}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+        <div id="PredictiveResults" class="search-modal__results" data-predictive-results aria-live="polite" hidden></div>
+      </div>
+    </div>
+  </div>
+</search-modal>

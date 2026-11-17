@@ -1,0 +1,354 @@
+{
+  "accessibility": {
+    "back_to_top": "Nach oben",
+    "close": "Schließen",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "skip_to_content": "Zum Inhalt springen"
+  },
+  "blogs": {
+    "article": {
+      "by": "Von {{ author }}",
+      "placeholder": "Titel Ihres Beitrags",
+      "read_more": "Weiterlesen"
+    },
+    "comments": {
+      "email": "E-Mail",
+      "leave": "Kommentar schreiben",
+      "message": "Nachricht",
+      "moderated": "Kommentare werden vor der Veröffentlichung geprüft.",
+      "name": "Name",
+      "post": "Kommentar senden",
+      "success": "Ihr Kommentar wurde veröffentlicht. Danke!",
+      "success_moderated": "Danke — Ihr Kommentar erscheint nach der Freigabe.",
+      "title": {
+        "one": "{{ count }} Kommentar",
+        "other": "{{ count }} Kommentare"
+      }
+    },
+    "general": {
+      "all": "Alle",
+      "empty": "Noch keine Beiträge.",
+      "journal": "Journal"
+    }
+  },
+  "cart": {
+    "general": {
+      "apply": "Anwenden",
+      "checkout": "Sicher zur Kasse",
+      "continue_shopping": "Weiter einkaufen",
+      "decrease": "Menge verringern",
+      "discount": "Rabattcode",
+      "discount_invalid": "Dieser Code kann nicht auf Ihren Warenkorb angewendet werden.",
+      "discount_placeholder": "Code eingeben",
+      "duties_and_taxes_included": "Inklusive Zölle und Steuern. Versand wird an der Kasse berechnet.",
+      "empty": "Ihr Warenkorb ist leer",
+      "empty_text": "Jedes Stück ist ein Unikat — wenn Sie Ihres finden, wartet es hier auf Sie.",
+      "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+      "free_shipping_away": "Noch {{ amount }} bis zum kostenlosen Versand",
+      "free_shipping_reached": "Sie erhalten kostenlosen Versand",
+      "have_account": "Sie haben ein Konto?",
+      "increase": "Menge erhöhen",
+      "items_count": {
+        "one": "{{ count }} Stück",
+        "other": "{{ count }} Stücke"
+      },
+      "note": "Notiz hinzufügen",
+      "note_placeholder": "Besondere Hinweise oder Geschenknachricht",
+      "quantity": "Menge",
+      "remove": "Entfernen",
+      "remove_title": "{{ title }} entfernen",
+      "subtotal": "Zwischensumme",
+      "taxes_at_checkout": "Steuern und Versand werden an der Kasse berechnet.",
+      "taxes_included": "Inklusive Steuern. Versand wird an der Kasse berechnet.",
+      "title": "Ihr Warenkorb",
+      "upsell": "Das könnte Ihnen auch gefallen",
+      "view_cart": "Warenkorb ansehen"
+    }
+  },
+  "collections": {
+    "filters": {
+      "apply": "Anwenden",
+      "clear_all": "Alle löschen",
+      "from": "Von",
+      "max_price": "Der höchste Preis ist {{ price }}",
+      "search_in": "{{ filter }} durchsuchen",
+      "show_results": "Ergebnisse anzeigen",
+      "title": "Filter",
+      "to": "Bis"
+    },
+    "general": {
+      "all": "Kollektionen",
+      "grid": "Rasterspalten",
+      "items": {
+        "one": "{{ count }} Stück",
+        "other": "{{ count }} Stücke"
+      },
+      "load_more": "Mehr laden",
+      "no_matches": "Keine Stücke entsprechen diesen Filtern",
+      "no_matches_text": "Entfernen Sie einen Filter — jede Woche kommen neue Stücke hinzu.",
+      "showing": "{{ shown }} von {{ total }}"
+    },
+    "sorting": {
+      "title": "Sortieren nach"
+    }
+  },
+  "contact": {
+    "form": {
+      "email": "E-Mail",
+      "message": "Nachricht",
+      "name": "Name",
+      "order": "Bestellnummer (optional)",
+      "phone": "Telefon",
+      "send": "Nachricht senden",
+      "success": "Danke — wir melden uns in Kürze.",
+      "topic": "Thema"
+    }
+  },
+  "customer": {
+    "account": {
+      "addresses": "Adressen",
+      "details": "Kontodaten",
+      "log_out": "Abmelden",
+      "orders": "Bestellungen",
+      "return": "Zurück zum Konto",
+      "title": "Konto",
+      "view_addresses": "Adressen ansehen",
+      "welcome": "Willkommen zurück, {{ name }}"
+    },
+    "activate_account": {
+      "cancel": "Einladung ablehnen",
+      "submit": "Konto aktivieren",
+      "subtext": "Erstellen Sie ein Passwort, um Ihr Konto zu aktivieren.",
+      "title": "Konto aktivieren"
+    },
+    "addresses": {
+      "add": "Neue Adresse hinzufügen",
+      "address1": "Adresse",
+      "address2": "Wohnung, Etage usw.",
+      "city": "Stadt",
+      "company": "Firma",
+      "country": "Land/Region",
+      "default": "Standard",
+      "delete": "Löschen",
+      "delete_confirm": "Möchten Sie diese Adresse wirklich löschen?",
+      "edit": "Bearbeiten",
+      "province": "Bundesland / Region",
+      "save": "Adresse speichern",
+      "set_default": "Als Standardadresse festlegen",
+      "zip": "Postleitzahl"
+    },
+    "login": {
+      "drawer_intro": "Melden Sie sich an, um Bestellungen zu verfolgen, schneller zu bezahlen und Neuheiten früher zu sehen.",
+      "email": "E-Mail",
+      "forgot_password": "Passwort vergessen?",
+      "guest": "Als Gast fortfahren",
+      "new_customer": "Neu hier?",
+      "password": "Passwort",
+      "perk_checkout": "Schneller, gespeicherter Checkout",
+      "perk_early": "Früher Zugang zu Neuheiten",
+      "perk_orders": "Bestellungen und Retouren verfolgen",
+      "sign_in": "Anmelden",
+      "title": "Anmelden"
+    },
+    "order": {
+      "billing_address": "Rechnungsadresse",
+      "cancelled": "Bestellung storniert",
+      "date": "Aufgegeben am {{ date }}",
+      "fulfilled_at": "Versandt am {{ date }}",
+      "shipping": "Versand",
+      "shipping_address": "Lieferadresse",
+      "subtotal": "Zwischensumme",
+      "tax": "Steuer",
+      "title": "Bestellung {{ name }}",
+      "total": "Gesamt",
+      "track": "Sendung verfolgen"
+    },
+    "orders": {
+      "date": "Datum",
+      "fulfillment_status": "Versand",
+      "none": "Sie haben noch keine Bestellungen aufgegeben.",
+      "order_number": "Bestellung",
+      "payment_status": "Zahlung",
+      "total": "Gesamt"
+    },
+    "recover_password": {
+      "cancel": "Zurück zur Anmeldung",
+      "submit": "Link senden",
+      "subtext": "Wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+      "success": "Wir haben Ihnen eine E-Mail mit einem Link zum Zurücksetzen gesendet.",
+      "title": "Passwort zurücksetzen"
+    },
+    "register": {
+      "first_name": "Vorname",
+      "have_account": "Sie haben bereits ein Konto?",
+      "last_name": "Nachname",
+      "marketing": "Neuheiten und private Angebote per E-Mail erhalten",
+      "submit": "Konto erstellen",
+      "subtext": "Speichern Sie Ihre Daten, verfolgen Sie Bestellungen und erfahren Sie zuerst von Neuheiten.",
+      "title": "Konto erstellen"
+    },
+    "reset_password": {
+      "password": "Passwort",
+      "password_confirm": "Passwort bestätigen",
+      "submit": "Passwort zurücksetzen",
+      "subtext": "Geben Sie ein neues Passwort für Ihr Konto ein.",
+      "title": "Kontopasswort zurücksetzen"
+    }
+  },
+  "general": {
+    "breadcrumbs": "Brotkrümelnavigation",
+    "cookie_preferences": "Cookie-Einstellungen",
+    "copied": "Kopiert",
+    "copy": "Kopieren",
+    "copy_code": "Code {{ code }} kopieren",
+    "home": "Startseite",
+    "meta": {
+      "page": "Seite {{ page }}",
+      "tags": "Getaggt mit „{{ tags }}“"
+    },
+    "pagination": {
+      "label": "Seitennummerierung",
+      "next": "Nächste Seite",
+      "page": "Seite {{ number }}",
+      "previous": "Vorherige Seite"
+    },
+    "payment_methods": "Zahlungsarten",
+    "search": {
+      "clear": "Löschen",
+      "collections": "Kollektionen",
+      "designers": "Designer",
+      "no_results": "Keine Ergebnisse für „{{ terms }}“",
+      "no_results_text": "Prüfen Sie die Schreibweise oder versuchen Sie einen Designer, eine Kategorie oder Farbe.",
+      "pages": "Seiten & Beiträge",
+      "placeholder": "Designer, Stile, Stücke suchen…",
+      "popular": "Beliebte Suchen",
+      "products": "Stücke",
+      "results_for": "Ergebnisse für „{{ terms }}“",
+      "start": "Wonach suchen Sie?",
+      "submit": "Suchen",
+      "suggestions": "Vorschläge",
+      "title": "Suche",
+      "trending": "Gerade gefragt",
+      "view_all": "Alle Ergebnisse für „{{ terms }}“ ansehen"
+    },
+    "share": "Teilen"
+  },
+  "gift_cards": {
+    "issued": {
+      "add_to_apple_wallet": "Zu Apple Wallet hinzufügen",
+      "copy_code": "Code kopieren",
+      "disabled": "Diese Geschenkkarte ist deaktiviert",
+      "expiration_date": "Gültig bis {{ expires_on }}",
+      "expired": "Diese Geschenkkarte ist abgelaufen",
+      "initial_value": "Ursprünglicher Wert {{ value }}",
+      "label": "Geschenkkarte",
+      "print": "Drucken",
+      "redeem_html": "Verwenden Sie diesen Code an der Kasse, um Ihre Geschenkkarte einzulösen",
+      "shop_link": "Jetzt einkaufen",
+      "subtext": "Hier ist Ihre Geschenkkarte",
+      "title": "Ihre Geschenkkarte über {{ value }} für {{ shop }}"
+    }
+  },
+  "header": {
+    "main_navigation": "Hauptnavigation",
+    "menu": "Menü",
+    "shop": "Shop",
+    "view_all": "Alle {{ title }} ansehen"
+  },
+  "localization": {
+    "country_label": "Land / Währung",
+    "language_label": "Sprache",
+    "update": "Aktualisieren"
+  },
+  "newsletter": {
+    "email": "E-Mail-Adresse",
+    "submit": "Abonnieren",
+    "success": "Danke für Ihre Anmeldung."
+  },
+  "password": {
+    "admin_link_html": "Sind Sie der Shopinhaber? <a href=\"{{ link }}\" class=\"link-underline\">Hier anmelden</a>",
+    "enter": "Eintreten",
+    "enter_password": "Mit Passwort eintreten",
+    "notify": "Benachrichtigen",
+    "password": "Passwort"
+  },
+  "products": {
+    "product": {
+      "add": "Hinzufügen",
+      "add_to_cart": "In den Warenkorb",
+      "added": "Zum Warenkorb hinzugefügt",
+      "adding": "Wird hinzugefügt…",
+      "auth_text": "Vor dem Verkauf von zwei Experten geprüft.",
+      "auth_title": "Echtheit garantiert",
+      "choose_options": "Optionen wählen",
+      "condition_label": "Zustand",
+      "duties_and_taxes_included": "Inklusive Zölle und Steuern.",
+      "in_stock": "Auf Lager, versandbereit",
+      "low_stock": {
+        "one": "Nur noch {{ count }}",
+        "other": "Nur noch {{ count }}"
+      },
+      "new_in": "Neu",
+      "on_sale": "Sale",
+      "one_of_one": "Unikat",
+      "only_one": "Unikat — nur dieses Stück verfügbar",
+      "placeholder_condition": "Ausgezeichnet",
+      "placeholder_title": "Ihr Produkttitel",
+      "placeholder_vendor": "Designer",
+      "price_from": "Ab",
+      "quick_view": "Schnellansicht",
+      "regular_price": "Normaler Preis",
+      "sale_price": "Sonderpreis",
+      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link-underline\">Versand</a> wird an der Kasse berechnet.",
+      "sku": "Referenz",
+      "sold_out": "Ausverkauft",
+      "taxes_included": "Inklusive Steuern.",
+      "unavailable": "Nicht verfügbar",
+      "view_details": "Alle Details ansehen",
+      "view_media": "Bild {{ index }} ansehen",
+      "zoom": "Bild vergrößern"
+    }
+  },
+  "sections": {
+    "announcement": {
+      "label": "Ankündigungen"
+    },
+    "brands": {
+      "jump": "Zum Buchstaben springen",
+      "search": "Designer finden"
+    },
+    "countdown": {
+      "days": "Tage",
+      "hours": "Stunden",
+      "minutes": "Minuten",
+      "seconds": "Sekunden"
+    },
+    "featured_product": {
+      "select": "Wählen Sie im Theme-Editor ein Produkt aus."
+    },
+    "video": {
+      "play": "Video abspielen"
+    }
+  },
+  "templates": {
+    "404": {
+      "link": "Neuheiten entdecken",
+      "subtext": "Die gesuchte Seite wurde verschoben, verkauft oder hat nie existiert. Finden wir etwas Schönes für Sie.",
+      "title": "Dieses Stück hat ein neues Zuhause gefunden"
+    }
+  },
+  "wishlist": {
+    "added": "Zur Merkliste hinzugefügt",
+    "clear": "Alle löschen",
+    "count": "Gemerkt",
+    "empty": "Noch nichts gemerkt",
+    "empty_text": "Tippen Sie auf das Herz eines Stücks, um es hier zu speichern.",
+    "removed": "Von der Merkliste entfernt",
+    "save": "Merken",
+    "save_item": "{{ title }} merken",
+    "saved": "Gemerkt",
+    "share": "Liste teilen",
+    "title": "Merkliste"
+  }
+}

@@ -1,0 +1,17 @@
+{%- comment -%} Save / unsave toggle. Usage: {% render 'wishlist-button', product: product, class: 'card__wish', label: true %} {%- endcomment -%}
+{%- if settings.wishlist_enabled -%}
+  <button
+    type="button"
+    class="wish-btn{% if class %} {{ class }}{% endif %}{% if label %} wish-btn--label{% endif %}"
+    data-wishlist-toggle
+    data-handle="{{ product.handle }}"
+    aria-pressed="false"
+    aria-label="{{ 'wishlist.save_item' | t: title: product.title | escape }}"
+  >
+    {% render 'icon', icon: 'heart' %}
+    {%- if label -%}
+      <span class="wish-btn__text" data-label-add>{{ 'wishlist.save' | t }}</span>
+      <span class="wish-btn__text" data-label-remove>{{ 'wishlist.saved' | t }}</span>
+    {%- endif -%}
+  </button>
+{%- endif -%}

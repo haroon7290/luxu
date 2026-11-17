@@ -1,0 +1,55 @@
+{%- if shop.customer_accounts_enabled -%}
+  <drawer-panel id="AccountDrawer" class="drawer drawer--right" aria-hidden="true">
+    <div class="drawer__overlay" data-close></div>
+    <div class="drawer__panel color-scheme-1" role="dialog" aria-modal="true" aria-labelledby="AccountDrawerTitle" tabindex="-1">
+      <div class="drawer__header">
+        <h2 class="drawer__title h4" id="AccountDrawerTitle">{{ 'customer.login.title' | t }}</h2>
+        <button type="button" class="icon-btn" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', icon: 'close' %}</button>
+      </div>
+      <div class="drawer__body account-drawer">
+        <p class="account-drawer__intro">{{ 'customer.login.drawer_intro' | t }}</p>
+        <ul class="account-drawer__perks" role="list">
+          <li>{% render 'icon', icon: 'box' %} {{ 'customer.login.perk_orders' | t }}</li>
+          <li>{% render 'icon', icon: 'sparkle' %} {{ 'customer.login.perk_early' | t }}</li>
+          <li>{% render 'icon', icon: 'lock' %} {{ 'customer.login.perk_checkout' | t }}</li>
+        </ul>
+
+        {%- if settings.account_drawer_inline_login -%}
+          <div data-account-view="login">
+            {%- form 'customer_login', id: 'DrawerLoginForm', class: 'form-stack' -%}
+              <div class="field">
+                <input type="email" name="customer[email]" id="DrawerLoginEmail" class="field__input" autocomplete="email" autocapitalize="off" placeholder=" " required>
+                <label for="DrawerLoginEmail" class="field__label">{{ 'customer.login.email' | t }}</label>
+              </div>
+              <div class="field">
+                <input type="password" name="customer[password]" id="DrawerLoginPassword" class="field__input" autocomplete="current-password" placeholder=" " required>
+                <label for="DrawerLoginPassword" class="field__label">{{ 'customer.login.password' | t }}</label>
+              </div>
+              <button type="button" class="link-underline account-drawer__forgot" data-account-switch="recover">{{ 'customer.login.forgot_password' | t }}</button>
+              <button type="submit" class="btn btn--primary btn--full">{{ 'customer.login.sign_in' | t }}</button>
+            {%- endform -%}
+          </div>
+          <div data-account-view="recover" hidden>
+            <p class="h4">{{ 'customer.recover_password.title' | t }}</p>
+            <p class="account-drawer__intro">{{ 'customer.recover_password.subtext' | t }}</p>
+            {%- form 'recover_customer_password', class: 'form-stack' -%}
+              <div class="field">
+                <input type="email" name="email" id="DrawerRecoverEmail" class="field__input" autocomplete="email" placeholder=" " required>
+                <label for="DrawerRecoverEmail" class="field__label">{{ 'customer.login.email' | t }}</label>
+              </div>
+              <button type="submit" class="btn btn--primary btn--full">{{ 'customer.recover_password.submit' | t }}</button>
+              <button type="button" class="link-underline" data-account-switch="login">{{ 'customer.recover_password.cancel' | t }}</button>
+            {%- endform -%}
+          </div>
+        {%- else -%}
+          <a href="{{ routes.account_login_url }}" class="btn btn--primary btn--full">{{ 'customer.login.sign_in' | t }}</a>
+        {%- endif -%}
+
+        <div class="account-drawer__register">
+          <p>{{ 'customer.login.new_customer' | t }}</p>
+          <a href="{{ routes.account_register_url }}" class="btn btn--secondary btn--full">{{ 'customer.register.title' | t }}</a>
+        </div>
+      </div>
+    </div>
+  </drawer-panel>
+{%- endif -%}

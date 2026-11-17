@@ -1,0 +1,35 @@
+{%- comment -%}
+  Add-to-bag form.
+  - product, section_id, show_quantity, show_dynamic_checkout, show_wishlist
+{%- endcomment -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section_id
+-%}
+<product-form class="product-form" data-section-id="{{ section_id }}">
+  {%- form 'product', product, id: form_id, class: 'product-form__form', novalidate: 'novalidate' -%}
+    <input type="hidden" name="id" value="{{ variant.id }}" data-variant-id{% if variant.available == false %} disabled{% endif %}>
+    <div class="product-form__row">
+      {%- if show_quantity -%}
+        {%- assign max_qty = '' -%}
+        {%- if variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny' -%}{%- assign max_qty = variant.inventory_quantity -%}{%- endif -%}
+        {%- unless max_qty == 1 -%}
+          {%- assign qty_id = 'Quantity-' | append: section_id -%}
+          {% render 'quantity-input', name: 'quantity', value: 1, min: 1, max: max_qty, id: qty_id %}
+        {%- endunless -%}
+      {%- endif -%}
+      <button type="submit" name="add" class="btn btn--primary btn--lg product-form__submit" data-add-button {% unless variant.available %}disabled{% endunless %}>
+        <span data-add-label>
+          {%- if variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+        </span>
+      </button>
+      {%- if show_wishlist -%}
+        {% render 'wishlist-button', product: product, class: 'product-form__wish' %}
+      {%- endif -%}
+    </div>
+    {%- if show_dynamic_checkout -%}
+      <div class="product-form__dynamic"{% unless variant.available %} hidden{% endunless %} data-dynamic-checkout>{{ form | payment_button }}</div>
+    {%- endif -%}
+    <p class="product-form__error" data-form-error role="alert" hidden></p>
+  {%- endform -%}
+</product-form>

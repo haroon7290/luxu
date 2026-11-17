@@ -1,0 +1,38 @@
+{%- comment -%}
+  Variant picker (pills / swatches). Hidden when the product has only a default variant.
+  - product, section_id, update_url (boolean)
+{%- endcomment -%}
+{%- unless product.has_only_default_variant -%}
+  <variant-picker class="variant-picker" data-section-id="{{ section_id }}" data-url="{{ product.url }}"{% if update_url %} data-update-url{% endif %}>
+    {%- for option in product.options_with_values -%}
+      <fieldset class="variant-picker__option">
+        <legend class="variant-picker__legend">
+          {{ option.name }}: <span data-option-selected="{{ forloop.index0 }}">{{ option.selected_value }}</span>
+        </legend>
+        <div class="variant-picker__values">
+          {%- for value in option.values -%}
+            {%- assign input_id = section_id | append: '-' | append: option.position | append: '-' | append: forloop.index0 -%}
+            <input
+              type="radio"
+              class="visually-hidden"
+              id="{{ input_id }}"
+              name="{{ option.name | escape }}-{{ section_id }}"
+              value="{{ value | escape }}"
+              data-option-index="{{ option.position | minus: 1 }}"
+              {% if option.selected_value == value %}checked{% endif %}
+            >
+            {%- if value.swatch -%}
+              <label for="{{ input_id }}" class="swatch-pill" title="{{ value | escape }}">
+                <span class="swatch" style="{% if value.swatch.image %}background-image: url({{ value.swatch.image | image_url: width: 80 }});{% else %}background-color: {{ value.swatch.color }};{% endif %}"></span>
+                <span class="visually-hidden">{{ value }}</span>
+              </label>
+            {%- else -%}
+              <label for="{{ input_id }}" class="option-pill">{{ value }}</label>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- endfor -%}
+    <script type="application/json" data-variants>{{ product.variants | json }}</script>
+  </variant-picker>
+{%- endunless -%}

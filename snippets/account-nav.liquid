@@ -1,0 +1,6 @@
+<nav class="account-nav" aria-label="{{ 'customer.account.title' | t }}">
+  <a href="{{ routes.account_url }}" class="{% if request.page_type == 'customers/account' %}link-underline{% endif %}">{{ 'customer.account.orders' | t }}</a>
+  <a href="{{ routes.account_addresses_url }}" class="{% if request.page_type == 'customers/addresses' %}link-underline{% endif %}">{{ 'customer.account.addresses' | t }}</a>
+  {%- if settings.wishlist_enabled -%}<a href="/pages/{{ settings.wishlist_page_handle }}">{{ 'wishlist.title' | t }}</a>{%- endif -%}
+  <a href="{{ routes.account_logout_url }}">{{ 'customer.account.log_out' | t }}</a>
+</nav>

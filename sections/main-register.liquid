@@ -1,0 +1,34 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: 72px; --pb: 88px;">
+  <div class="page-width">
+    <div class="customer">
+      <header class="customer__header">
+        <p class="eyebrow eyebrow--line">{{ 'customer.account.title' | t }}</p>
+        <h1 class="h1">{{ 'customer.register.title' | t }}</h1>
+        <p class="muted">{{ 'customer.register.subtext' | t }}</p>
+      </header>
+      {%- form 'create_customer', class: 'form-stack', novalidate: 'novalidate' -%}
+        {%- if form.errors -%}<div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <div class="form-row">
+          <div class="field"><input type="text" name="customer[first_name]" id="RegFirst" class="field__input" autocomplete="given-name" placeholder=" "><label for="RegFirst" class="field__label">{{ 'customer.register.first_name' | t }}</label></div>
+          <div class="field"><input type="text" name="customer[last_name]" id="RegLast" class="field__input" autocomplete="family-name" placeholder=" "><label for="RegLast" class="field__label">{{ 'customer.register.last_name' | t }}</label></div>
+        </div>
+        <div class="field"><input type="email" name="customer[email]" id="RegEmail" class="field__input" autocomplete="email" placeholder=" " required><label for="RegEmail" class="field__label">{{ 'customer.login.email' | t }}</label></div>
+        <div class="field"><input type="password" name="customer[password]" id="RegPassword" class="field__input" autocomplete="new-password" placeholder=" " required><label for="RegPassword" class="field__label">{{ 'customer.login.password' | t }}</label></div>
+        <label class="check">
+          <input type="checkbox" name="customer[accepts_marketing]" value="true">
+          <span class="check__box" aria-hidden="true">{% render 'icon', icon: 'check' %}</span>
+          <span class="check__label">{{ 'customer.register.marketing' | t }}</span>
+        </label>
+        <button type="submit" class="btn btn--primary btn--full">{{ 'customer.register.submit' | t }}</button>
+      {%- endform -%}
+      <div class="customer__links">
+        <span>{{ 'customer.register.have_account' | t }}</span>
+        <a href="{{ routes.account_login_url }}" class="link-underline">{{ 'customer.login.sign_in' | t }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Customer register", "tag": "div", "settings": [ { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" } ] }
+{% endschema %}

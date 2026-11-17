@@ -1,0 +1,21 @@
+{%- if settings.free_shipping_threshold > 0 -%}
+  {%- liquid
+    assign threshold = settings.free_shipping_threshold | times: 100
+    assign remaining = threshold | minus: cart.total_price
+    assign pct = cart.total_price | times: 100.0 | divided_by: threshold
+    if pct > 100
+      assign pct = 100
+    endif
+  -%}
+  <free-shipping-bar class="ship-bar" data-total="{{ cart.total_price }}" data-threshold="{{ threshold }}">
+    <p class="ship-bar__text" data-ship-text>
+      {%- if remaining > 0 -%}
+        {%- capture amount -%}<strong>{% render 'money', amount: remaining %}</strong>{%- endcapture -%}
+        {{ 'cart.general.free_shipping_away' | t: amount: amount }}
+      {%- else -%}
+        {% render 'icon', icon: 'check' %} {{ 'cart.general.free_shipping_reached' | t }}
+      {%- endif -%}
+    </p>
+    <div class="ship-bar__track" aria-hidden="true"><span class="ship-bar__fill" data-ship-fill style="width: {{ pct }}%"></span></div>
+  </free-shipping-bar>
+{%- endif -%}

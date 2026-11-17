@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "main-404", "settings": {} },
+    "edit": { "type": "product-carousel", "settings": { "eyebrow": "While you're here", "heading": "Recently <em>arrived</em>", "button_label": "" } }
+  },
+  "order": ["main", "edit"]
+}

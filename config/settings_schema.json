@@ -1,0 +1,192 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Provenance",
+    "theme_version": "1.0.0",
+    "theme_author": "Provenance Studio",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Logo & brand",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo image" },
+      { "type": "image_picker", "id": "logo_inverse", "label": "Logo for dark backgrounds", "info": "Used on dark colour schemes (optional)." },
+      { "type": "range", "id": "logo_width", "label": "Desktop logo width", "min": 60, "max": 300, "step": 5, "unit": "px", "default": 150 },
+      { "type": "range", "id": "logo_width_mobile", "label": "Mobile logo width", "min": 50, "max": 200, "step": 5, "unit": "px", "default": 110 },
+      { "type": "text", "id": "logo_tagline", "label": "Tagline under logo", "default": "Certified pre-owned luxury" },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "32 × 32px PNG recommended." }
+    ]
+  },
+  {
+    "name": "Colours",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          { "type": "color", "id": "background", "label": "Background", "default": "#FAF7F2" },
+          { "type": "color_background", "id": "background_gradient", "label": "Background gradient", "info": "Overrides the solid background when set." },
+          { "type": "color", "id": "text", "label": "Text", "default": "#161412" },
+          { "type": "color", "id": "accent", "label": "Accent (links, highlights)", "default": "#9C7A4B" },
+          { "type": "color", "id": "surface", "label": "Cards & surfaces", "default": "#F1EBE2" },
+          { "type": "color", "id": "button", "label": "Solid button", "default": "#161412" },
+          { "type": "color", "id": "button_label", "label": "Solid button label", "default": "#FAF7F2" },
+          { "type": "color", "id": "secondary_button_label", "label": "Outline button", "default": "#161412" }
+        ],
+        "role": {
+          "background": { "solid": "background", "gradient": "background_gradient" },
+          "text": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "primary_button_border": "button",
+          "secondary_button": "background",
+          "on_secondary_button": "secondary_button_label",
+          "secondary_button_border": "secondary_button_label",
+          "icons": "text",
+          "links": "accent"
+        }
+      },
+      { "type": "header", "content": "Status colours" },
+      { "type": "color", "id": "color_sale", "label": "Sale price & badge", "default": "#8E2B2B" },
+      { "type": "color", "id": "color_success", "label": "Success", "default": "#2F6B4F" },
+      { "type": "color", "id": "color_live", "label": "Live indicator", "default": "#D6453D" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select", "id": "font_source", "label": "Font source", "default": "google",
+        "options": [
+          { "value": "google", "label": "Google Fonts (designer default)" },
+          { "value": "shopify", "label": "Shopify font library" }
+        ]
+      },
+      { "type": "text", "id": "google_heading_font", "label": "Google heading font family", "default": "Cormorant Garamond", "info": "Exact family name from fonts.google.com" },
+      { "type": "text", "id": "google_heading_axes", "label": "Heading font weights", "default": "ital,wght@0,300;0,400;0,500;0,600;1,400", "info": "If your chosen font does not load, set this to wght@400" },
+      { "type": "text", "id": "google_body_font", "label": "Google body font family", "default": "Jost" },
+      { "type": "text", "id": "google_body_axes", "label": "Body font weights", "default": "wght@300;400;500;600" },
+      { "type": "header", "content": "Shopify font library" },
+      { "type": "font_picker", "id": "type_header_font", "label": "Heading font", "default": "assistant_n4" },
+      { "type": "font_picker", "id": "type_body_font", "label": "Body font", "default": "assistant_n4" },
+      { "type": "header", "content": "Style" },
+      { "type": "range", "id": "heading_scale", "label": "Heading size", "min": 80, "max": 150, "step": 5, "unit": "%", "default": 100 },
+      { "type": "range", "id": "body_scale", "label": "Body size", "min": 90, "max": 120, "step": 2, "unit": "%", "default": 100 },
+      {
+        "type": "select", "id": "heading_weight", "label": "Heading weight", "default": "400",
+        "options": [ { "value": "300", "label": "Light" }, { "value": "400", "label": "Regular" }, { "value": "500", "label": "Medium" }, { "value": "600", "label": "Semibold" } ]
+      },
+      { "type": "checkbox", "id": "heading_uppercase", "label": "Uppercase headings", "default": false },
+      { "type": "checkbox", "id": "eyebrow_uppercase", "label": "Uppercase small labels", "default": true }
+    ]
+  },
+  {
+    "name": "Layout & style",
+    "settings": [
+      { "type": "range", "id": "page_width", "label": "Page width", "min": 1000, "max": 1800, "step": 20, "unit": "px", "default": 1440 },
+      { "type": "range", "id": "border_radius", "label": "Card & image corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 4 },
+      { "type": "range", "id": "button_radius", "label": "Button corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 0 },
+      { "type": "checkbox", "id": "button_uppercase", "label": "Uppercase buttons", "default": true },
+      { "type": "checkbox", "id": "animations_reveal", "label": "Reveal sections on scroll", "default": true },
+      { "type": "checkbox", "id": "animations_hover", "label": "Image zoom on hover", "default": true },
+      { "type": "checkbox", "id": "show_back_to_top", "label": "Show back-to-top button", "default": true }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select", "id": "card_image_ratio", "label": "Image ratio", "default": "1.25",
+        "options": [ { "value": "1", "label": "Square" }, { "value": "1.25", "label": "Portrait" }, { "value": "1.5", "label": "Tall" }, { "value": "0.75", "label": "Landscape" } ]
+      },
+      { "type": "select", "id": "card_image_fit", "label": "Image fit", "default": "contain", "options": [ { "value": "contain", "label": "Fit (show whole item)" }, { "value": "cover", "label": "Fill" } ] },
+      { "type": "range", "id": "card_image_padding", "label": "Image padding", "min": 0, "max": 20, "step": 1, "unit": "%", "default": 8 },
+      { "type": "checkbox", "id": "card_show_secondary", "label": "Show second image on hover", "default": true },
+      { "type": "checkbox", "id": "card_show_vendor", "label": "Show designer (vendor)", "default": true },
+      { "type": "checkbox", "id": "card_show_condition", "label": "Show condition", "default": true },
+      { "type": "checkbox", "id": "card_show_quick_view", "label": "Enable quick view", "default": true },
+      { "type": "checkbox", "id": "card_show_quick_add", "label": "Enable quick add", "default": true },
+      { "type": "checkbox", "id": "card_show_wishlist", "label": "Show save (heart) button", "default": true },
+      { "type": "select", "id": "card_text_align", "label": "Text alignment", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" } ] }
+    ]
+  },
+  {
+    "name": "Badges & condition",
+    "settings": [
+      { "type": "paragraph", "content": "Condition is read from the product metafield custom.condition. If empty, a product tag beginning with the prefix below is used (e.g. condition:Excellent)." },
+      { "type": "text", "id": "condition_tag_prefix", "label": "Condition tag prefix", "default": "condition:" },
+      { "type": "checkbox", "id": "show_sale_badge", "label": "Show sale badge", "default": true },
+      { "type": "select", "id": "sale_badge_type", "label": "Sale badge text", "default": "percent", "options": [ { "value": "text", "label": "Sale" }, { "value": "percent", "label": "Percentage off" } ] },
+      { "type": "checkbox", "id": "show_sold_out_badge", "label": "Show sold out badge", "default": true },
+      { "type": "range", "id": "new_badge_days", "label": "Show “New in” badge for products added in the last", "min": 0, "max": 60, "step": 1, "unit": "d", "default": 14, "info": "Set to 0 to disable." },
+      { "type": "checkbox", "id": "show_unique_badge", "label": "Show “One of one” badge when only 1 is in stock", "default": true }
+    ]
+  },
+  {
+    "name": "Currency",
+    "settings": [
+      { "type": "checkbox", "id": "currency_code_enabled", "label": "Show currency codes (e.g. €1.250,00 EUR)", "default": true }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      { "type": "select", "id": "cart_type", "label": "Cart type", "default": "drawer", "options": [ { "value": "drawer", "label": "Drawer" }, { "value": "page", "label": "Page" } ] },
+      { "type": "number", "id": "free_shipping_threshold", "label": "Free shipping threshold", "default": 300, "info": "In your store currency. Converted automatically for other currencies. Set to 0 to hide the progress bar." },
+      { "type": "checkbox", "id": "cart_show_note", "label": "Enable order note", "default": true },
+      { "type": "checkbox", "id": "cart_show_discount", "label": "Enable discount code field", "default": true },
+      { "type": "checkbox", "id": "cart_gift_wrap", "label": "Enable gift wrapping option", "default": true },
+      { "type": "text", "id": "cart_gift_wrap_label", "label": "Gift wrapping label", "default": "Add complimentary gift wrapping" },
+      { "type": "collection", "id": "cart_upsell_collection", "label": "“You may also like” collection in cart" },
+      { "type": "header", "content": "Trust messages" },
+      { "type": "checkbox", "id": "cart_show_trust", "label": "Show trust messages in cart", "default": true },
+      { "type": "text", "id": "trust_1", "label": "Message 1", "default": "Authenticity guaranteed" },
+      { "type": "text", "id": "trust_2", "label": "Message 2", "default": "14-day returns" },
+      { "type": "text", "id": "trust_3", "label": "Message 3", "default": "Insured, tracked shipping" },
+      { "type": "text", "id": "trust_4", "label": "Message 4", "default": "Secure checkout" },
+      { "type": "text", "id": "trust_5", "label": "Message 5", "default": "Complimentary gift wrapping" }
+    ]
+  },
+  {
+    "name": "Customer accounts",
+    "settings": [
+      { "type": "checkbox", "id": "account_drawer_inline_login", "label": "Show email & password sign-in inside the account drawer", "default": false, "info": "Only works with classic customer accounts. Leave off if you use Shopify’s new customer accounts – the drawer will link to the sign-in page instead." }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      { "type": "checkbox", "id": "predictive_search_enabled", "label": "Enable predictive search", "default": true },
+      { "type": "text", "id": "search_shortcuts", "label": "Designer shortcuts", "default": "Chanel, Louis Vuitton, Hermès, Gucci, Prada, Dior", "info": "Comma separated. Shown in the search panel." },
+      { "type": "text", "id": "search_popular", "label": "Popular searches", "default": "Shoulder bag, Card holder, Tote, Necklace, Silk scarf", "info": "Comma separated." },
+      { "type": "collection", "id": "search_featured_collection", "label": "Products shown in empty search panel" }
+    ]
+  },
+  {
+    "name": "Saved items (wishlist)",
+    "settings": [
+      { "type": "checkbox", "id": "wishlist_enabled", "label": "Enable saved items", "default": true },
+      { "type": "text", "id": "wishlist_page_handle", "label": "Saved items page handle", "default": "saved", "info": "Create a page with this handle and assign the template “page.saved”." }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram", "placeholder": "https://instagram.com/yourbrand" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok", "placeholder": "https://tiktok.com/@yourbrand" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook" },
+      { "type": "text", "id": "social_youtube", "label": "YouTube" },
+      { "type": "text", "id": "social_pinterest", "label": "Pinterest" },
+      { "type": "text", "id": "social_x", "label": "X (Twitter)" },
+      { "type": "text", "id": "social_whatsapp", "label": "WhatsApp link", "placeholder": "https://wa.me/123456789" },
+      { "type": "text", "id": "social_linkedin", "label": "LinkedIn" }
+    ]
+  },
+  {
+    "name": "Social sharing image",
+    "settings": [
+      { "type": "image_picker", "id": "share_image", "label": "Default share image", "info": "Used when a page has no image of its own." }
+    ]
+  }
+]

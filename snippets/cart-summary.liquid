@@ -1,0 +1,72 @@
+{%- comment -%} Cart extras + totals, shared by drawer and page. Param: context, form_id {%- endcomment -%}
+<div class="cart-summary">
+  {%- if settings.cart_gift_wrap -%}
+    <label class="check cart-summary__gift">
+      <input type="checkbox" data-cart-attribute="Gift wrapping" {% if cart.attributes['Gift wrapping'] == 'Yes' %}checked{% endif %}>
+      <span class="check__box" aria-hidden="true">{% render 'icon', icon: 'check' %}</span>
+      <span class="check__label">{% render 'icon', icon: 'gift' %} {{ settings.cart_gift_wrap_label }}</span>
+    </label>
+  {%- endif -%}
+
+  {%- if settings.cart_show_note -%}
+    <details class="cart-summary__toggle"{% if cart.note != blank %} open{% endif %}>
+      <summary>{{ 'cart.general.note' | t }} {% render 'icon', icon: 'plus' %}</summary>
+      <label for="CartNote-{{ context }}" class="visually-hidden">{{ 'cart.general.note' | t }}</label>
+      <textarea id="CartNote-{{ context }}" class="field__input" name="note" form="{{ form_id }}" rows="3" data-cart-note placeholder="{{ 'cart.general.note_placeholder' | t }}">{{ cart.note }}</textarea>
+    </details>
+  {%- endif -%}
+
+  {%- if settings.cart_show_discount -%}
+    <details class="cart-summary__toggle"{% if cart.cart_level_discount_applications.size > 0 %} open{% endif %}>
+      <summary>{{ 'cart.general.discount' | t }} {% render 'icon', icon: 'plus' %}</summary>
+      <div class="discount-form" data-discount-form>
+        <label for="Discount-{{ context }}" class="visually-hidden">{{ 'cart.general.discount' | t }}</label>
+        <input id="Discount-{{ context }}" type="text" class="field__input" placeholder="{{ 'cart.general.discount_placeholder' | t }}" autocomplete="off" data-discount-input>
+        <button type="button" class="btn btn--secondary btn--sm" data-discount-apply>{{ 'cart.general.apply' | t }}</button>
+      </div>
+      <p class="discount-form__error" data-discount-error hidden></p>
+    </details>
+  {%- endif -%}
+
+  <div class="cart-totals">
+    {%- if cart.cart_level_discount_applications.size > 0 -%}
+      <ul class="cart-totals__discounts" role="list">
+        {%- for discount in cart.cart_level_discount_applications -%}
+          <li>
+            <span>{% render 'icon', icon: 'tag' %} {{ discount.title }}
+              {%- if discount.type == 'discount_code' -%}
+                <button type="button" class="cart-totals__remove" data-discount-remove="{{ discount.title | escape }}" aria-label="{{ 'cart.general.remove' | t }}">{% render 'icon', icon: 'close' %}</button>
+              {%- endif -%}
+            </span>
+            <span>&minus;{% render 'money', amount: discount.total_allocated_amount %}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <div class="cart-totals__row cart-totals__row--total">
+      <span>{{ 'cart.general.subtotal' | t }}</span>
+      <span class="cart-totals__amount">{% render 'money', amount: cart.total_price %}</span>
+    </div>
+    <p class="cart-totals__note">
+      {%- if cart.duties_included and cart.taxes_included -%}
+        {{ 'cart.general.duties_and_taxes_included' | t }}
+      {%- elsif cart.taxes_included -%}
+        {{ 'cart.general.taxes_included' | t }}
+      {%- else -%}
+        {{ 'cart.general.taxes_at_checkout' | t }}
+      {%- endif -%}
+    </p>
+  </div>
+
+  <button type="submit" name="checkout" form="{{ form_id }}" class="btn btn--primary btn--full btn--lg cart-summary__checkout"{% if cart.item_count == 0 %} disabled{% endif %}>
+    {% render 'icon', icon: 'lock' %} {{ 'cart.general.checkout' | t }}
+  </button>
+  {%- if context == 'drawer' -%}
+    <a href="{{ routes.cart_url }}" class="cart-summary__view link-underline">{{ 'cart.general.view_cart' | t }}</a>
+  {%- endif -%}
+
+  {%- if settings.cart_show_trust -%}
+    {% render 'trust-list', class: 'trust-list--compact' %}
+  {%- endif -%}
+  {% render 'payment-icons' %}
+</div>

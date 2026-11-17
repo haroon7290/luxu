@@ -1,0 +1,39 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <wishlist-grid>
+      <div class="wishlist__toolbar">
+        <div>
+          <p class="eyebrow eyebrow--line">{{ 'wishlist.count' | t }} <span data-wishlist-total>0</span></p>
+          <h1 class="h1 heading-italic">{{ section.settings.heading }}</h1>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn--secondary btn--sm" data-wishlist-share>{% render 'icon', icon: 'share' %} {{ 'wishlist.share' | t }}</button>
+          <button type="button" class="btn btn--secondary btn--sm" data-wishlist-clear>{% render 'icon', icon: 'trash' %} {{ 'wishlist.clear' | t }}</button>
+        </div>
+      </div>
+      {%- if section.settings.text != blank -%}<div class="rte muted" style="margin-bottom: 2rem; max-width: 640px;">{{ section.settings.text }}</div>{%- endif -%}
+      <div class="grid product-grid" data-wishlist-grid style="--cols: {{ section.settings.columns }}; --cols-mobile: 2;"></div>
+      <div class="empty-state" data-wishlist-empty hidden>
+        <span class="empty-state__icon">{% render 'icon', icon: 'heart', class: 'icon--lg' %}</span>
+        <p class="h3">{{ 'wishlist.empty' | t }}</p>
+        <p class="muted">{{ 'wishlist.empty_text' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">{{ 'cart.general.continue_shopping' | t }}</a>
+      </div>
+    </wishlist-grid>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Saved items",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Your <em>saved</em> pieces" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Saved items are kept on this device. Most pieces are one of a kind — if you love it, don't wait too long.</p>" },
+    { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 88 }
+  ]
+}
+{% endschema %}

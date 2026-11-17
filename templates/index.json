@@ -1,0 +1,173 @@
+{
+  "sections": {
+    "search_hero": {
+      "type": "search-hero",
+      "blocks": {
+        "s1": { "type": "shortcut", "settings": { "label": "Chanel" } },
+        "s2": { "type": "shortcut", "settings": { "label": "Louis Vuitton" } },
+        "s3": { "type": "shortcut", "settings": { "label": "Hermès" } },
+        "s4": { "type": "shortcut", "settings": { "label": "Gucci" } },
+        "s5": { "type": "shortcut", "settings": { "label": "Prada" } },
+        "s6": { "type": "shortcut", "settings": { "label": "Dior" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5", "s6"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Certified pre-owned",
+        "heading": "What are you <em>looking</em> for?",
+        "placeholder": "Try",
+        "typed_words": "a quilted shoulder bag, a silk scarf, a card holder, a gold bracelet",
+        "show_stats": true,
+        "padding_top": 64,
+        "padding_bottom": 56
+      }
+    },
+    "slideshow": {
+      "type": "slideshow",
+      "blocks": {
+        "slide-1": { "type": "slide", "settings": { "eyebrow": "Your next favourite", "heading": "Quiet icons, <em>second</em> chapters", "button_label": "Shop the collection", "position": "bottom-left", "overlay": 35 } },
+        "slide-2": { "type": "slide", "settings": { "eyebrow": "Just landed", "heading": "The leather goods <em>edit</em>", "button_label": "Shop the collection", "position": "bottom-left", "overlay": 35 } },
+        "slide-3": { "type": "slide", "settings": { "eyebrow": "Fine jewellery", "heading": "Gold that <em>remembers</em>", "button_label": "Shop the collection", "position": "bottom-left", "overlay": 35 } }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3"],
+      "settings": { "height": "medium", "full_width": false, "autoplay": true, "speed": 6, "show_counter": true, "padding_top": 0, "padding_bottom": 24 }
+    },
+    "live": {
+      "type": "live-banner",
+      "blocks": {
+        "slot-1": { "type": "slot", "settings": { "day": "Mon – Fri", "weekdays": "1,2,3,4,5", "time": "19:00 – 21:00 CET", "note": "New arrivals" } },
+        "slot-2": { "type": "slot", "settings": { "day": "Saturday", "weekdays": "6", "time": "14:00 – 17:00 CET", "note": "Bags & SLGs" } },
+        "slot-3": { "type": "slot", "settings": { "day": "Sunday", "weekdays": "0", "time": "15:00 – 17:00 CET", "note": "Jewellery hour" } }
+      },
+      "block_order": ["slot-1", "slot-2", "slot-3"],
+      "settings": { "color_scheme": "scheme-2", "platform": "tiktok", "padding_top": 80, "padding_bottom": 80 }
+    },
+    "offers": {
+      "type": "offer-codes",
+      "blocks": {
+        "code-1": { "type": "code", "settings": { "amount": "€20 off", "description": "On orders over €300", "code": "WELCOME20" } },
+        "code-2": { "type": "code", "settings": { "amount": "€35 off", "description": "On orders over €500", "code": "SAVE35" } },
+        "code-3": { "type": "code", "settings": { "amount": "€60 off", "description": "On orders over €800", "code": "SAVE60" } }
+      },
+      "block_order": ["code-1", "code-2", "code-3"],
+      "settings": { "color_scheme": "scheme-1", "align": "center", "padding_top": 64, "padding_bottom": 40 }
+    },
+    "trust": {
+      "type": "trust-block",
+      "blocks": {
+        "t1": { "type": "item", "settings": { "icon": "double-check", "title": "Authenticated twice", "text": "<p>Two independent specialists review materials, construction, hardware and codes before a piece is listed.</p>" } },
+        "t2": { "type": "item", "settings": { "icon": "loupe", "title": "Condition, honestly graded", "text": "<p>We check every item against its listing photos and our grading scale, then note even the smallest marks.</p>" } },
+        "t3": { "type": "item", "settings": { "icon": "video", "title": "Inspection on film", "text": "<p>Your final check is recorded. Scan the card in your parcel to watch exactly what we saw.</p>" } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": { "color_scheme": "scheme-1", "layout": "split", "style": "cards", "link_label": "How we check your item", "padding_top": 48, "padding_bottom": 72 }
+    },
+    "edit": {
+      "type": "product-carousel",
+      "settings": { "color_scheme": "scheme-4", "eyebrow": "Curated by our specialists", "heading": "The considered <em>edit</em>", "limit": 10, "per_view": 4.5, "per_view_mobile": 1.6, "bleed": true, "link_label": "View all", "button_label": "Explore more finds", "padding_top": 88, "padding_bottom": 88 }
+    },
+    "sale_banner": {
+      "type": "image-banner",
+      "settings": { "color_scheme": "scheme-1", "layout": "overlay", "height": "large", "full_width": true, "parallax": true, "overlay": 30, "position": "middle-left", "text_color": "light", "tag": "Up to −40%", "eyebrow": "Seasonal sale", "heading": "The next <em>chapter</em>", "heading_size": "h0", "text": "<p>Considered reductions on pieces with stories still to tell.</p>", "button_label": "Shop the sale", "padding_top": 0, "padding_bottom": 0 }
+    },
+    "tiles": {
+      "type": "promo-tiles",
+      "blocks": {
+        "tile-1": { "type": "tile", "settings": { "eyebrow": "Under €800", "heading": "Finds that <em>feel</em> like a find", "label": "Shop now" } },
+        "tile-2": { "type": "tile", "settings": { "eyebrow": "Signature pieces", "heading": "An icon, <em>your</em> next chapter", "label": "Discover" } }
+      },
+      "block_order": ["tile-1", "tile-2"],
+      "settings": { "columns": 2, "ratio": "1.1", "padding_top": 24, "padding_bottom": 24 }
+    },
+    "standard": {
+      "type": "standard-steps",
+      "blocks": {
+        "step-1": { "type": "step", "settings": { "icon": "double-check", "title": "Two specialists, two opinions", "text": "<p>Each piece is authenticated separately by two members of our team. If they don't agree, it doesn't go on sale.</p>" } },
+        "step-2": { "type": "step", "settings": { "icon": "loupe", "title": "Graded against its photos", "text": "<p>We compare the item in hand with its listing images and grade it on a clear, published scale.</p>" } },
+        "step-3": { "type": "step", "settings": { "icon": "video", "title": "Filmed from shelf to box", "text": "<p>The final inspection and packing are recorded in one continuous take, so you can see exactly what you're receiving.</p>" } }
+      },
+      "block_order": ["step-1", "step-2", "step-3"],
+      "settings": { "color_scheme": "scheme-4", "show_panel": true, "padding_top": 96, "padding_bottom": 96 }
+    },
+    "feature_banner": {
+      "type": "image-banner",
+      "settings": { "color_scheme": "scheme-2", "layout": "split", "image_position": "right", "height": "medium", "full_width": true, "eyebrow": "Signature houses", "heading": "An icon. <em>Your</em> next chapter.", "heading_size": "h1", "text": "<p>Timeless shapes from the houses that defined them — each one inspected, graded and ready for its next owner.</p>", "button_label": "Discover the edit", "button_2_label": "All designers", "padding_top": 0, "padding_bottom": 0 }
+    },
+    "new_arrivals": {
+      "type": "featured-collection",
+      "settings": { "color_scheme": "scheme-1", "eyebrow": "Fresh from inspection", "heading": "New <em>arrivals</em>", "limit": 8, "columns": 4, "columns_mobile": "2", "link_label": "View all", "padding_top": 88, "padding_bottom": 72 }
+    },
+    "categories": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": { "type": "collection", "settings": { "title": "Bags" } },
+        "c2": { "type": "collection", "settings": { "title": "Wallets & SLGs" } },
+        "c3": { "type": "collection", "settings": { "title": "Jewellery" } },
+        "c4": { "type": "collection", "settings": { "title": "Accessories" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": { "color_scheme": "scheme-1", "layout": "grid", "columns": 4, "ratio": "1.25", "label_style": "overlay", "show_count": true, "padding_top": 24, "padding_bottom": 72 }
+    },
+    "designers": {
+      "type": "designer-links",
+      "blocks": {
+        "d1": { "type": "designer", "settings": { "name": "Louis Vuitton" } },
+        "d2": { "type": "designer", "settings": { "name": "Chanel" } },
+        "d3": { "type": "designer", "settings": { "name": "Gucci" } },
+        "d4": { "type": "designer", "settings": { "name": "Dior" } },
+        "d5": { "type": "designer", "settings": { "name": "Loewe" } },
+        "d6": { "type": "designer", "settings": { "name": "Prada" } }
+      },
+      "block_order": ["d1", "d2", "d3", "d4", "d5", "d6"],
+      "settings": { "color_scheme": "scheme-2", "style": "text", "align": "center", "button_label": "All designers A–Z", "button_link": "/collections/vendors", "padding_top": 88, "padding_bottom": 88 }
+    },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "m1": { "type": "text", "settings": { "text": "Authenticated twice" } },
+        "m2": { "type": "text", "settings": { "text": "Graded with care" } },
+        "m3": { "type": "text", "settings": { "text": "Every inspection filmed" } },
+        "m4": { "type": "text", "settings": { "text": "Pre-owned, never second best" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4"],
+      "settings": { "color_scheme": "scheme-1", "size": "large", "speed": 45, "padding": 24 }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "How do you grade condition?", "answer": "<p>Every item is graded on our six-step scale, from New to Fair, after a close inspection of the exterior, interior, corners, hardware and odour. Any marks are described and photographed in the listing.</p>" } },
+        "q2": { "type": "question", "settings": { "question": "Can I see the inspection of my item?", "answer": "<p>Yes. The final check and packing of your order are recorded. You'll find a card with a personal code in your parcel — scan it to watch the recording.</p>" } },
+        "q3": { "type": "question", "settings": { "question": "What does “authenticated twice” mean?", "answer": "<p>Two specialists review each piece independently, looking at materials, stitching, hardware, stamps and date codes. Both must agree before the item is listed.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3"],
+      "settings": { "color_scheme": "scheme-1", "layout": "split", "schema": true, "padding_top": 96, "padding_bottom": 88 }
+    },
+    "social": {
+      "type": "social-links",
+      "settings": { "color_scheme": "scheme-2", "style": "tiles", "padding_top": 72, "padding_bottom": 72 }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": { "color_scheme": "scheme-1", "button_label": "Subscribe", "padding_top": 88, "padding_bottom": 88 }
+    }
+  },
+  "order": [
+    "search_hero",
+    "slideshow",
+    "live",
+    "offers",
+    "trust",
+    "edit",
+    "sale_banner",
+    "tiles",
+    "standard",
+    "feature_banner",
+    "new_arrivals",
+    "categories",
+    "designers",
+    "marquee",
+    "faq",
+    "social",
+    "newsletter"
+  ]
+}

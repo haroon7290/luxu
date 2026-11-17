@@ -1,0 +1,35 @@
+{%- comment -%} Badges stacked on product media. Usage: {% render 'product-badges', product: product %} {%- endcomment -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign compare = product.compare_at_price_min
+  assign price = product.price_min
+-%}
+{%- unless product.available -%}
+  {%- if settings.show_sold_out_badge -%}
+    <span class="badge badge--soldout">{{ 'products.product.sold_out' | t }}</span>
+  {%- endif -%}
+{%- else -%}
+  {%- if settings.show_sale_badge and compare > price -%}
+    <span class="badge badge--sale">
+      {%- if settings.sale_badge_type == 'percent' -%}
+        {%- assign saving = compare | minus: price | times: 100.0 | divided_by: compare | round -%}
+        &minus;{{ saving }}%
+      {%- else -%}
+        {{ 'products.product.on_sale' | t }}
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+  {%- if settings.new_badge_days > 0 and product.published_at -%}
+    {%- liquid
+      assign now_s = 'now' | date: '%s' | plus: 0
+      assign pub_s = product.published_at | date: '%s' | plus: 0
+      assign age_days = now_s | minus: pub_s | divided_by: 86400
+    -%}
+    {%- if age_days <= settings.new_badge_days -%}
+      <span class="badge badge--new">{{ 'products.product.new_in' | t }}</span>
+    {%- endif -%}
+  {%- endif -%}
+  {%- if settings.show_unique_badge and product.variants.size == 1 and variant.inventory_management == 'shopify' and variant.inventory_quantity == 1 -%}
+    <span class="badge badge--unique">{{ 'products.product.one_of_one' | t }}</span>
+  {%- endif -%}
+{%- endunless -%}

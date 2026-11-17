@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "blocks": {
+        "e": { "type": "eyebrow", "settings": { "text": "About us" } },
+        "h": { "type": "heading", "settings": { "heading": "Luxury, <em>passed on</em> with care", "size": "h0" } },
+        "t": { "type": "text", "settings": { "text": "<p>Tell your story here — where you source, who inspects, and why you believe in giving beautiful things a second life.</p>" } }
+      },
+      "block_order": ["e", "h", "t"],
+      "settings": { "align": "center", "padding_top": 96, "padding_bottom": 56 }
+    },
+    "story": {
+      "type": "image-with-text",
+      "blocks": {
+        "e": { "type": "eyebrow", "settings": { "text": "Our story" } },
+        "h": { "type": "heading", "settings": { "heading": "Chosen with an <em>expert</em> eye", "size": "h1" } },
+        "t": { "type": "text" },
+        "s": { "type": "stats" }
+      },
+      "block_order": ["e", "h", "t", "s"],
+      "settings": { "image_position": "left" }
+    },
+    "values": { "type": "multicolumn", "settings": { "color_scheme": "scheme-2" } },
+    "newsletter": { "type": "newsletter", "settings": {} }
+  },
+  "order": ["intro", "story", "values", "newsletter"]
+}

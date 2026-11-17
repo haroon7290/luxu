@@ -1,0 +1,46 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: 56px; --pb: 88px;">
+  <div class="page-width">
+    <header class="section-header">
+      <div class="section-header__copy">
+        <p class="eyebrow eyebrow--line">{{ 'customer.account.title' | t }}</p>
+        <h1 class="h1">{{ 'customer.account.addresses' | t }}</h1>
+      </div>
+    </header>
+    {% render 'account-nav' %}
+
+    <details class="address-card" style="margin-bottom: 2rem;"{% if customer.addresses_count == 0 %} open{% endif %}>
+      <summary class="btn btn--primary" style="width: max-content;">{% render 'icon', icon: 'plus' %} {{ 'customer.addresses.add' | t }}</summary>
+      {%- form 'customer_address', customer.new_address, class: 'form-stack mt-1' -%}
+        {% render 'address-fields', form: form, id: 'new', countries: country_option_tags %}
+      {%- endform -%}
+    </details>
+
+    {%- paginate customer.addresses by 12 -%}
+      <div class="grid" style="--cols: 3; --cols-mobile: 1;">
+        {%- for address in customer.addresses -%}
+          <div class="address-card">
+            {%- if address == customer.default_address -%}<span class="badge badge--new" style="justify-self: start;">{{ 'customer.addresses.default' | t }}</span>{%- endif -%}
+            <div style="font-size: var(--fs-sm);">{{ address | format_address }}</div>
+            <div class="address-card__actions">
+              <details>
+                <summary class="link-underline">{{ 'customer.addresses.edit' | t }}</summary>
+                {%- form 'customer_address', address, class: 'form-stack mt-1' -%}
+                  {% render 'address-fields', form: form, id: address.id %}
+                {%- endform -%}
+              </details>
+              {%- form 'customer_address', address, class: 'address-delete' -%}
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="link-underline" style="color: var(--c-sale);" onclick="return confirm('{{ 'customer.addresses.delete_confirm' | t }}')">{{ 'customer.addresses.delete' | t }}</button>
+              {%- endform -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {% render 'pagination', paginate: paginate, style: 'numbers' %}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Customer addresses", "tag": "div", "settings": [ { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" } ] }
+{% endschema %}

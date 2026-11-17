@@ -1,0 +1,48 @@
+{%- assign img = collection.image -%}
+{%- if section.settings.show_image == false -%}{%- assign img = nil -%}{%- endif -%}
+<section class="section collection-hero{% if img %} collection-hero--image{% endif %} color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a><span aria-hidden="true">/</span>
+      <a href="{{ routes.collections_url }}">{{ 'collections.general.all' | t }}</a><span aria-hidden="true">/</span>
+      <span aria-current="page">{{ collection.title }}</span>
+    </nav>
+    <div class="collection-hero__inner">
+      <div class="reveal" style="display: grid; gap: 1rem;">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--line">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h1 class="collection-hero__title">{{ collection.title }}</h1>
+        {%- if section.settings.show_description and collection.description != blank -%}
+          <div class="collection-hero__desc rte">{{ collection.description }}</div>
+        {%- endif -%}
+        {%- if section.settings.quick_links != blank -%}
+          <ul class="chips collection-hero__chips" role="list">
+            {%- for link in section.settings.quick_links.links -%}
+              <li><a href="{{ link.url }}" class="chip{% if link.active %} is-active{% endif %}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+      {%- if img -%}
+        <div class="collection-hero__media reveal" style="--i: 1;">
+          <div class="media">{{ img | image_url: width: 1600 | image_tag: loading: 'eager', widths: '600,900,1200,1600', sizes: '(min-width: 990px) 50vw, 100vw', alt: collection.title }}</div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection banner",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Small label" },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "checkbox", "id": "show_image", "label": "Show collection image", "default": true },
+    { "type": "link_list", "id": "quick_links", "label": "Quick link chips", "info": "e.g. sub-categories or price bands." },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ]
+}
+{% endschema %}

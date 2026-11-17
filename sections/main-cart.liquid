@@ -1,0 +1,52 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <main-cart data-main-cart data-section-id="{{ section.id }}" data-item-count="{{ cart.item_count }}">
+      <div class="section-header">
+        <div class="section-header__copy">
+          <p class="eyebrow eyebrow--line">{{ 'cart.general.items_count' | t: count: cart.item_count }}</p>
+          <h1 class="h1">{{ 'cart.general.title' | t }}</h1>
+        </div>
+        <a href="{{ routes.all_products_collection_url }}" class="link-arrow">{{ 'cart.general.continue_shopping' | t }} {% render 'icon', icon: 'arrow-right' %}</a>
+      </div>
+      {%- if cart.item_count > 0 -%}
+        <div class="cart-page">
+          <div>
+            {% render 'free-shipping-bar' %}
+            <form action="{{ routes.cart_url }}" method="post" id="CartPageForm" novalidate>
+              {% render 'cart-items', context: 'page' %}
+            </form>
+          </div>
+          <aside class="cart-page__aside">
+            {% render 'cart-summary', context: 'page', form_id: 'CartPageForm' %}
+            {%- if additional_checkout_buttons and section.settings.show_dynamic -%}
+              <div class="mt-1">{{ content_for_additional_checkout_buttons }}</div>
+            {%- endif -%}
+          </aside>
+        </div>
+      {%- else -%}
+        <div class="empty-state">
+          <span class="empty-state__icon">{% render 'icon', icon: 'bag', class: 'icon--lg' %}</span>
+          <p class="h3">{{ 'cart.general.empty' | t }}</p>
+          <p class="muted">{{ 'cart.general.empty_text' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">{{ 'cart.general.continue_shopping' | t }}</a>
+          {%- if shop.customer_accounts_enabled and customer == nil -%}
+            <p class="muted">{{ 'cart.general.have_account' | t }} <a href="{{ routes.account_login_url }}" class="link-underline">{{ 'customer.login.sign_in' | t }}</a></p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </main-cart>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "show_dynamic", "label": "Show express checkout buttons", "default": true },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 72 }
+  ]
+}
+{% endschema %}

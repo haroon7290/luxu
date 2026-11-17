@@ -1,0 +1,17 @@
+{%- comment -%}
+  Visual condition scale highlighting the current grade.
+  - condition: current grade (string)
+  - grades: comma separated list, best → worst
+{%- endcomment -%}
+{%- assign grade_list = grades | split: ',' -%}
+{%- assign current = condition | strip | downcase -%}
+<ol class="condition-scale" role="list" style="--steps: {{ grade_list.size }};">
+  {%- for g in grade_list -%}
+    {%- assign g_clean = g | strip -%}
+    {%- assign g_lower = g_clean | downcase -%}
+    <li class="condition-scale__step{% if g_lower == current %} is-current{% endif %}"{% if g_lower == current %} aria-current="true"{% endif %}>
+      <span class="condition-scale__bar" aria-hidden="true"></span>
+      <span class="condition-scale__label">{{ g_clean }}</span>
+    </li>
+  {%- endfor -%}
+</ol>

@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "form": {
+      "type": "contact-form",
+      "blocks": {
+        "i1": { "type": "info", "settings": { "icon": "mail", "title": "Orders & questions", "text": "care@example.com" } },
+        "i2": { "type": "info", "settings": { "icon": "return", "title": "Returns", "text": "returns@example.com" } },
+        "i3": { "type": "info", "settings": { "icon": "clock", "title": "Hours", "text": "Mon–Fri, 9:00–18:00 CET" } }
+      },
+      "block_order": ["i1", "i2", "i3"],
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "How long does delivery take?", "answer": "<p>Most orders are dispatched within two business days and arrive within 3–6 business days, fully insured.</p>" } },
+        "q2": { "type": "question", "settings": { "question": "How do I start a return?", "answer": "<p>Email us within 14 days of delivery with your order number and we'll send a prepaid label.</p>" } },
+        "q3": { "type": "question", "settings": { "question": "Do you buy pre-owned pieces?", "answer": "<p>Yes — send us photos and details of your item through the form above, choosing “Selling to us”.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3"],
+      "settings": { "color_scheme": "scheme-2", "layout": "split", "heading": "Before you <em>write</em>" }
+    }
+  },
+  "order": ["form", "faq"]
+}

@@ -1,0 +1,60 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: 72px; --pb: 88px;">
+  <div class="page-width">
+    <div class="customer">
+      <div data-account-view="login" class="form-stack">
+        <header class="customer__header">
+          <p class="eyebrow eyebrow--line">{{ 'customer.account.title' | t }}</p>
+          <h1 class="h1">{{ 'customer.login.title' | t }}</h1>
+          <p class="muted">{{ 'customer.login.drawer_intro' | t }}</p>
+        </header>
+        {%- form 'customer_login', class: 'form-stack', novalidate: 'novalidate' -%}
+          {%- if form.errors -%}<div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <div class="field">
+            <input type="email" name="customer[email]" id="CustomerEmail" class="field__input" autocomplete="email" autocapitalize="off" placeholder=" " required>
+            <label for="CustomerEmail" class="field__label">{{ 'customer.login.email' | t }}</label>
+          </div>
+          {%- if form.password_needed -%}
+            <div class="field">
+              <input type="password" name="customer[password]" id="CustomerPassword" class="field__input" autocomplete="current-password" placeholder=" " required>
+              <label for="CustomerPassword" class="field__label">{{ 'customer.login.password' | t }}</label>
+            </div>
+            <a href="#recover" class="link-underline" style="justify-self: start; font-size: var(--fs-sm);">{{ 'customer.login.forgot_password' | t }}</a>
+          {%- endif -%}
+          <button type="submit" class="btn btn--primary btn--full">{{ 'customer.login.sign_in' | t }}</button>
+        {%- endform -%}
+        <div class="customer__links">
+          <span>{{ 'customer.login.new_customer' | t }}</span>
+          <a href="{{ routes.account_register_url }}" class="link-underline">{{ 'customer.register.title' | t }}</a>
+        </div>
+        {%- if shop.checkout.guest_login -%}
+          <hr class="divider">
+          {%- form 'guest_login', class: 'form-stack' -%}
+            <button type="submit" class="btn btn--secondary btn--full">{{ 'customer.login.guest' | t }}</button>
+          {%- endform -%}
+        {%- endif -%}
+      </div>
+
+      <div id="recover" class="form-stack" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--c-line);">
+        <header class="customer__header">
+          <h2 class="h3">{{ 'customer.recover_password.title' | t }}</h2>
+          <p class="muted">{{ 'customer.recover_password.subtext' | t }}</p>
+        </header>
+        {%- form 'recover_customer_password', class: 'form-stack' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success">{% render 'icon', icon: 'check' %} {{ 'customer.recover_password.success' | t }}</p>
+          {%- endif -%}
+          {%- if form.errors -%}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <div class="field">
+            <input type="email" name="email" id="RecoverEmail" class="field__input" autocomplete="email" placeholder=" " required>
+            <label for="RecoverEmail" class="field__label">{{ 'customer.login.email' | t }}</label>
+          </div>
+          <button type="submit" class="btn btn--secondary btn--full">{{ 'customer.recover_password.submit' | t }}</button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Customer login", "tag": "div", "settings": [ { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-1" } ] }
+{% endschema %}

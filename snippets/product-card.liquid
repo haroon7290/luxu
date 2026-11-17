@@ -1,0 +1,90 @@
+{%- comment -%}
+  Product card.
+  - product: product object (optional – renders a placeholder card when blank)
+  - sizes: image sizes attribute
+  - eager: load first image eagerly
+{%- endcomment -%}
+{%- liquid
+  assign sizes = sizes | default: '(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw'
+  assign load = 'lazy'
+  if eager
+    assign load = 'eager'
+  endif
+-%}
+{%- if product != blank -%}
+  {%- capture condition -%}{% render 'product-condition', product: product %}{%- endcapture -%}
+  {%- assign secondary = product.media[1].preview_image -%}
+  {%- assign card_alt = product.featured_media.alt | default: product.title | escape -%}
+  <article class="card{% if settings.card_text_align == 'center' %} card--center{% endif %}{% if secondary and settings.card_show_secondary %} card--has-secondary{% endif %}" data-product-handle="{{ product.handle }}">
+    <div class="card__media">
+      <a href="{{ product.url }}" class="card__media-link" tabindex="-1" aria-hidden="true">
+        <div class="media media--card" style="--ratio: {{ settings.card_image_ratio }};">
+          {%- if product.featured_media -%}
+            {{ product.featured_media.preview_image | image_url: width: 1000 | image_tag: loading: load, widths: '240,360,480,640,800,1000', sizes: sizes, class: 'card__img card__img--primary', alt: card_alt }}
+            {%- if secondary and settings.card_show_secondary -%}
+              {{ secondary | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '240,360,480,640,800,1000', sizes: sizes, class: 'card__img card__img--secondary', alt: '' }}
+            {%- endif -%}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+      </a>
+
+      <div class="card__badges">{% render 'product-badges', product: product %}</div>
+
+      {%- if settings.wishlist_enabled and settings.card_show_wishlist -%}
+        {% render 'wishlist-button', product: product, class: 'card__wish' %}
+      {%- endif -%}
+
+      {%- if settings.card_show_quick_view or settings.card_show_quick_add -%}
+        <div class="card__actions">
+          {%- if settings.card_show_quick_add and product.available and product.has_only_default_variant -%}
+            <product-form class="card__quick-add">
+              {%- form 'product', product, class: 'card__form', novalidate: 'novalidate' -%}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <button type="submit" name="add" class="card__action card__action--primary" data-add-button>
+                  {% render 'icon', icon: 'bag' %}<span data-add-label>{{ 'products.product.add_to_cart' | t }}</span>
+                </button>
+              {%- endform -%}
+            </product-form>
+          {%- elsif settings.card_show_quick_add and product.available -%}
+            <button type="button" class="card__action card__action--primary" data-quick-view="{{ product.url }}">
+              {% render 'icon', icon: 'bag' %}<span>{{ 'products.product.choose_options' | t }}</span>
+            </button>
+          {%- endif -%}
+          {%- if settings.card_show_quick_view -%}
+            <button type="button" class="card__action" data-quick-view="{{ product.url }}" aria-label="{{ 'products.product.quick_view' | t }}: {{ product.title | escape }}">
+              {% render 'icon', icon: 'eye' %}<span class="card__action-label">{{ 'products.product.quick_view' | t }}</span>
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="card__info">
+      {%- if settings.card_show_vendor and product.vendor != blank -%}
+        <p class="card__vendor">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h3 class="card__title"><a href="{{ product.url }}" class="card__link">{{ product.title }}</a></h3>
+      {%- if settings.card_show_condition and condition != blank -%}
+        <p class="card__condition"><span class="card__condition-dot" aria-hidden="true"></span>{{ 'products.product.condition_label' | t }}: {{ condition }}</p>
+      {%- endif -%}
+      {% render 'price', product: product %}
+    </div>
+  </article>
+{%- else -%}
+  <article class="card card--placeholder">
+    <div class="card__media">
+      <div class="media media--card" style="--ratio: {{ settings.card_image_ratio }};">
+        {%- assign ph = index | default: 1 | modulo: 6 | plus: 1 -%}
+        {{ 'product-' | append: ph | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    </div>
+    <div class="card__info">
+      <p class="card__vendor">{{ 'products.product.placeholder_vendor' | t }}</p>
+      <h3 class="card__title">{{ 'products.product.placeholder_title' | t }}</h3>
+      <p class="card__condition"><span class="card__condition-dot" aria-hidden="true"></span>{{ 'products.product.condition_label' | t }}: {{ 'products.product.placeholder_condition' | t }}</p>
+      <div class="price"><span class="price__current">{% render 'money', amount: 125000 %}</span></div>
+    </div>
+  </article>
+{%- endif -%}

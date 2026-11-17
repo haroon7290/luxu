@@ -1,0 +1,92 @@
+<section class="section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {% render 'section-header', eyebrow: section.settings.eyebrow, title: section.settings.heading, text: section.settings.text, link_label: section.settings.link_label, link_url: section.settings.link %}
+    <div class="steps{% if section.settings.show_panel %} steps--with-panel{% endif %}">
+      <ol class="steps__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="step reveal" style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+            <span class="step__num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+            <div>
+              <h3 class="step__title">{% if block.settings.icon != 'none' %}{% render 'icon', icon: block.settings.icon %}{% endif %}{{ block.settings.title }}</h3>
+              <div class="step__text rte">{{ block.settings.text }}</div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ol>
+      {%- if section.settings.show_panel -%}
+        <aside class="qr-panel reveal" style="--i: 2;">
+          <div class="qr-panel__code">
+            {%- if section.settings.qr_image != blank -%}
+              {{ section.settings.qr_image | image_url: width: 400 | image_tag: loading: 'lazy', alt: section.settings.panel_heading | escape }}
+            {%- else -%}
+              {% render 'icon', icon: 'qr' %}
+            {%- endif -%}
+            <span class="qr-panel__scan" aria-hidden="true"></span>
+          </div>
+          {%- if section.settings.panel_eyebrow != blank -%}<p class="eyebrow">{{ section.settings.panel_eyebrow }}</p>{%- endif -%}
+          <h3 class="qr-panel__title">{{ section.settings.panel_heading }}</h3>
+          <div class="qr-panel__text rte">{{ section.settings.panel_text }}</div>
+          <ul class="qr-panel__list" role="list">
+            {%- if section.settings.panel_point_1 != blank -%}<li>{% render 'icon', icon: 'check' %}{{ section.settings.panel_point_1 }}</li>{%- endif -%}
+            {%- if section.settings.panel_point_2 != blank -%}<li>{% render 'icon', icon: 'check' %}{{ section.settings.panel_point_2 }}</li>{%- endif -%}
+            {%- if section.settings.panel_point_3 != blank -%}<li>{% render 'icon', icon: 'check' %}{{ section.settings.panel_point_3 }}</li>{%- endif -%}
+          </ul>
+          {%- if section.settings.panel_button_label != blank -%}
+            <a href="{{ section.settings.panel_button_link }}" class="btn btn--secondary">{{ section.settings.panel_button_label }}</a>
+          {%- endif -%}
+        </aside>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our standard (steps)",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 6,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "scheme-4" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Our standard" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Three checks. <em>No shortcuts.</em>" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Read the full standard" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "header", "content": "Scan panel" },
+    { "type": "checkbox", "id": "show_panel", "label": "Show panel", "default": true },
+    { "type": "image_picker", "id": "qr_image", "label": "QR / card image" },
+    { "type": "text", "id": "panel_eyebrow", "label": "Small label", "default": "In every parcel" },
+    { "type": "text", "id": "panel_heading", "label": "Heading", "default": "Unbox. Scan. Watch." },
+    { "type": "richtext", "id": "panel_text", "label": "Text", "default": "<p>A personal card with a code links to the recording of your item's final inspection.</p>" },
+    { "type": "text", "id": "panel_point_1", "label": "Point 1", "default": "Close-ups of hardware and stitching" },
+    { "type": "text", "id": "panel_point_2", "label": "Point 2", "default": "Every mark we noted, on camera" },
+    { "type": "text", "id": "panel_point_3", "label": "Point 3", "default": "Sealed and packed in the same take" },
+    { "type": "text", "id": "panel_button_label", "label": "Button label" },
+    { "type": "url", "id": "panel_button_link", "label": "Button link" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "none", "options": [ { "value": "none", "label": "None" }, { "value": "double-check", "label": "Double check" }, { "value": "loupe", "label": "Magnifier" }, { "value": "video", "label": "Video" }, { "value": "shield", "label": "Shield" }, { "value": "box", "label": "Box" }, { "value": "certificate", "label": "Certificate" } ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "Step" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Describe this step.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our standard (steps)",
+      "blocks": [
+        { "type": "step", "settings": { "icon": "double-check", "title": "Two specialists, two opinions", "text": "<p>Each piece is authenticated separately by two members of our team. If they don't agree, it doesn't go on sale.</p>" } },
+        { "type": "step", "settings": { "icon": "loupe", "title": "Graded against its photos", "text": "<p>We compare the item in hand with its listing images and grade it on a clear, published scale.</p>" } },
+        { "type": "step", "settings": { "icon": "video", "title": "Filmed from shelf to box", "text": "<p>The final inspection and packing are recorded in one continuous take, so you can see exactly what you're receiving.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

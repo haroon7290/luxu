@@ -38,7 +38,7 @@
         {%- endfor -%}
       </ul>
       {%- if section.settings.button_label != blank -%}
-        <div class="designers__footer"><a href="{{ section.settings.button_link }}" class="link-arrow">{{ section.settings.button_label }} {% render 'icon', icon: 'arrow-right' %}</a></div>
+        <div class="designers__footer"><a href="{{ section.settings.button_link | default: '/pages/designers' }}" class="link-arrow">{{ section.settings.button_label }} {% render 'icon', icon: 'arrow-right' %}</a></div>
       {%- endif -%}
     </div>
   </div>
@@ -59,7 +59,7 @@
     { "type": "richtext", "id": "text", "label": "Text" },
     { "type": "select", "id": "align", "label": "Heading alignment", "default": "center", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" } ] },
     { "type": "text", "id": "button_label", "label": "Link label", "default": "All designers A–Z" },
-    { "type": "url", "id": "button_link", "label": "Link", "default": "/collections/vendors" },
+    { "type": "url", "id": "button_link", "label": "Link", "info": "Defaults to /pages/designers (create a page with the page.brands template)." },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 }
   ],

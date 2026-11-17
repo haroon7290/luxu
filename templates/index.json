@@ -119,7 +119,7 @@
         "d6": { "type": "designer", "settings": { "name": "Prada" } }
       },
       "block_order": ["d1", "d2", "d3", "d4", "d5", "d6"],
-      "settings": { "color_scheme": "scheme-2", "style": "text", "align": "center", "button_label": "All designers A–Z", "button_link": "/collections/vendors", "padding_top": 88, "padding_bottom": 88 }
+      "settings": { "color_scheme": "scheme-2", "style": "text", "align": "center", "button_label": "All designers A–Z", "padding_top": 88, "padding_bottom": 88 }
     },
     "marquee": {
       "type": "marquee",
